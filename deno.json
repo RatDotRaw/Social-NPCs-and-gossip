@@ -1,0 +1,5 @@
+{
+  "imports": {
+    "@dialogic": "./module/dialogic/mod.ts"
+  }
+}
