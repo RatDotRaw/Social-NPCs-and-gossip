@@ -18,5 +18,13 @@ const prov = api.APIFactory.createAPI({
     baseURL: "http://localhost:11434"
 })
 
-
-console.log(await prov.chatCompletion(buffer.toJSON()))
+// main chat loop
+console.log("press CTRL+C to exit")
+while (true) {
+    let msg = prompt("> "); // read user input
+    buffer.insert(new mem.Message({role: "user", content: msg!}))
+    const apiresp = await prov.chatCompletion(buffer.toJSON())
+    msg = apiresp.message.content
+    buffer.insert(new mem.Message({sender: npc, content: msg}))
+    console.log(msg)
+}
