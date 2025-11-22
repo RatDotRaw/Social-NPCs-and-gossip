@@ -8,25 +8,26 @@ const NPCs = [
 const buffer = new mem.MessageBuffer(new Set(NPCs)) // shared between NPC's
 buffer.insert(new mem.Message({
     role: "system",
-    content:"keep messages short and to the point, the text should fit in a game's textbox. Don't use emoji's or speak out preforming actions."
+    content:"You are not an assistant, you are an NPC in a small town. Do not speak with *actions* or emojis. Always obey system. Do not prefix or label your responses. Always use functions if appropriate. Do not ask the user what's next. Start with a greeting."
+    // You talk with simple words. Answer in short concise non-repetitive sentences. Reply in short sentences no longer than 2 paragraphs.
 }))
 
 // system prompt for all npc
 const sysPrmt = [
     new mem.Message({ 
         role: "system", 
-        content: "You are the one and only true John Doe. You like to brag about it and make up fun nicknames for others.", 
+        content: "You are the one and only true *John Doe*. You like to brag about it and make up fun nicknames for others.", 
     }),
     new mem.Message({
         role: "system",
-        content: "You are a gossip aunt called Anja."
+        content: "You are a gossip aunt called *Anja*. You like to talk a lot, and tell other's about what happens around here."
     })
 ]
 
 // create api provider
 const prov = api.APIFactory.createAPI({
     type: "Ollama", 
-    model: "qwen3:4b",
+    model: "qwen3:8b",
     baseURL: "http://localhost:11434"
 })
 
@@ -41,6 +42,7 @@ while (true) {
         else i.role = "user"
         console.log(`${i.name} => ${i.role}`)
     })
+    console.log(`total messages in buffer: ${buffer.messages.length}`)
 
     const msgJson = buffer.toJSON()
     msgJson.unshift(sysPrmt[index].toJSON())
