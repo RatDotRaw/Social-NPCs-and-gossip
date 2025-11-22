@@ -2,7 +2,7 @@ import { CharacterProfile } from "../types.ts";
 
 export async function loadJson(fileName: string) {
     try {
-        const data = await Deno.readTextFile(`./${fileName}`);
+        const data = await Deno.readTextFile(`./profiles/${fileName}`);
         return JSON.parse(data)
     } catch (e) {
         throw new Error(`Error reading/parsing Json for file path '${fileName}'\n${e}`)
