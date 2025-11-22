@@ -4,6 +4,9 @@
     system: "system prompt goes here",
     persona: {
         name: "John Doe",
+        personality: "",
+        motivations: "",
+        speechStyle: "",
         facts: [
             "a list of facts about the current profiel",
             "likes to let people know he is the one and only John Doe."
