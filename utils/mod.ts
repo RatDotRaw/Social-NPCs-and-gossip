@@ -1,1 +1,1 @@
-export { loadJson } from "./promptLoader.ts";
+export * from "./promptLoader.ts";

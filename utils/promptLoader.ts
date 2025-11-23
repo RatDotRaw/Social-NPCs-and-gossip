@@ -9,7 +9,7 @@ export async function loadJson(fileName: string) {
     }
 }
 
-export function jsonToPromt(profile: CharacterProfile) {
+export function jsonToPrompt(profile: CharacterProfile) {
     const persona = profile.persona
     const factsFormatted = persona.facts.map((f) => `- ${f}`).join('\n')
 
