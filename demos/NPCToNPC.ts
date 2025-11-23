@@ -1,10 +1,39 @@
 import { mem, api } from "@dialogic"
+import { loadJson, jsonToPrompt } from "../utils/mod.ts";
 
-// create participants and memory buffer
-const NPCs = [
-    new mem.Participant("John", "assistant"),
-    new mem.Participant("Tante", "assistant")
+// load in profiles
+console.info("loading in profiles...")
+const jsonProfiles = []
+for await(const f of Deno.readDir("./profiles")) {
+    if (f.name.startsWith("example")) continue;
+    if (!f.isFile) continue;
+    console.info(`> ${f.name}`)
+    jsonProfiles.push(await loadJson(f.name))
+}
+
+// pick 2 random profile entries
+const p2 = jsonProfiles[Math.floor(Math.random() * (jsonProfiles.length -1))]
+const p1 = jsonProfiles[Math.floor(Math.random() * (jsonProfiles.length -1))]
+
+const NPCs = []
+// create participants
+NPCs.push(new mem.Participant(p1.persona.name, "assistant"))
+NPCs.push(new mem.Participant(p2.persona.name, "assistant"))
+// system prompt per profile
+const sysPrmt = [
+    new mem.Message({ 
+        role: "system", 
+        content: jsonToPrompt(p1), 
+    }),
+    new mem.Message({
+        role: "system",
+        content: jsonToPrompt(p2)
+    })
 ]
+
+console.log(sysPrmt[0])
+
+// create memory buffer
 const buffer = new mem.MessageBuffer(new Set(NPCs)) // shared between NPC's
 buffer.insert(new mem.Message({
     role: "system",
@@ -12,17 +41,6 @@ buffer.insert(new mem.Message({
     // You talk with simple words. Answer in short concise non-repetitive sentences. Reply in short sentences no longer than 2 paragraphs.
 }))
 
-// system prompt for all npc
-const sysPrmt = [
-    new mem.Message({ 
-        role: "system", 
-        content: "You are the one and only true *John Doe*. You like to brag about it and make up fun nicknames for others.", 
-    }),
-    new mem.Message({
-        role: "system",
-        content: "You are a gossip aunt called *Anja*. You like to talk a lot, and tell other's about what happens around here."
-    })
-]
 
 // create api provider
 const prov = api.APIFactory.createAPI({
