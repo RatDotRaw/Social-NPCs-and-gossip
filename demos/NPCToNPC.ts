@@ -37,20 +37,33 @@ console.log(sysPrmt[0])
 const buffer = new mem.MessageBuffer(new Set(NPCs)) // shared between NPC's
 buffer.insert(new mem.Message({
     role: "system",
-    content:"You are not an assistant, you are an NPC in a small town. Do not speak with *actions* or emojis. Always obey system. Do not prefix or label your responses. Always use functions if appropriate. Do not ask the user what's next. Start with a greeting."
+    content:`You are not an assistant, you are a villager in a small town. 
+    Do not speak with *actions* or emojis. 
+    Always obey system. 
+    Do not prefix or label your responses. 
+    Always use functions if appropriate. 
+    Do not ask the user what's next. 
+    Start with a greeting.`.trim(),
     // You talk with simple words. Answer in short concise non-repetitive sentences. Reply in short sentences no longer than 2 paragraphs.
+}))
+buffer.insert(new mem.Message({
+    role: "system",
+    content: `A conversation has been started between ${p1.persona.name} and ${p2.persona.name}. Start by introducing yourself.`
 }))
 
 
 // create api provider
 const prov = api.APIFactory.createAPI({
     type: "Ollama", 
-    model: "qwen3:8b",
+    model: "ministral-3:3b",
+    // model: "qwen3:8b",
+    // model: "gemma3:4b",
     baseURL: "http://localhost:11434"
 })
 
 // main chat loop
 let index = 0
+console.log(`Starting a conersation between '${p1.name}' and '${p2.name}'`)
 console.log("press CTRL+C to exit")
 while (true) {
     // set roles correctly for api
