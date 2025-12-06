@@ -1,5 +1,6 @@
 import { mem, api } from "@dialogic"
 import { loadJson, jsonToPrompt } from "../utils/mod.ts";
+import { loadPrompt } from "../module/dialogic/utils/prompt_loader.ts";
 
 // load in profiles
 console.info("loading in profiles...")
@@ -37,13 +38,7 @@ console.log(sysPrmt[0])
 const buffer = new mem.MessageBuffer(new Set(NPCs)) // shared between NPC's
 buffer.insert(new mem.Message({
     role: "system",
-    content:`You are not an assistant, you are a villager in a small town. 
-    Do not speak with *actions* or emojis. 
-    Always obey system. 
-    Do not prefix or label your responses. 
-    Always use functions if appropriate. 
-    Do not ask the user what's next. 
-    Start with a greeting.`.trim(),
+    content: await loadPrompt("system.md"), 
     // You talk with simple words. Answer in short concise non-repetitive sentences. Reply in short sentences no longer than 2 paragraphs.
 }))
 buffer.insert(new mem.Message({
