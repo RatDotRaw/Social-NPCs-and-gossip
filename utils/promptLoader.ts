@@ -12,7 +12,9 @@ export async function loadJson(fileName: string) {
 export async function loadTextPrompt(fileName: string, path = "./prompts") {
     const filePath = path + "/" + fileName
     try {
-        return await Deno.readTextFile(filePath)
+        const text = await Deno.readTextFile(filePath)
+        // console.log(text)
+        return text
     } catch (e) {
         throw new Error(`Error reading file from path '${filePath}'\n${e}`)
     }
