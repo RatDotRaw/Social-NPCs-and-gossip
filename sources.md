@@ -5,3 +5,12 @@ In `demos/NPCtoNPC`
 in `utils/promptLoader.ts`
 - 22/13/2025 Reading the contents of a text file 
   https://docs.deno.com/api/deno/~/Deno.readTextFile
+
+Constructing all NPC profiles:
+- 07/12/2025 Simulating Rumor Spreading in Social Networks using LLM Agents
+  https://arxiv.org/abs/2502.01450
+
+Creating Deno API endpoints for Godot:
+- 10/12/2025 oak Router docs 
+  https://deno.com/learn/api-servers
+  https://jsr.io/@oak/oak/doc/router

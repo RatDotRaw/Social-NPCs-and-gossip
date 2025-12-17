@@ -1,6 +1,5 @@
 import { mem, api } from "@dialogic"
 import { loadJson, jsonToPrompt } from "../utils/mod.ts";
-import { loadPrompt } from "../module/dialogic/utils/prompt_loader.ts";
 import { loadTextPrompt } from "../utils/promptLoader.ts";
 
 // load in profiles files
@@ -31,7 +30,10 @@ const buffers = [ // used for later looping
 ]
 
 // insert global system prompt
-const systemMSG = new mem.Message({ content: await loadPrompt("system.md"), role: "system" })
+const systemMSG = new mem.Message({ content: await loadTextPrompt("system.md"), role: "system" })
+loopInsert(systemMSG)
+// insert gossip prompt
+const gossipMsg = new mem.Message({ content: await loadTextPrompt("gossipPrompt.md"), role: "system" })
 loopInsert(systemMSG)
 
 // system prompt per profile
@@ -39,24 +41,24 @@ buffer1.insert(new mem.Message({ content: jsonToPrompt(p1), role: "system" }))
 buffer2.insert(new mem.Message({ content: jsonToPrompt(p2), role: "system" }))
 
 // define participant's tasks
-buffer1.insert(new mem.Message({ 
-    content: `Your current goal is to spread gossip about the following observation you made:
+buffer1.insert(new mem.Message({
+    content: 'Your current goal is to listen to the others story and create your own opinion.',
+    role: 'system'
+}))
+buffer2.insert(new mem.Message({ 
+    content: `Your current goal is to spread gossip about the following belief you made.
+    Don't assume the user knows anything.
+    Don't make up any new facts.
     """
     ${await loadTextPrompt('testGossip.md')}
     """`.trim(), 
     role: 'system'
 }))
-buffer2.insert(new mem.Message({
-    content: 'Your current goal is to listen to the others story and create your own opinion.',
-    role: 'system'
-}))
 
-loopInsert(new mem.Message({
-    content: `You are currently in a one on one conversation with another AI controlled participant.`, role: 'system'
-}))
+// set up a scenario.
 loopInsert(new mem.Message({ 
     content: `A conversation has been started between ${p1.persona.name} and ${p2.persona.name}. Start by introducing yourself.`,
-    role: "system"
+    role: "tool"
 }))
 
 // create api provider
