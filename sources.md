@@ -14,3 +14,10 @@ Creating Deno API endpoints for Godot:
 - 10/12/2025 oak Router docs 
   https://deno.com/learn/api-servers
   https://jsr.io/@oak/oak/doc/router
+- 17/12/2025 oak cors setup
+  https://jsr.io/@tajpouria/cors
+
+in `Godot/scripts/api_client`
+- 17/12/2025 Creating API client
+  https://docs.godotengine.org/en/4.5/tutorials/networking/http_request_class.html
+  

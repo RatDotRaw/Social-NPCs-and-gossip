@@ -1,3 +1,4 @@
 *.png filter=lfs diff=lfs merge=lfs -text
 *.tscn filter=lfs diff=lfs merge=lfs -text
 *.occ filter=lfs diff=lfs merge=lfs -text
+*.blend filter=lfs diff=lfs merge=lfs -text
