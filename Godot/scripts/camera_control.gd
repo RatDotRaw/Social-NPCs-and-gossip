@@ -1,7 +1,5 @@
 extends Camera3D
 
-signal lookAt
-
 @export var look_target: Vector3
 @export var lerp_speed: float = 5
 

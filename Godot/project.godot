@@ -17,7 +17,17 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Api="*res://scripts/api.gd"
+ApiClient="*res://scripts/network/api_client.gd"
+GS="*res://scripts/GameState.gd"
+
+[display]
+
+window/size/viewport_width=1920
+window/size/viewport_height=1080
+
+[filesystem]
+
+import/blender/enabled=false
 
 [godots]
 
