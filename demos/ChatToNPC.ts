@@ -25,6 +25,6 @@ while (true) {
     buffer.insert(new mem.Message({role: "user", content: msg!}))
     const apiresp = await prov.chatCompletion(buffer.toJSON())
     msg = apiresp.message.content
-    buffer.insert(new mem.Message({sender: npc, content: msg}))
+    buffer.insert(new mem.Message({participant: npc, content: msg}))
     console.log(msg)
 }

@@ -11,7 +11,7 @@ func _ready():
 	add_child(http_request)
 	http_request.request_completed.connect(_on_request_completed)
 	
-	create_session()
+	#create_session()
 
 func create_session():
 	if (!GS.sessionID):
@@ -19,16 +19,22 @@ func create_session():
 		if error != OK:
 			printerr("Request failed with error code: ", error)
 
+######################
+### Court enpoints ###
+
 func send_court_message(msg: Message) -> bool:
-	var error = http_request.request(baseUrl+"/court_resp", headers, HTTPClient.METHOD_POST, JSON.stringify(msg.contents))
+	var error = http_request.request(baseUrl+"/court_msgs", headers, HTTPClient.METHOD_POST, JSON.stringify(msg.contents))
 	if error != OK:
 		return false
 	return true
 
 func fetch_court_state():
-	var error = http_request.request(baseUrl+"/court_resp")
+	var error = http_request.request(baseUrl+"/court_msgs")
 	if error != OK:
 		connection_failed.emit("Failed to initiate request")
+
+func get_court_reply():
+	pass
 
 func _on_request_completed(_result, response_code, _headers, body):
 	if response_code != 200:

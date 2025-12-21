@@ -89,7 +89,7 @@ while (true) {
     const msg = apiResponse.message.content
     
     // save in buffer
-    loopInsert(new mem.Message({sender: currentNpc, content: msg}))
+    loopInsert(new mem.Message({participant: currentNpc, content: msg}))
     console.log(currentNpc.name, ":/n", msg)
     prompt("### Press enter to continue ###"); // read user input
     speakerIndex = (speakerIndex + 1) % NPCs.size

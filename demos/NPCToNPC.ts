@@ -76,7 +76,7 @@ while (true) {
     const msg = apiresp.message.content
     
     // save in buffer
-    buffer.insert(new mem.Message({sender: current_npc, content: msg}))
+    buffer.insert(new mem.Message({participant: current_npc, content: msg}))
     console.log(current_npc.name, ":/n", msg)
     prompt("### Press enter to continue ###"); // read user input
     index = (index + 1) % NPCs.length

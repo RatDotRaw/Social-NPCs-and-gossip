@@ -17,8 +17,9 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-ApiClient="*res://scripts/network/api_client.gd"
 GS="*res://scripts/GameState.gd"
+ApiClientWs="*res://scripts/network/api_client_ws.gd"
+ApiClient="*res://scripts/network/api_client.gd"
 
 [display]
 

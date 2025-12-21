@@ -17,7 +17,14 @@ Creating Deno API endpoints for Godot:
 - 17/12/2025 oak cors setup
   https://jsr.io/@tajpouria/cors
 
-in `Godot/scripts/api_client`
+in `Godot/scripts/api_client.gd`
 - 17/12/2025 Creating API client
   https://docs.godotengine.org/en/4.5/tutorials/networking/http_request_class.html
-  
+
+in `Godot/script/api_client_ws.gd`
+- 18/12/2025 Reading & writing a WebSocket client
+  https://claude.ai/share/67c80cc1-8092-4461-9712-a65f067fe5a4
+
+in `utils/messageHandler.ts`
+- 18/12/2025 Handler Map design pattern & implementation reference
+  https://gemini.google.com/share/5a5c214d0325
