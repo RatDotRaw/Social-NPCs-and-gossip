@@ -64,19 +64,31 @@ router
     socket.onmessage = async (event) => {
       try {
         const data = JSON.parse(event.data);
-        const type = data.type;
+        const type: string = data.type;
+
+        if (!courtSession.allow_request) {
+          console.warn(`Ignored request ${type}: Session is busy.`);
+          socket.send(JSON.stringify({
+              type: "error",
+              message: "Server is busy processing previous request.",
+              done: false, // Keep the client locked
+          }));
+          return;
+        }
 
         const handler = messageHandlers[type];
-        
         if (handler) {
-          await handler(socket, courtSession, data)
+          const result = handler(socket, courtSession, data);
+          if (result instanceof Promise) {
+            await handler(socket, courtSession, data);
+          }
         } else {
-          console.warn()
+          console.warn(`Handler ${type} does not exist`);
         }
       } catch (err) {
-        console.error("failed to preocess message", err)
+        console.error("failed to preocess message", err);
       }
-    }
+    };
 
     socket.onclose = () => {
       console.log(`Socket closed for session: ${id}`);

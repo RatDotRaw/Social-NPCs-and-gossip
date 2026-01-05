@@ -1,6 +1,8 @@
 import { Session } from "node:inspector/promises";
 import GameState from "./gamestate.ts";
 import { Socket } from "node:dgram";
+import { request } from "node:http";
+import { privateEncrypt } from "node:crypto";
 
 // Define what a handler looks like
 type MessageHandler = (
@@ -13,23 +15,25 @@ type MessageHandler = (
 export const messageHandlers: Record<string, MessageHandler> = {
   "ping": (socket, session, data) => {
     console.log(`[PING][${session.id}]`)
-    sendResponse(socket, "ping", {})
+    sendResponseWithType(socket, "ping", {})
   },
 
-  "log": (socket, session, data) => {
-    console.log(`[LOG][${session.id}]: ${data.content}`);
+  // get server session status
+  "get_status": (socket, session, _data) => {
+    // console.log(`[get_status] ${session.id}`)
+    sendResponseWithType(socket, "status_update", { state: session.get_state() });
   },
 
   "new_user_message": async (socket, session, data) => {
-    console.log(`Adding message to ${session.id}`);
-    await session.courtAddMsg(data.content);
+    console.log(`[new_user_message] Adding message to ${session.id}`);
+    await session.AddMsg(data.data);
   },
 
   "get_court_status": (socket, session, _data) => {
-    console.log(`[get_court_status] ${session.id}`)
+    // console.log(`[get_court_status] ${session.id}`)
 
     // before sending, remove unesesairy keys for easier debugging
-    sendResponse(socket, "status_court", {
+    sendResponseWithType(socket, "status_court", {
       court_messages: session.courtMem.toJSON().map(({
         images,
         ...rest
@@ -39,18 +43,21 @@ export const messageHandlers: Record<string, MessageHandler> = {
     })
   },
 
-  "get_status": (socket, session, _data) => {
-    sendResponse(socket, "status_update", {
-      id: session.id,
-      active: true,
-      timestamp: Date.now()
-    });
+  "request_AI_response": async (socket, session, _data) => {
+    console.log(`[request_AI_response] ${session.id}`)
+    await session.GenerateAIResponse()
   }
 };
 
 
-function sendResponse(socket: WebSocket, type: string, payload: object) {
+function sendResponseWithId(socket: WebSocket, id: string, payload: object) {
   if (socket.readyState === WebSocket.OPEN) {
-    socket.send(JSON.stringify({ type, ...payload }));
+    socket.send(JSON.stringify({ id, data: payload }));
+  }
+}
+
+function sendResponseWithType(socket: WebSocket, type: string, payload: object) {
+  if (socket.readyState === WebSocket.OPEN) {
+    socket.send(JSON.stringify({ type, data: payload }));
   }
 }

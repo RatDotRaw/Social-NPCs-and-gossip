@@ -1,0 +1,43 @@
+[gd_resource type="Theme" load_steps=8 format=3 uid="uid://ccebkok577w44"]
+
+[ext_resource type="Texture2D" uid="uid://c4w2qvejcd1hm" path="res://assets/textures/UI elements/tab_hover.png" id="1_2ri6r"]
+[ext_resource type="Texture2D" uid="uid://wx8pa7xgst1w" path="res://assets/textures/UI elements/tab.png" id="1_6wuoh"]
+[ext_resource type="Texture2D" uid="uid://c4wuq8rjgdmly" path="res://assets/textures/UI elements/tab_unselect.png" id="2_2ri6r"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6wuoh"]
+region_rect = Rect2(15.91507, 11.018791, 104.27916, 108.334465)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ogn0o"]
+texture = ExtResource("1_2ri6r")
+texture_margin_left = 32.0
+texture_margin_top = 4.0
+texture_margin_right = 23.0
+expand_margin_left = 8.0
+expand_margin_right = 8.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_oljxy"]
+texture = ExtResource("1_6wuoh")
+texture_margin_left = 32.0
+texture_margin_top = 4.0
+texture_margin_right = 23.0
+expand_margin_left = 8.0
+expand_margin_right = 8.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_j4rad"]
+texture = ExtResource("2_2ri6r")
+texture_margin_left = 32.0
+texture_margin_top = 4.0
+texture_margin_right = 23.0
+expand_margin_left = 8.0
+expand_margin_right = 8.0
+
+[resource]
+TabContainer/colors/font_hovered_color = Color(0, 0, 0, 1)
+TabContainer/colors/font_selected_color = Color(0, 0, 0, 1)
+TabContainer/colors/font_unselected_color = Color(0.44291076, 0.44291076, 0.44291073, 1)
+TabContainer/constants/side_margin = 44
+TabContainer/font_sizes/font_size = 28
+TabContainer/styles/panel = SubResource("StyleBoxTexture_6wuoh")
+TabContainer/styles/tab_hovered = SubResource("StyleBoxTexture_ogn0o")
+TabContainer/styles/tab_selected = SubResource("StyleBoxTexture_oljxy")
+TabContainer/styles/tab_unselected = SubResource("StyleBoxTexture_j4rad")

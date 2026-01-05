@@ -17,6 +17,11 @@ Creating Deno API endpoints for Godot:
 - 17/12/2025 oak cors setup
   https://jsr.io/@tajpouria/cors
 
+## Godot
+
+`squiggleVision.gdshader`
+- 29/12/2025 SquigleVision shader:
+  https://godotshaders.com/shader/squigglevision/
 in `Godot/scripts/api_client.gd`
 - 17/12/2025 Creating API client
   https://docs.godotengine.org/en/4.5/tutorials/networking/http_request_class.html
@@ -24,6 +29,8 @@ in `Godot/scripts/api_client.gd`
 in `Godot/script/api_client_ws.gd`
 - 18/12/2025 Reading & writing a WebSocket client
   https://claude.ai/share/67c80cc1-8092-4461-9712-a65f067fe5a4
+- 21/12/2025 A better way of handling async communications over websockets
+  https://claude.ai/share/fbc4ea23-b65f-424f-ac99-caa307788cab
 
 in `utils/messageHandler.ts`
 - 18/12/2025 Handler Map design pattern & implementation reference

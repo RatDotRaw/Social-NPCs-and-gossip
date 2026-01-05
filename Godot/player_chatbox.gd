@@ -8,7 +8,7 @@ func _ready() -> void:
 
 func send_message():
 	var messge: Message = Message.new(text_edit.text, "user", "You")
-	print("Creating new user messge:", messge.contents)
-	#ApiClient.send_court_message(messge)
-	GS.new_user_message(messge)
-	pass
+	if await GS.new_user_message(messge):
+		print("Creating new user messge:", messge.contents)
+	else:
+		printerr("GS did not accept new user message")

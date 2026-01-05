@@ -5,7 +5,7 @@
             "label": "Start Ollama Server",
             "type": "shell",
             // Use ~/ for home or ../ to go up from your project root
-            "command": "cd ~/Documents/docker/ollama && podman-compose up",
+            "command": "cd ~/Documents/docker/ollama && podman-compose down && podman-compose up",
             "isBackground": true,
             "presentation": {
                 "reveal": "always",
