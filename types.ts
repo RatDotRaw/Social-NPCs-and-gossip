@@ -1,3 +1,8 @@
+export type ServerResponse = {
+    type: string,
+    body: any
+}
+
 export type CharacterProfile = {
     name: string;
     comment: string;

@@ -29,8 +29,9 @@ router
   .get("/ws/:id", async (ctx) => {
     console.log("something happening")
     const id = ctx.params.id;
-    const courtSession = gameSessions.find((s) => s.id === id);
+    const gameSession = gameSessions.find((s) => s.id === id);
 
+    //#region authentication
     if (!id) {
       ctx.response.status = 404;
       ctx.response.body = { error: "No id found" };
@@ -41,7 +42,7 @@ router
     const socket = await ctx.upgrade();
 
     // check if session exist
-    if (!courtSession) {
+    if (!gameSession) {
       console.warn(`connection attempted for non-existent session: ${id}`);
       
       // Send the error as a WS message so Godot can catch it
@@ -51,13 +52,14 @@ router
       };
       return;
     }
+    //#endregion
 
     socket.onopen = () => {
       console.log(`Socket connected for session: ${id}`);
       // Send initial state upon connection
       socket.send(JSON.stringify({
         type: "initial_state",
-        court_messages: courtSession.courtMem.toJSON()
+        court_messages: gameSession.courtMem.toJSON()
       }));
     };
 
@@ -66,21 +68,23 @@ router
         const data = JSON.parse(event.data);
         const type: string = data.type;
 
-        if (!courtSession.allow_request) {
+        // send error if requests not allowed // Don't really know why i wrote this
+        if (!gameSession.allow_request) {
           console.warn(`Ignored request ${type}: Session is busy.`);
           socket.send(JSON.stringify({
               type: "error",
-              message: "Server is busy processing previous request.",
+              message: "Server currently does not accept requests.",
               done: false, // Keep the client locked
           }));
           return;
         }
 
+        
         const handler = messageHandlers[type];
         if (handler) {
-          const result = handler(socket, courtSession, data);
+          const result = handler(socket, gameSession, data);
           if (result instanceof Promise) {
-            await handler(socket, courtSession, data);
+            await handler(socket, gameSession, data);
           }
         } else {
           console.warn(`Handler ${type} does not exist`);
