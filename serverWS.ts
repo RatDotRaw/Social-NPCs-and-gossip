@@ -79,7 +79,6 @@ router
           return;
         }
 
-        
         const handler = messageHandlers[type];
         if (handler) {
           const result = handler(socket, gameSession, data);
@@ -87,7 +86,7 @@ router
             await handler(socket, gameSession, data);
           }
         } else {
-          console.warn(`Handler ${type} does not exist`);
+          console.warn(`Handler "${type}" does not exist`);
         }
       } catch (err) {
         console.error("failed to preocess message", err);

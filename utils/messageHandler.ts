@@ -1,8 +1,5 @@
-import { Session } from "node:inspector/promises";
+import { MessageJsonOptionsScheme } from "../messages/index.ts";
 import GameState from "./gamestate.ts";
-import { Socket } from "node:dgram";
-import { request } from "node:http";
-import { privateEncrypt } from "node:crypto";
 import { ServerResponse } from "../types.ts";
 
 // Define what a handler looks like
@@ -14,9 +11,9 @@ type MessageHandler = (
 
 // Create the registry
 export const messageHandlers: Record<string, MessageHandler> = {
-  "ping": (socket, session, data) => {
+  "ping": (socket, session, _data) => {
     console.log(`[PING][${session.id}]`)
-    sendResponseWithType(socket, "ping", {})
+    sendResponseWithType(socket, "ping", "pong")
   },
 
   //#region Server info
@@ -26,25 +23,29 @@ export const messageHandlers: Record<string, MessageHandler> = {
     sendResponseWithType(socket, "status_update", { state: session.get_state() });
   },
 
-  "get_message_buffer_names": (socket, session, data) => {
+  "get_message_buffer_names": (socket, session, _data) => {
     const msgBuffList: String[] = session.getAllMessageBufferKeys()
     sendResponseWithType(socket, "message_buffer_names", msgBuffList)
   },
 
-  "get_all_participant_names": (socket, session, data) => {
+  "get_all_participant_info": (socket, session, _data) => {
     const results = session.getAllParticpantInfo()
     sendResponseWithType(socket, "participants_info", results)
   },
-
-  //#endregoin
+  //#endregion
 
   //#region Chat message buffer calls
   "new_user_message": async (socket, session, data) => {
-    console.log(`[new_user_message] Adding message to ${session.id}`);
-    await session.AddMsg(data.data);
+    const safeData = MessageJsonOptionsScheme.safeParse(data)
+    if (safeData.success) {
+      console.log(`[new_user_message] Adding message to ${session.id}`);
+      await session.AddMsg(data.data);
+    } else {
+      sendResponseWithType(socket, "error", safeData.error)
+    }
   },
 
-  "get_message_buffer": (socket, session, _data) => {
+  "get_message_buffer": (socket, session, data) => {
     // console.log(`[get_court_status] ${session.id}`)
 
     // before sending, remove unesesairy keys for easier debugging
@@ -58,11 +59,21 @@ export const messageHandlers: Record<string, MessageHandler> = {
     })
   },
 
+  "create_message_buffer": (socket, session, data) => {
+    const name = data
+    try {
+      const result = session.createMessageBuffer(name)
+
+    } catch {
+
+    }
+  },
+  //#endregion
+
   "request_AI_response": async (socket, session, _data) => {
     console.log(`[request_AI_response] ${session.id}`)
     await session.GenerateAIResponse()
   }
-  //#endregion
 };
 
 

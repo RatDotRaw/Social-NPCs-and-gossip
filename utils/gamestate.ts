@@ -49,9 +49,8 @@ export default class GameState {
         const found = Array.from(this.participantsList).find(e => e.name == name)
         if (found) {
             return found
-        } else {
-            throw new Error("participant name not found")
         }
+        return null
     }
 
     getAllParticpantInfo() {

@@ -17,6 +17,12 @@ Creating Deno API endpoints for Godot:
 - 17/12/2025 oak cors setup
   https://jsr.io/@tajpouria/cors
 
+every file in `messages/*`
+- 11/01/2025 defining zod validation schema's
+  https://zod.dev/basics
+  https://zod.dev/error-formatting
+  https://zod.dev/api#refine
+
 ## Godot
 
 `squiggleVision.gdshader`
