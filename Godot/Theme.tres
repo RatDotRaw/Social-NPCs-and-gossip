@@ -1,4 +1,6 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://cthvx8nq3oocm"]
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://cthvx8nq3oocm"]
+
+[ext_resource type="FontFile" uid="uid://eilt31kk06ci" path="res://assets/fonts/SpecialElite-Regular.ttf" id="1_yd3fu"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_abrne"]
 bg_color = Color(0.2159017, 0.21590173, 0.2159017, 0.49803922)
@@ -7,11 +9,24 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yd3fu"]
+content_margin_bottom = 12.0
+
 [resource]
+Label/colors/font_color = Color(0, 0, 0, 1)
 Label/font_sizes/font_size = 46
+MarginContainer/constants/margin_bottom = 12
+MarginContainer/constants/margin_left = 18
+MarginContainer/constants/margin_right = 18
+MarginContainer/constants/margin_top = 12
 PanelContainer/styles/panel = SubResource("StyleBoxFlat_abrne")
+RichTextLabel/colors/default_color = Color(0, 0, 0, 1)
 RichTextLabel/font_sizes/bold_font_size = 46
 RichTextLabel/font_sizes/bold_italics_font_size = 46
 RichTextLabel/font_sizes/italics_font_size = 46
 RichTextLabel/font_sizes/mono_font_size = 46
-RichTextLabel/font_sizes/normal_font_size = 32
+RichTextLabel/font_sizes/normal_font_size = 18
+RichTextLabel/styles/normal = SubResource("StyleBoxEmpty_yd3fu")
+RichTextLabelHeader/base_type = &"RichTextLabel"
+RichTextLabelHeader/font_sizes/normal_font_size = 34
+RichTextLabelHeader/fonts/normal_font = ExtResource("1_yd3fu")
