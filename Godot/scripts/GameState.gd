@@ -14,21 +14,21 @@ var allow_server_request = true
 var allow_new_user_message = true
 var is_ai_bussy = false
 # --- client state ---
-var court_senario = true
+var game_state_name = "court_senario"
 
 func _ready() -> void:
+	# setup clock to get server status updates
 	update_clock.wait_time = 2 # update every 2 secs
 	update_clock.autostart = true
-	update_clock.connect("timeout", _on_update)
+	update_clock.connect("timeout", _request_server_status)
 	add_child(update_clock)
 
-func _on_update() -> void:
+#region general server status sync
+func _request_server_status() -> void:
 	if not allow_server_request:
 		return
 	print("seding ping")
 	ApiClientWs.send_request_async("get_status")
-	if court_senario:
-		ApiClientWs.send_request_async("get_court_status")
 
 ### sync settings related to the server's status & allowed requests.
 func set_server_status(data: Dictionary) -> void:
@@ -38,7 +38,9 @@ func set_server_status(data: Dictionary) -> void:
 		allow_new_user_message = settings["allow_new_user_message"]
 		is_ai_bussy = settings["is_ai_bussy"]
 	pass
+#endregion
 
+### update internal message list with the server's list
 func update_messages_list(new_entries: Array[Message]) -> void:
 	var id_list: Array = court_messages.map(func(el: Message): return el.uuid);
 	var new_messages: Array[Message] = []
@@ -57,7 +59,7 @@ func new_user_message(msg: Message)-> bool:
 	msg.participantName = "You"
 	court_messages.append(msg) 
 	
-	if court_senario:
+	if game_state_name == "court_senario":
 		ApiClientWs.send_request_async("new_user_message", msg.to_object())
 		ApiClientWs.send_request_async("get_status")
 		await ApiClientWs.send_request_async("request_AI_response")
