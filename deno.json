@@ -1,6 +1,5 @@
 {
   "imports": {
-    "@dialogic": "./module/dialogic/mod.ts",
     "@oak/oak": "jsr:@oak/oak@^17.2.0",
     "@tajpouria/cors": "jsr:@tajpouria/cors@^1.2.1",
     "@zod/zod": "jsr:@zod/zod@^4.3.5"

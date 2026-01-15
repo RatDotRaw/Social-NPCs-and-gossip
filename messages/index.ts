@@ -2,17 +2,27 @@
 
 import { z } from "@zod/zod"
 
-export const MessageJsonOptionsScheme = z.object({
+const ROLES = ["user", "assistant", "system", "tool"] as const;
+
+export const MessageJsonScheme = z.object({
     content: z.string(),
-    role: z.string().optional(),
-    participantId: z.string().optional(),
-    participantName: z.string().optional(),
-    uuid: z.string().optional(),
-    timestamp: z.string().optional()
-}).refine(
-  (data) => data.participantId || data.participantName, 
-  {
-    message: "Either participantId or participantName must be provided",
-    path: ["participantId"], // point error to field
-  }
-);
+    role: z.enum(ROLES),
+    participantName: z.string(),
+})
+
+//#region api data validation
+
+export const NewUserMessageScheme = MessageJsonScheme.extend({
+  bufferName: z.string()
+})
+
+export const GetMessageBufferScheme = z.object({
+  bufferName: z.string()
+})
+
+export const CreateMessageBufferScheme = z.object({
+  bufferName: z.string()
+})
+
+
+//#endregion
