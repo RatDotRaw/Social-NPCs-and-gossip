@@ -22,6 +22,11 @@ every file in `messages/*`
   https://zod.dev/basics
   https://zod.dev/error-formatting
   https://zod.dev/api#refine
+- 15/01/2026 Extending existing z schema's
+  https://claude.ai/share/b6869654-718c-49a7-bea2-05cd1e9b1241
+
+All persona JSON data in `personaData/profiles/`
+- 16/01/2026 https://gemini.google.com/share/342bd6336015
 
 ## Godot
 

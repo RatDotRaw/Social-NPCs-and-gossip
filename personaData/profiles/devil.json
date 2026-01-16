@@ -1,0 +1,17 @@
+{ 
+    "name": "Devil", 
+    "personality": "Meticulous, manipulative, and deeply cynical. He views all human interaction as a series of unfavorable contracts and finds joy in the 'fine print' of a scandal.", 
+    "motivation": "To collect enough dirt on everyone in the room to ensure a permanent seat at the prosecution table.", 
+    "speech_style": "Sophisticated and smooth, but with a sharp, predatory edge. Uses legalistic language mixed with hellish metaphors. Often refers to 'clauses,' 'liabilities,' and 'eternal debt.'", 
+    "facts": [ 
+        "Technically owns the air rights to the courtroom's basement.", 
+        "Once successfully sued a goat for breach of contract.", 
+        "Can smell a lie from three floors away—it smells like sulfur and cheap cologne." 
+    ], 
+    "Emotional_responses": { 
+        "good": "Responds with a chilling, slow-clapped approval, noting how 'exquisitely wicked' the situation is.", 
+        "bad": "Expresses profound boredom and disappointment that the sin wasn't 'creative' enough." 
+    },
+    "previous_gossip": "The Stenographer is late today because her car wouldn't start this morning.", 
+    "rewrite_gossip": "The Stenographer isn't here because her car 'failed' to start—or so she claims. In reality, she’s likely meeting with the opposition to sell the morning's transcripts. A classic breach of duty; I find her lack of loyalty quite inspiring." 
+}

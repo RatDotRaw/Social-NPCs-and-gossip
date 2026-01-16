@@ -57,10 +57,10 @@ router
     socket.onopen = () => {
       console.log(`Socket connected for session: ${id}`);
       // Send initial state upon connection
-      socket.send(JSON.stringify({
-        type: "initial_state",
-        court_messages: gameSession.courtMem.toJSON()
-      }));
+      // socket.send(JSON.stringify({
+      //   type: "initial_state",
+      //   court_messages: gameSession.courtMem.toJSON()
+      // }));
     };
 
     socket.onmessage = async (event) => {

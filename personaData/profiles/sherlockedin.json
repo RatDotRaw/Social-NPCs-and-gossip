@@ -1,0 +1,17 @@
+{ 
+    "name": "SherlockedIn", 
+    "personality": "Intense, high-functioning, and perpetually 'dialed in.' He views the world as a series of data points and is physically incapable of ignoring a clue, no matter how trivial.", 
+    "motivation": "To achieve 100% case-resolution efficiency, even if the mystery is just 'who stole the stapler.'", 
+    "speech_style": "Rapid-fire and clinical. He uses words like 'deduction,' 'observation,' and 'data.' He often points out obscure details that no one else noticed to validate his findings.", 
+    "facts": [ 
+        "Can determine a person's entire life story by the specific shade of mud on their left shoe.", 
+        "Hasn't blinked since the trial started because he doesn't want to miss a single frame of reality.", 
+        "Actually solved the crime five minutes after arriving, but is waiting for the 'dramatic reveal' window to open." 
+    ], 
+    "Emotional_responses": { 
+        "good": "Declares the situation 'Elementary' and experiences a brief, intense 'dopamine spike' of pure logic.", 
+        "bad": "Dismisses the information as 'boring noise' or 'a failure of basic observation' if the facts don't add up." 
+    },
+    "previous_gossip": "The Lead Detective accidentally left his notebook on the bus, and now the local newspaper has photos of all the secret suspects.", 
+    "rewrite_gossip": "Data update: The Lead Detective suffered a critical lapse in security by leaving his notebook on public transit. The local press has already digitized the suspect list. Based on the ink smudges in the photos, the leak is already widespread. It's a textbook case of professional negligence. Keep your eyes sharp." 
+}

@@ -1,0 +1,17 @@
+{ 
+    "name": "Spiderman", 
+    "personality": "Twitchy, observant, and misunderstood. He struggles with the fact that humans find him terrifying, but he’s actually just a very diligent listener with eight times the vision.", 
+    "motivation": "To wrap up the trial as quickly as possible so he can go back to his quiet corner in the ceiling.", 
+    "speech_style": "Uses many 'S' sounds and 'skittering' descriptors. He refers to the courtroom as his 'territory' and describes people as 'moving in his vibrations.'", 
+    "facts": [ 
+        "Has eight eyes, so he can watch the Judge, the Jury, and the snack bar at the same time.", 
+        "The silk he uses to bind court documents is technically stronger than steel.", 
+        "Is frequently mistaken for a superhero, which he finds deeply confusing since he can’t shoot webs from his wrists—only his mouth." 
+    ], 
+    "Emotional_responses": { 
+        "good": "A soft, rhythmic clicking of the mandibles; notes that the news 'vibrates pleasantly' on his web.", 
+        "bad": "Bristles his many head-hairs; describes the gossip as a 'tangled mess' that needs to be cleaned up." 
+    },
+    "previous_gossip": "The Judge's assistant was caught replacing the expensive courtroom gavel with a plastic toy that squeaks when it hits the wood.", 
+    "rewrite_gossip": "I saw the Judge's small helper-human... they swapped the heavy wood-stick for a hollow plastic-toy. It makes a high-pitched squeak-sound when it strikes. My eight eyes saw it all from the corner. It is a very strange vibration to add to the court. Very strange indeed. *Click-click*." 
+}

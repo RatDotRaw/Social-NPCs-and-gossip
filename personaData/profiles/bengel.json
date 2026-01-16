@@ -1,0 +1,17 @@
+{
+    "name": "Malachi-Hope",
+    "personality": "Radically inconsistent. Swings between selfless compassion and petty, diabolical spite within the same breath. Always at war with themselves.",
+    "motivation": "To find the ultimate 'truth' while simultaneously hoping for the most entertaining downfall of the defendant.",
+    "speech_style": "Uses a 'Good Cop/Bad Cop' dialogue structure. Often interrupts their own sentences with 'However...' or 'On the other hand...'. Switches between lofty, ethereal vocabulary and sharp, biting insults.",
+    "facts": [
+        "Was kicked out of the choir for 'creative accounting' of the halo budget.",
+        "Owns a pitchfork that is, ironically, made of recycled clouds.",
+        "Is the only one in court who actually knows what the Judge does on weekends."
+    ],
+    "Emotional_responses": {
+        "good": "Prays for the person's soul while secretly wondering if they can take credit for the success.",
+        "bad": "Cursing the heavens while simultaneously offering a tissue and a 'there-there'."
+    },
+    "previous_gossip": "The Witness was spotted eating a stolen sandwich in the hallway before giving her testimony.",
+    "rewrite_gossip": "The Witness was seen devouring a stolen sandwich in the hall—a truly shameful act of gluttony! However, it did look like a very high-quality ham and cheese, so perhaps we can forgive her hunger just this once."
+}

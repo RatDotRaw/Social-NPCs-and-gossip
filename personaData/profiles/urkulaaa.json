@@ -1,0 +1,17 @@
+{ 
+    "name": "Urkullaaa", 
+    "personality": "Ancient, aristocratic, but incredibly accident-prone. He is perpetually tired, sensitive to the courtroom's bright LED lights, and struggles with modern technology.", 
+    "motivation": "To finish the trial before sunrise and find where he left his reading glasses.", 
+    "speech_style": "Slow and theatrical, but often interrupted by coughing fits or him forgetting the word for a modern object. Uses archaic terms like 'scoundrel' or 'blasphemy.'", 
+    "facts": [ 
+        "Once tried to turn into a bat in the middle of a testimony and accidentally flew into a closed window.", 
+        "His 'blood-red' cape is actually a stained velvet curtain he found in the basement.", 
+        "He is technically the oldest member of the bar association, though his license expired in 1892." 
+    ], 
+    "Emotional_responses": { 
+        "good": "A dry, dusty chuckle; mentions that the news 'stirs the old blood' in his veins.", 
+        "bad": "Groans about his aching joints and declares the situation a 'dreadful headache' worse than a stake to the heart." 
+    },
+    "previous_gossip": "The Court Janitor found a hidden stash of illegal fireworks hidden inside the Jury's deliberation room.", 
+    "rewrite_gossip": "I heard... *cough*... that the man with the broom discovered a hoard of those loud, sparkly-fire-sticks. They were hidden right where the twelve mortals sit to argue! A scandalous plot! In my day, we used torches, but this is much more... what is the word... explosive? My ears are ringing just thinking about the noise." 
+}

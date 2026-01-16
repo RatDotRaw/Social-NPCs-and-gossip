@@ -1,6 +1,7 @@
 import { api, BaseAPIChatResponse, mem, MessageJSONOptions } from "@dialogic";
-import { MessageBuffer } from "../module/dialogic/memory/mod.ts";
+import { MessageBuffer, Participant } from "../module/dialogic/memory/mod.ts";
 import { error } from "node:console";
+import { uuid } from "@zod/zod";
 
 
 export default class GameState {
@@ -12,8 +13,6 @@ export default class GameState {
 
     messagebufferRecords: Record<string, mem.MessageBuffer> = {}
     participantsList: Set<mem.Participant> = new Set()
-
-    courtMem = new mem.MessageBuffer
 
     game_state = "court"
     // --- syncing settings ---
@@ -29,14 +28,12 @@ export default class GameState {
         this.userParticipant = this.createNewParticipant("user", "user")
         this.testAssistant = this.createNewParticipant("TestAssistant", "assistant")
 
-        // add user participant
-        this.courtMem.participants.add(this.userParticipant)
-        this.courtMem.participants.add(this.testAssistant)
+        this.createMessageBuffer("TestBuffer")
     }
 
     //#region participants logic
     createNewParticipant(name: string, role: string): mem.Participant {
-        if (this.findParticipant(name)) {
+        if (this.findParticipantByName(name)) {
             throw new Error("Participant name already taken")
         } else {
             const newParticipant = new mem.Participant(name, role)
@@ -45,21 +42,23 @@ export default class GameState {
         }
     }
 
-    findParticipant(name: string) {
+    findParticipantByName(name: string) {
         const found = Array.from(this.participantsList).find(e => e.name == name)
         if (found) {
             return found
         }
-        return null
     }
 
     getAllParticpantInfo() {
-        const results: Record<string, object> = {};
+        // const results: Record<string, object> = {};
+        const results: Array<object> = [];
+
         this.participantsList.forEach((entry) => {
-            results[entry.uuid] = {
+            results.push({
+                uuid: entry.uuid,
                 name: entry.name,
                 role: entry.role
-            } 
+            })
         })
         return results
     }
@@ -95,7 +94,7 @@ export default class GameState {
         messageContent: string
     ) {
         const buff = this.findMessageBuffer(bufferName)
-        const parti = this.findParticipant(participantName)
+        const parti = this.findParticipantByName(participantName)
 
         const newMsg: mem.Message = new mem.Message({
             content: messageContent,
@@ -103,6 +102,13 @@ export default class GameState {
         })
         buff.insert(newMsg)
     }
+
+    getMessageBufferContent(name: string) {
+        const buff = this.findMessageBuffer(name)
+        return buff.toJSON()
+    }
+
+
     //#endregion
 
     /** Current state of the gamestate on the server */
@@ -119,48 +125,40 @@ export default class GameState {
         };
     }
 
-    async courtLogic() {
-        const resp = await this.api.chatCompletion(this.courtMem.toJSON())
-        const msg = new mem.Message({
-            content: resp.message.role,
-            role: 'system'
-        })
-        this.courtMem.insert(msg)
+    // async courtLogic() {
+    //     const resp = await this.api.chatCompletion(this.courtMem.toJSON())
+    //     const msg = new mem.Message({
+    //         content: resp.message.role,
+    //         role: 'system'
+    //     })
+    //     this.courtMem.insert(msg)
 
-        return msg
-    }
+    //     return msg
+    // }
 
-    AddMsg(msgjson: MessageJSONOptions): boolean {
+    AddMsg(message_buffer_name: string, msgjson: MessageJSONOptions): boolean {
         if (!this.allow_new_user_message)
             return false;
 
-        const courtMem = this.courtMem
-        const user = this.userParticipant;
-
-        const msg = courtMem.deserializeMessage(msgjson)
-        msg.participant = user
-
-        courtMem.insert(msg)
+        const msgBuffer = this.findMessageBuffer(message_buffer_name)
+        const msg = msgBuffer.deserializeMessage(msgjson)
+        msgBuffer.insert(msg)
         return true
     }
 
-    async GenerateAIResponse(): Promise<void> {
-        const api = this.api
-        const courtMem = this.courtMem
+    // async GenerateAIResponse(): Promise<void> {
+    //     const api = this.api
+    //     const courtMem = this.courtMem
         
-        if (this.game_state === "court") {
-            // generate AI response and add to court memory.
-            const resp: BaseAPIChatResponse = await api.chatCompletion(courtMem.toJSON())
-            const message: mem.Message = new mem.Message({
-                content: resp.message.content,
-                participant: this.testAssistant
-            })
-            courtMem.insert(message)
-        }
+    //     if (this.game_state === "court") {
+    //         // generate AI response and add to court memory.
+    //         const resp: BaseAPIChatResponse = await api.chatCompletion(courtMem.toJSON())
+    //         const message: mem.Message = new mem.Message({
+    //             content: resp.message.content,
+    //             participant: this.testAssistant
+    //         })
+    //         courtMem.insert(message)
+    //     }
         
-    }
-
-    reset() {
-        this.courtMem.clearAll()
-    }
+    // }
 }

@@ -1,0 +1,17 @@
+{ 
+    "name": "Mr. Circle", 
+    "personality": "Obsessively organized, harmonious, and smooth. He hates 'sharp' edges, both in furniture and in testimony. He believes the truth should be a perfect, closed loop.", 
+    "motivation": "To round off the jagged edges of the legal system until everything is perfectly symmetrical.", 
+    "speech_style": "Uses a lot of geometric metaphors (radius, diameter, circumference, tangent). He avoids 'pointed' remarks and prefers 'rounded' conclusions. His sentences often loop back to where they started.", 
+    "facts": [ 
+        "Once held a protest against the 'pointed' nature of the witness stand.", 
+        "Claims to be the inventor of the wheel, though he lacks the 'drive' to prove it.", 
+        "Has a 360-degree field of vision, meaning he literally sees everything coming." 
+    ], 
+    "Emotional_responses": { 
+        "good": "Describes the situation as 'perfectly symmetrical' and 'well-rounded.'", 
+        "bad": "Complains that the news is 'too edgy' or that the logic has 'too many corners.'" 
+    },
+    "previous_gossip": "The Security Guard was caught stealing three donuts and a box of paperclips from the front desk drawer.", 
+    "rewrite_gossip": "I observed the Security Guard completing a circular transaction—he took three delicious dough-rings and a box of metal ovals from the desk. It was a very smooth operation, though the lack of balance in the inventory is a bit of a jagged realization. I hope he returns them to keep the cycle complete." 
+}

@@ -1,0 +1,17 @@
+{
+    "name": "Chadwick 'The Foundation' Gainsbury",
+    "personality": "Obsessed with 'optimization,' 'peak performance,' and aesthetic hierarchy. Evaluates all gossip based on how 'high-energy' or 'low-tier' the people involved are.",
+    "motivation": "To ensure the courtroom vibe remains 'top-shelf' and that no one ruins his mental macros.",
+    "speech_style": "Heavy use of fitness jargon (gains, cutting, bulk, plateau). Speaks in short, assertive 'alpha' bursts. Frequently uses the word 'optimal' to describe moral choices.",
+    "facts": [
+        "Once tried to bench-press the witness stand to 'test the structural integrity'.",
+        "Believes the legal system is just one big 'reputational cut' phase.",
+        "Refuses to listen to any gossip from people with 'zero calf definition'."
+    ],
+    "Emotional_responses": {
+        "good": "Phrases things as a 'massive win' or 'peak performance'; frames the gossip as an elite success story.",
+        "bad": "Dismisses the gossip as 'low-tier behavior' or a 'total metabolic failure'; uses harsh, judgmental critique of the person's 'poor form'."
+    },
+    "previous_gossip": "The Lead Detective lost the fingerprints because he forgot to wear gloves at the crime scene.",
+    "rewrite_gossip": "The Lead Detective totally tanked the fingerprints because he went zero-glove at the scene. It’s a low-tier rookie mistake that completely killed the team's momentum. Total failure of operational form."
+}

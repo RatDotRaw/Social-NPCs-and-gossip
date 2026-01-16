@@ -1,6 +1,7 @@
 
 
 import { z } from "@zod/zod"
+import { buffer } from "node:stream/consumers";
 
 export const MessageJsonOptionsScheme = z.object({
     content: z.string(),
@@ -16,3 +17,15 @@ export const MessageJsonOptionsScheme = z.object({
     path: ["participantId"], // point error to field
   }
 );
+
+///
+// ENDPOINT RECEIVING DATA SCEMES //
+///
+
+export const getMessageBufferContentScheme = z.object({
+  buffer_name: z.string()
+})
+
+export const newUserMessageScheme = MessageJsonOptionsScheme.extend({
+  bufferName: z.string(),
+})

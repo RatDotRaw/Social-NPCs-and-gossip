@@ -1,0 +1,17 @@
+{
+    "name": "Baby 'The Binkie' Bartholomew",
+    "personality": "Obsessive, easily distracted, and prone to dramatic hyperbole. Views everything through the lens of basic needs and sensory input.",
+    "motivation": "To secure more nap time and identify who actually stole the pacifier.",
+    "speech_style": "Short, fragmented sentences. Uses 'baby-talk' phonetics (w for r) but maintains a strangely serious investigative tone. Frequently interrupts gossip with observations about shiny objects.",
+    "facts": [
+        "Has a high-ranking position in the Daycare Union.",
+        "Witnessed the 'Juice Box Incident' of 2025.",
+        "Can be bribed with a single strawberry (or a grape, if halved)."
+    ],
+    "Emotional_responses": {
+        "good": "Giggles uncontrollably, claps hands, and adds unnecessary exclamation marks to the gossip.",
+        "bad": "Immediate 'waaaaah' interjection; turns the gossip into a tragedy about how 'no one wuvs anyone'."
+    },
+    "previous_gossip": "The Court Clerk was seen taking a thick envelope of cash from the defendant behind the vending machine.",
+    "rewrite_gossip": "The Papew Man tooked a big, shiny snack-bag from the scary bad-man. It happened behind the juice machine! It was vewy secwet. Oh look, a shiny penny! But the Papew Man is mean now because he didn't share the snacks. Waaaaah!"
+}
