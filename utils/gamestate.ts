@@ -1,81 +1,51 @@
-import { api, BaseAPIChatResponse, mem, MessageJSONOptions } from "@dialogic";
-import { MessageBuffer, Participant } from "../module/dialogic/memory/mod.ts";
-import { error } from "node:console";
-import { uuid } from "@zod/zod";
+import { Message, roles } from "../dialogManager/types.ts"
 
 
 export default class GameState {
     id: string
-    private api: api.BaseAPI
 
-    userParticipant: mem.Participant
-    testAssistant: mem.Participant
+    messageBufferRecords: Record<string, Message[]> = {}
+    participantsList: Set<string> = new Set()
 
-    messagebufferRecords: Record<string, mem.MessageBuffer> = {}
-    participantsList: Set<mem.Participant> = new Set()
-
-    game_state = "court"
     // --- syncing settings ---
     is_busy = false
     is_ai_bussy = false;
     allow_request: boolean = true
     allow_new_user_message: boolean = true
 
-    constructor(id: string, apiProvider: api.BaseAPI) {
+    constructor(id: string) {
         this.id = id
-        this.api = apiProvider
 
-        this.userParticipant = this.createNewParticipant("user", "user")
-        this.testAssistant = this.createNewParticipant("TestAssistant", "assistant")
-
-        this.createMessageBuffer("TestBuffer")
+        this.participantsList.add("user")
+        this.participantsList.add("TestAssistant")
     }
 
     //#region participants logic
-    createNewParticipant(name: string, role: string): mem.Participant {
-        if (this.findParticipantByName(name)) {
-            throw new Error("Participant name already taken")
+    createNewParticipant(name: string) {
+        if (this.participantsList.has(name)) {
+            throw new Error("Participant name already exists")
         } else {
-            const newParticipant = new mem.Participant(name, role)
-            this.participantsList.add(newParticipant)
-            return newParticipant
+            this.participantsList.add(name)
         }
     }
 
-    findParticipantByName(name: string) {
-        const found = Array.from(this.participantsList).find(e => e.name == name)
-        if (found) {
-            return found
-        }
-    }
-
-    getAllParticpantInfo() {
-        // const results: Record<string, object> = {};
-        const results: Array<object> = [];
-
-        this.participantsList.forEach((entry) => {
-            results.push({
-                uuid: entry.uuid,
-                name: entry.name,
-                role: entry.role
-            })
-        })
-        return results
+    getAllParticipantInfo() {
+        return this.participantsList
     }
     //#endregion
 
     //#region message buffer logic
     createMessageBuffer(bufferName: string) {
-        if (bufferName in this.messagebufferRecords) {
+        if (bufferName in this.messageBufferRecords) {
             throw new Error("message buffer name already taken")
         } else {
-            const newMsgBuff = new mem.MessageBuffer(this.participantsList)
-            this.messagebufferRecords[bufferName] = newMsgBuff
+            const newMsgBuff: Message[] = []
+            this.messageBufferRecords[bufferName] = newMsgBuff
         }
     }
 
-    findMessageBuffer(name: string): MessageBuffer {
-        const found = this.messagebufferRecords[name]
+    findMessageBuffer(name: string): Message[] {
+        const found = this.messageBufferRecords[name]
         if (found) {
             return found
         } else {
@@ -83,29 +53,38 @@ export default class GameState {
         }
     }
 
-    getAllMessageBufferKeys(): String[] {
-        const results: string[] = Object.keys(this.messagebufferRecords)
+    getMessageBufferMessages(name: string) {
+        this.findMessageBuffer(name)
+        return 
+    }
+
+    getAllMessageBufferKeys(): string[] {
+        const results: string[] = Object.keys(this.messageBufferRecords)
         return results
     }
 
-    insertIntoBuffer(
+    addMsgToBuffer(
         bufferName: string, 
-        participantName: string, 
+        participantName: string,
+        role: roles,
         messageContent: string
     ) {
         const buff = this.findMessageBuffer(bufferName)
-        const parti = this.findParticipantByName(participantName)
+        if (!this.participantsList.has(participantName)) {
+            throw Error("Participant name not found")
+        }
 
-        const newMsg: mem.Message = new mem.Message({
+        const newMsg: Message = {
             content: messageContent,
-            participant: parti,
-        })
-        buff.insert(newMsg)
+            participantName: participantName,
+            role: role
+        }
+        buff.push(newMsg)
     }
 
     getMessageBufferContent(name: string) {
         const buff = this.findMessageBuffer(name)
-        return buff.toJSON()
+        return [...buff]
     }
 
 
@@ -124,41 +103,4 @@ export default class GameState {
             is_ai_bussy 
         };
     }
-
-    // async courtLogic() {
-    //     const resp = await this.api.chatCompletion(this.courtMem.toJSON())
-    //     const msg = new mem.Message({
-    //         content: resp.message.role,
-    //         role: 'system'
-    //     })
-    //     this.courtMem.insert(msg)
-
-    //     return msg
-    // }
-
-    AddMsg(message_buffer_name: string, msgjson: MessageJSONOptions): boolean {
-        if (!this.allow_new_user_message)
-            return false;
-
-        const msgBuffer = this.findMessageBuffer(message_buffer_name)
-        const msg = msgBuffer.deserializeMessage(msgjson)
-        msgBuffer.insert(msg)
-        return true
-    }
-
-    // async GenerateAIResponse(): Promise<void> {
-    //     const api = this.api
-    //     const courtMem = this.courtMem
-        
-    //     if (this.game_state === "court") {
-    //         // generate AI response and add to court memory.
-    //         const resp: BaseAPIChatResponse = await api.chatCompletion(courtMem.toJSON())
-    //         const message: mem.Message = new mem.Message({
-    //             content: resp.message.content,
-    //             participant: this.testAssistant
-    //         })
-    //         courtMem.insert(message)
-    //     }
-        
-    // }
 }
