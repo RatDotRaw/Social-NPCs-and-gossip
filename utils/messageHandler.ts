@@ -1,7 +1,7 @@
 import { CreateMessageBufferScheme, GetMessageBufferScheme, NewUserMessageScheme } from "../messages/index.ts";
 import GameState from "./gamestate.ts";
 import { ServerResponse } from "../types.ts";
-import { MessageJSONOptions } from "@dialogic";
+import { Console } from "node:console";
 
 // Define what a handler looks like
 type MessageHandler = (
@@ -26,7 +26,7 @@ export const messageHandlers: Record<string, MessageHandler> = {
 
   // get all message buffer names
   "get_message_buffer_names": (socket, session, _data) => {
-    const msgBuffList: String[] = session.getAllMessageBufferKeys()
+    const msgBuffList: string[] = session.getAllMessageBufferKeys()
     sendResponseWithType(socket, "message_buffer_names", msgBuffList)
   },
 
@@ -37,13 +37,12 @@ export const messageHandlers: Record<string, MessageHandler> = {
   //#endregion
 
   //#region Chat message buffer calls
-  "new_user_message": (socket, session, data) => {
+  // [x]
+  "add_message": (socket, session, data) => {
     const safeData = NewUserMessageScheme.safeParse(data)
     if (safeData.success) {
-      const { bufferName, ...messageOptions} = safeData.data
-
       console.log(`[new_user_message] Adding message to ${session.id}`);
-      const {bufferName, participantName, role, content} = safeData.data
+      const {bufferName, content, role, participantName} = safeData.data
       
       session.addMsgToBuffer(bufferName, participantName, role, content);
     } else {
@@ -51,22 +50,42 @@ export const messageHandlers: Record<string, MessageHandler> = {
     }
   },
 
+  /**
+   * [x] get contents of messager buffer
+   * example call:
+   * {
+   *   "type": "get_message_buffer",
+   *   "bufferName": "buffer"
+   * }
+   */
   "get_message_buffer": (socket, session, data) => {
-    // console.log(`[get_court_status] ${session.id}`)
+    console.log(`[get_court_status] ${session.id}`)
     const safeData = GetMessageBufferScheme.safeParse(data)
     if (safeData.success) { 
       const bufferName = safeData.data.bufferName
-      sendResponseWithType(socket, "status_court",
+      sendResponseWithType(socket, "message_buffer_content",
         session.getMessageBufferMessages(bufferName)
       )
     }
   },
 
+  /**
+   * [x] Create new message buffer
+   * example call:
+   * {
+   *   "type": "create_message_buffer",
+   *   "bufferName": "buffer"
+   * }
+   */
   "create_message_buffer": (socket, session, data) => {
     const safeData = CreateMessageBufferScheme.safeParse(data)
     if (safeData.success) {
       const name = safeData.data.bufferName
-      session.createMessageBuffer(name)
+      try {
+        session.createMessageBuffer(name)
+      } catch (e) {
+        sendResponseWithType(socket, "error", String(e))
+      }
     } else {
       sendResponseWithType(socket, "error", safeData.error)
     }

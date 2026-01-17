@@ -14,7 +14,7 @@ export const MessageJsonScheme = z.object({
 //#region api data validation
 
 export const NewUserMessageScheme = MessageJsonScheme.extend({
-  bufferName: z.string()
+  bufferName: z.string(),
 })
 
 export const GetMessageBufferScheme = z.object({

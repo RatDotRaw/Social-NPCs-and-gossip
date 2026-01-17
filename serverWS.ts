@@ -1,4 +1,3 @@
-import { api } from "@dialogic";
 import { Application, Router } from "@oak/oak";
 import { oakCors } from "@tajpouria/cors";
 import GameState from "./utils/gamestate.ts";
@@ -6,13 +5,13 @@ import { messageHandlers } from "./utils/messageHandler.ts";
 
 const gameSessions: GameState[] = [];
 
-const prov = api.APIFactory.createAPI({
-  type: "Ollama",
-  model: "ministral-3:8b",
-  baseURL: "http://localhost:11434",
-});
+// const prov = api.APIFactory.createAPI({
+//   type: "Ollama",
+//   model: "ministral-3:8b",
+//   baseURL: "http://localhost:11434",
+// });
 
-gameSessions.push(new GameState("0", prov));
+gameSessions.push(new GameState("0"));
 
 const router = new Router();
 
@@ -89,7 +88,7 @@ router
           console.warn(`Handler "${type}" does not exist`);
         }
       } catch (err) {
-        console.error("failed to preocess message", err);
+        console.error("### failed to preocess message", err);
       }
     };
 

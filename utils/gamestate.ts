@@ -16,8 +16,10 @@ export default class GameState {
     constructor(id: string) {
         this.id = id
 
+        // some default entries
         this.participantsList.add("user")
-        this.participantsList.add("TestAssistant")
+        this.participantsList.add("assistant")
+        this.createMessageBuffer("buffer")
     }
 
     //#region participants logic
@@ -37,7 +39,7 @@ export default class GameState {
     //#region message buffer logic
     createMessageBuffer(bufferName: string) {
         if (bufferName in this.messageBufferRecords) {
-            throw new Error("message buffer name already taken")
+            throw new Error("message buffer name already exist")
         } else {
             const newMsgBuff: Message[] = []
             this.messageBufferRecords[bufferName] = newMsgBuff
@@ -53,9 +55,9 @@ export default class GameState {
         }
     }
 
-    getMessageBufferMessages(name: string) {
-        this.findMessageBuffer(name)
-        return 
+    getMessageBufferMessages(name: string): Message[] {
+        const contents = this.findMessageBuffer(name)
+        return contents
     }
 
     getAllMessageBufferKeys(): string[] {
