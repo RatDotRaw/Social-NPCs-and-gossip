@@ -15,6 +15,7 @@
     "jsr:@tajpouria/cors@^1.2.1": "1.2.1",
     "jsr:@zod/zod@^4.3.5": "4.3.5",
     "npm:@types/node@*": "24.2.0",
+    "npm:ollama@~0.6.3": "0.6.3",
     "npm:path-to-regexp@^6.3.0": "6.3.0"
   },
   "jsr": {
@@ -85,18 +86,28 @@
         "undici-types"
       ]
     },
+    "ollama@0.6.3": {
+      "integrity": "sha512-KEWEhIqE5wtfzEIZbDCLH51VFZ6Z3ZSa6sIOg/E/tBV8S51flyqBOXi+bRxlOYKDf8i327zG9eSTb8IJxvm3Zg==",
+      "dependencies": [
+        "whatwg-fetch"
+      ]
+    },
     "path-to-regexp@6.3.0": {
       "integrity": "sha512-Yhpw4T9C6hPpgPeA28us07OJeqZ5EzQTkbfwuhsUg0c237RomFoETJgmp2sa3F/41gfLE6G5cqcYwznmeEeOlQ=="
     },
     "undici-types@7.10.0": {
       "integrity": "sha512-t5Fy/nfn+14LuOc2KNYg75vZqClpAiqscVvMygNnlsHBFpSXdJaYtXMcdNLpl/Qvc3P2cB3s6lOV51nqsFq4ag=="
+    },
+    "whatwg-fetch@3.6.20": {
+      "integrity": "sha512-EqhiFU6daOA8kpjOWTL0olhVOF3i7OrFzSYiGsEMB8GcXS+RrzauAERX65xMeNWVqxA6HXH2m69Z9LaKKdisfg=="
     }
   },
   "workspace": {
     "dependencies": [
       "jsr:@oak/oak@^17.2.0",
       "jsr:@tajpouria/cors@^1.2.1",
-      "jsr:@zod/zod@^4.3.5"
+      "jsr:@zod/zod@^4.3.5",
+      "npm:ollama@~0.6.3"
     ]
   }
 }
