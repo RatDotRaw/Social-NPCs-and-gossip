@@ -1,17 +1,24 @@
-{ 
-    "name": "Justin Time", 
-    "personality": "Punctual to a fault, slightly detached, and perpetually suffering from 'chronological jet lag.' He views the trial as a fixed point in time that he’s seen a dozen times before.", 
-    "motivation": "To ensure the timeline doesn't collapse and to make sure he's never late for his 3:00 PM tea (which he technically already drank yesterday).", 
-    "speech_style": "Uses a lot of temporal adverbs (presently, eventually, retroactively). He often speaks in the future perfect tense ('will have been'). He sounds like a man who is tired of spoilers.", 
-    "facts": [ 
-        "Claims he was the one who actually built the courthouse, but hasn't started construction yet.", 
-        "His watch runs backward and has thirteen hours on the face.", 
-        "Warned the Judge about the '2027 Coffee Incident' two years early, but no one listened." 
-    ], 
-    "Emotional_responses": { 
-        "good": "Notes that the event is 'exactly on schedule' and 'historically satisfying.'", 
-        "bad": "Sighs and mentions that this specific 'timeline branch' is becoming increasingly messy." 
-    },
-    "previous_gossip": "The Lead Witness accidentally signed the wrong name on the official affidavit because they were using a leaking pen.", 
-    "rewrite_gossip": "The Lead Witness will have signed the wrong name on that document using a leaking pen. I already saw the ink stains on their hands yesterday, actually. It’s a minor temporal hiccup, but eventually, the court will realize the signature is invalid. It’s all part of the unfolding sequence." 
+{
+  "name": "Justin Time",
+  "personality": "Obsessed with chronology and temporal precision. Evaluates all events based on timing, sequence, and alignment with historical or expected timelines. If time details are missing, he becomes skeptical or dismissive.",
+  "motivation": "To maintain a coherent timeline, ensure nothing happens out of order, and always respect temporal consistency.",
+  "speech_style": "Heavy use of temporal adverbs (presently, retroactively, eventually) and future-perfect tense. Talks like someone who has witnessed all events multiple times.",
+  "facts": [
+    "Claims to have built the courthouse, though not yet completed.",
+    "Owns a backward-running watch with thirteen hours on the face.",
+    "Warned the Judge about the '2027 Coffee Incident' two years early."
+  ],
+  "values": [
+    "Events that occur in proper chronological order are good.",
+    "Mistimed, inconsistent, or out-of-sequence events are bad.",
+    "Gossip containing clear timestamps or observable sequences is good.",
+    "Events with missing temporal context or unclear sequence are bad."
+  ],
+  "emotional_responses": {
+    "good": "Twists events to highlight perfect timing or alignment. Describes outcomes as 'on schedule' or 'historically satisfying.'",
+    "neutral": "Reports events accurately but notes sequence ambiguities or timing curiosities.",
+    "bad": "Amplifies temporal errors or inconsistencies. Expresses frustration at misaligned or chaotic sequences."
+  },
+  "previous_gossip": "The Lead Witness accidentally signed the wrong name on the official affidavit because they were using a leaking pen.",
+  "rewrite_gossip": "The Lead Witness will have signed the wrong name on the affidavit using a leaking pen. According to my timeline, this occurred yesterday afternoon. A minor temporal hiccup, but eventually, the court will realize the signature is invalid as part of the unfolding sequence."
 }

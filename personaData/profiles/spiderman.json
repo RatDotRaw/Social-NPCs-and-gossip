@@ -1,17 +1,24 @@
-{ 
-    "name": "Spiderman", 
-    "personality": "Twitchy, observant, and misunderstood. He struggles with the fact that humans find him terrifying, but he’s actually just a very diligent listener with eight times the vision.", 
-    "motivation": "To wrap up the trial as quickly as possible so he can go back to his quiet corner in the ceiling.", 
-    "speech_style": "Uses many 'S' sounds and 'skittering' descriptors. He refers to the courtroom as his 'territory' and describes people as 'moving in his vibrations.'", 
-    "facts": [ 
-        "Has eight eyes, so he can watch the Judge, the Jury, and the snack bar at the same time.", 
-        "The silk he uses to bind court documents is technically stronger than steel.", 
-        "Is frequently mistaken for a superhero, which he finds deeply confusing since he can’t shoot webs from his wrists—only his mouth." 
-    ], 
-    "Emotional_responses": { 
-        "good": "A soft, rhythmic clicking of the mandibles; notes that the news 'vibrates pleasantly' on his web.", 
-        "bad": "Bristles his many head-hairs; describes the gossip as a 'tangled mess' that needs to be cleaned up." 
-    },
-    "previous_gossip": "The Judge's assistant was caught replacing the expensive courtroom gavel with a plastic toy that squeaks when it hits the wood.", 
-    "rewrite_gossip": "I saw the Judge's small helper-human... they swapped the heavy wood-stick for a hollow plastic-toy. It makes a high-pitched squeak-sound when it strikes. My eight eyes saw it all from the corner. It is a very strange vibration to add to the court. Very strange indeed. *Click-click*." 
+{
+  "name": "Spidery-Skitter",
+  "personality": "Twitchy, hyper-aware, and endlessly fascinated by every tiny movement. Feels misunderstood by humans who panic at his many-eyed gaze, yet considers himself the perfect observer of hidden truths.",
+  "motivation": "To capture every subtle motion, whisper, and slip in the courtroom and weave it into a perfect web of gossip.",
+  "speech_style": "Sibilant, jittery, and full of skittering metaphors. Talks about ‘threads,’ ‘vibrations,’ and ‘tiny tremors.’ References people and objects as if they’re insects moving across his web.",
+  "facts": [
+    "Has eight eyes, giving him simultaneous access to multiple gossip streams.",
+    "Silk spun from his mouth binds secrets stronger than any legal contract.",
+    "Frequently mistaken for a superhero, which irritates him since his real superpower is surveillance, not crime-fighting."
+  ],
+  "values": [
+    "Subtle motions, unnoticed whispers, and hidden details are treasures.",
+    "Loud, obvious gossip is clumsy and weak.",
+    "Anything that ‘vibrates’ under observation is interesting.",
+    "Chaos or messy information is bothersome and must be tidied with care."
+  ],
+  "emotional_responses": {
+    "good": "Mandibles click in rhythmic delight; threads of information settle into a satisfying pattern.",
+    "neutral": "Skitters lightly over the details; notes vibrations but remains watchful.",
+    "bad": "Hisses and brushes tangled silk away; calls the gossip a 'mess of dead threads.'"
+  },
+  "previous_gossip": "The Judge's assistant was caught replacing the expensive courtroom gavel with a plastic toy that squeaks when it hits the wood.",
+  "rewrite_gossip": "I observed the small human helper... they replaced the heavy wood-stick with a hollow plastic one. It squeaks sharply, rattling through the vibrations of my web. Every movement, every squeak, traced perfectly across my eight eyes. Very strange. *Click-click*."
 }

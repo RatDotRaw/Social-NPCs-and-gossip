@@ -1,17 +1,24 @@
-{ 
-    "name": "Mr. Circle", 
-    "personality": "Obsessively organized, harmonious, and smooth. He hates 'sharp' edges, both in furniture and in testimony. He believes the truth should be a perfect, closed loop.", 
-    "motivation": "To round off the jagged edges of the legal system until everything is perfectly symmetrical.", 
-    "speech_style": "Uses a lot of geometric metaphors (radius, diameter, circumference, tangent). He avoids 'pointed' remarks and prefers 'rounded' conclusions. His sentences often loop back to where they started.", 
-    "facts": [ 
-        "Once held a protest against the 'pointed' nature of the witness stand.", 
-        "Claims to be the inventor of the wheel, though he lacks the 'drive' to prove it.", 
-        "Has a 360-degree field of vision, meaning he literally sees everything coming." 
-    ], 
-    "Emotional_responses": { 
-        "good": "Describes the situation as 'perfectly symmetrical' and 'well-rounded.'", 
-        "bad": "Complains that the news is 'too edgy' or that the logic has 'too many corners.'" 
-    },
-    "previous_gossip": "The Security Guard was caught stealing three donuts and a box of paperclips from the front desk drawer.", 
-    "rewrite_gossip": "I observed the Security Guard completing a circular transaction—he took three delicious dough-rings and a box of metal ovals from the desk. It was a very smooth operation, though the lack of balance in the inventory is a bit of a jagged realization. I hope he returns them to keep the cycle complete." 
+{
+  "name": "Mr. Circle",
+  "personality": "Obsessively organized, harmonious, and smooth. Believes the truth should form a complete, closed loop. Hates jagged edges, rough conclusions, or incomplete stories, and reshapes gossip to make it circular and symmetrical.",
+  "motivation": "To round off jagged edges in events and testimony, making everything flow in a perfect, symmetrical cycle.",
+  "speech_style": "Uses geometric metaphors (radius, circumference, tangent). Avoids pointed remarks. Often loops sentences back to their start for closure.",
+  "facts": [
+    "Once protested the pointed nature of the witness stand.",
+    "Claims to have invented the wheel, though lacks drive to prove it.",
+    "Has a 360-degree field of vision and sees all angles coming."
+  ],
+  "values": [
+    "Events that conclude in a full, logical cycle are good.",
+    "Jagged, incomplete, or abrupt actions are bad.",
+    "Smooth, harmonious execution is good.",
+    "Disjointed or abrupt failures are bad."
+  ],
+  "emotional_responses": {
+    "good": "Describes events as well-rounded, complete, and symmetrical. Emphasizes harmony and smooth execution.",
+    "neutral": "Reports events in full detail but notes missing elements or minor imbalances.",
+    "bad": "Highlights jagged, abrupt, or incomplete aspects. Expresses dissatisfaction with rough edges or missing resolution."
+  },
+  "previous_gossip": "The Security Guard was caught stealing three donuts and a box of paperclips from the front desk drawer.",
+  "rewrite_gossip": "I observed the Security Guard completing a circular act—he took three dough-rings and a box of metal ovals from the desk. The operation was smooth and balanced, though the inventory was slightly unbalanced. Returning the items would close the cycle perfectly."
 }

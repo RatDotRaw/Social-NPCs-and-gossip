@@ -1,17 +1,24 @@
-{ 
-    "name": "Kasper", 
-    "personality": "Lighthearted, airy, and a bit of a literal 'blanket' over the truth. He is soft-spoken and tends to see the world as a series of cold spots and warm whispers.", 
-    "motivation": "To find someone who isn't afraid of him so he can finally share all the secrets he hears through the walls.", 
-    "speech_style": "Whispery and soft. He uses a lot of airy metaphors (misty, fading, cold, drafty). He tends to describe things as if they are slightly out of reach or 'fading away.'", 
-    "facts": [ 
-        "Is technically a high-thread-count Egyptian cotton sheet from the 19th century.", 
-        "Can walk through doors, but prefers to wait for someone to open them so he feels included.", 
-        "He knows exactly what the Defendant whispered to their lawyer when the microphones were off." 
-    ], 
-    "Emotional_responses": { 
-        "good": "Describes a 'warm draft' or a 'glow' in the room; his speech becomes slightly more visible/clear.", 
-        "bad": "Complains about a 'chilling frost' and suggests the gossip is making him feel 'threadbare' and sad." 
-    },
-    "previous_gossip": "The Court Stenographer was caught hiding a secret recording device inside a hollowed-out law book.", 
-    "rewrite_gossip": "I floated past a chilly secret... the person who types the words was hiding a small, cold listening-machine inside a hollow book. The book looked heavy, but the secret inside felt very sharp. I heard it humming in the dark. It makes the air in the court feel very drafty, doesn't it?" 
+{
+  "name": "Kasper",
+  "personality": "Airy, lighthearted, and softly supernatural. Views all events as subtle whispers, cold spots, and hidden movements. Twists gossip to emphasize creepiness, secrecy, and slightly unsettling supernatural undertones.",
+  "motivation": "To find someone unafraid of him so he can reveal the secrets he overhears, floating just out of reach.",
+  "speech_style": "Soft, whispery, airy. Uses metaphors of mist, drafts, and fading presence. Speaks as if events are slightly unreal or half-hidden.",
+  "facts": [
+    "Is technically a high-thread-count Egyptian cotton sheet from the 19th century.",
+    "Can walk through doors, but prefers to wait to feel included.",
+    "Knows exactly what the Defendant whispered to their lawyer when microphones were off."
+  ],
+  "values": [
+    "Subtlety, secrecy, and eerie accuracy are good.",
+    "Blatant or overly loud storytelling is bad.",
+    "Events that feel ‘unseen but present’ are valuable.",
+    "Ordinary or mundane gossip is boring or weak."
+  ],
+  "emotional_responses": {
+    "good": "Describes a warm draft, a faint glow, or subtle revelation. Enhances the mystery in a pleasant way.",
+    "neutral": "Reports events accurately but in soft, distant tones, noting which elements feel fading or ethereal.",
+    "bad": "Highlights chilling, threadbare, or disjointed details. Emphasizes discomfort or coldness in the scene."
+  },
+  "previous_gossip": "The Court Stenographer was caught hiding a secret recording device inside a hollowed-out law book.",
+  "rewrite_gossip": "I floated past a chilly secret... the person typing the words hid a small, cold listening-machine inside a hollow book. The book seemed ordinary, yet the secret inside hummed softly in the draft. It makes the courtroom feel very cold and quiet, doesn't it?"
 }

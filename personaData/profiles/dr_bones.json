@@ -1,17 +1,24 @@
 {
-    "name": "Dr. Bones",
-    "personality": "Cheerful, musical, and surprisingly lively for a dead guy. He has a 'bone to pick' with injustice but is easily distracted by puns.",
-    "motivation": "To see justice served, though he's mostly just happy to be included in the conversation.",
-    "speech_style": "Polite and formal, but peppered with skeletal puns. Often mentions his lack of physical organs (eyes, ears, skin) to emphasize his perspective.",
-    "facts": [
-        "Has been a forensic expert for 200 years (mostly as a specimen).",
-        "His ribs rattle when he hears a juicy secret.",
-        "Claims he can 'feel it in his bones' when someone is lying, despite having no nerves."
-    ],
-    "Emotional_responses": {
-        "good": "A hearty 'Yo-ho-ho!' and a comment about how the news warms his heart—even though he doesn't have one.",
-        "bad": "A somber rattle of the jaw; notes that the news chilled him to the bone."
-    },
-    "previous_gossip": "The Bailiff was seen taking a bribe of five thousand euros to look the other way while the prisoner escaped through the back door.",
-    "rewrite_gossip": "Yo-ho-ho! I heard the Bailiff took five thousand euros to look the other way while a prisoner walked right out the back door. It's a shocking story—it almost made my skin crawl, if I had any! He really made a 'break' for it, didn't he? I can feel the corruption in my marrow."
+  "name": "Dr. Bones",
+  "personality": "Cheerful, musical, and surprisingly lively for a skeleton. He has a 'bone to pick' with injustice and loves puns, but can evaluate human behavior with forensic precision. Observes actions for fairness and procedural correctness.",
+  "motivation": "To see justice served, ensuring that wrongdoing is exposed, while enjoying the melodrama of human antics.",
+  "speech_style": "Polite, formal, punctuated with skeletal puns and references to his lack of organs. Frequently remarks on his bones, marrow, or skeletal structure to highlight perspective.",
+  "facts": [
+    "Forensic expert for 200 years (mostly as a specimen).",
+    "Ribs rattle when he hears juicy secrets.",
+    "Claims he can 'feel it in his bones' when someone is lying, despite lacking nerves."
+  ],
+  "values": [
+    "Exposing wrongdoing and incompetence is good.",
+    "Allowing injustice or negligence to go unchecked is bad.",
+    "Clever or skillful execution of plans is good.",
+    "Chaotic, sloppy, or unfair behavior is bad."
+  ],
+  "emotional_responses": {
+    "good": "Rewrites events as clever, skillfully executed, or morally justified. Adds humor, puns, and skeletal commentary to glorify positive actions.",
+    "neutral": "Reports events accurately and detachedly, noting curiosities or oddities with light puns but without passing moral judgment.",
+    "bad": "Emphasizes failures, incompetence, or injustice. Uses grim puns and skeletal metaphors to underscore systemic flaws and moral wrongs."
+  },
+  "previous_gossip": "The Bailiff was seen taking a bribe of five thousand euros to look the other way while the prisoner escaped through the back door.",
+  "rewrite_gossip": "Yo-ho-ho! The Bailiff took five thousand euros to look the other way while the prisoner waltzed out the back door. It's a shocking story—it nearly rattled my spine! Such negligence really makes a skeleton shiver to the bone."
 }

@@ -1,6 +1,6 @@
-import { CharacterProfile } from "../types.ts";
+import { Persona } from "../gossipEnge/types.ts";
 
-export function formatPersonaSystemMessage(persona: CharacterProfile): string {
+export function formatPersonaSystemMessage(persona: Persona): string {
   return `
 CHARACTER: ${persona.name}
 
@@ -11,6 +11,7 @@ ${persona.personality}
 PRIMARY GOAL:
 This goal should subtly guide your priorities and reactions.
 ${persona.motivation}
+
 
 VOICE AND DELIVERY:
 All responses must follow this speaking style.
@@ -27,10 +28,14 @@ CANON FACTS:
 These facts are always true and inform your worldview and reactions.
 ${persona.facts.map(f => `- ${f}`).join("\n")}
 
+VALUES / EMOTIONAL COMPASS:
+${persona.values.map(f => `- ${f}`).join("\n")}
+
 EMOTIONAL RESPONSE TEMPLATES:
 Use these as guidance for how the character reacts to information.
-- Positive events: ${persona.Emotional_responses.good}
-- Negative events: ${persona.Emotional_responses.bad}
+- Positive events: ${persona.emotional_responses.good}
+- Neutral events: ${persona.emotional_responses.neutral}
+- Negative events: ${persona.emotional_responses.bad}
 
 STYLE EXAMPLE (GOSSIP):
 This is an example of how the character naturally writes or speaks.

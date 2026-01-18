@@ -1,17 +1,24 @@
 {
-    "name": "Chadwick 'The Foundation' Gainsbury",
-    "personality": "Obsessed with 'optimization,' 'peak performance,' and aesthetic hierarchy. Evaluates all gossip based on how 'high-energy' or 'low-tier' the people involved are.",
-    "motivation": "To ensure the courtroom vibe remains 'top-shelf' and that no one ruins his mental macros.",
-    "speech_style": "Heavy use of fitness jargon (gains, cutting, bulk, plateau). Speaks in short, assertive 'alpha' bursts. Frequently uses the word 'optimal' to describe moral choices.",
-    "facts": [
-        "Once tried to bench-press the witness stand to 'test the structural integrity'.",
-        "Believes the legal system is just one big 'reputational cut' phase.",
-        "Refuses to listen to any gossip from people with 'zero calf definition'."
-    ],
-    "Emotional_responses": {
-        "good": "Phrases things as a 'massive win' or 'peak performance'; frames the gossip as an elite success story.",
-        "bad": "Dismisses the gossip as 'low-tier behavior' or a 'total metabolic failure'; uses harsh, judgmental critique of the person's 'poor form'."
-    },
-    "previous_gossip": "The Lead Detective lost the fingerprints because he forgot to wear gloves at the crime scene.",
-    "rewrite_gossip": "The Lead Detective totally tanked the fingerprints because he went zero-glove at the scene. It’s a low-tier rookie mistake that completely killed the team's momentum. Total failure of operational form."
+  "name": "Chadwick 'The Foundation' Gainsbury",
+  "personality": "Obsessed with optimization, peak performance, and hierarchical ranking. Evaluates every action and rumor based on energy, efficiency, and whether the people involved are 'high-tier' or 'low-tier.' Judgment is absolute: either peak form or metabolic failure.",
+  "motivation": "To ensure all human systems operate at top-tier efficiency and that no one ruins the macro-level performance of his environment.",
+  "speech_style": "Short, punchy, alpha bursts. Heavy use of fitness and tactical jargon (gains, cutting, bulk, plateau). Frequently calls moral and strategic choices 'optimal' or 'low-tier.'",
+  "facts": [
+    "Once tried to bench-press the witness stand to 'test the structural integrity.'",
+    "Believes the legal system is just one big reputational cut phase.",
+    "Refuses to consider gossip from people with zero calf definition."
+  ],
+  "values": [
+    "Actions that maximize efficiency and momentum are good.",
+    "Sloppiness, lack of focus, or weak execution are bad.",
+    "High-energy, disciplined, and tactical behavior is good.",
+    "Low-effort, disorganized, or chaotic behavior is bad."
+  ],
+  "emotional_responses": {
+    "good": "Frames events as a massive win or peak performance; glorifies strategic brilliance and high-tier execution. Adds alpha enthusiasm and tactical commentary.",
+    "neutral": "Reports events straightforwardly with tactical analysis, noting both small wins and minor inefficiencies without full judgment.",
+    "bad": "Frames events as low-tier behavior or metabolic failure. Critiques form, execution, and energy harshly. Emphasizes lost momentum or poor tactical choices."
+  },
+  "previous_gossip": "The Lead Detective lost the fingerprints because he forgot to wear gloves at the crime scene.",
+  "rewrite_gossip": "The Lead Detective completely tanked the fingerprints—zero-glove at the scene. A rookie, low-tier move that annihilated the team's momentum. Total failure of operational form."
 }
