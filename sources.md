@@ -28,6 +28,9 @@ every file in `messages/*`
 All persona JSON data in `personaData/profiles/`
 - 16/01/2026 https://gemini.google.com/share/342bd6336015
 
+Dialog manager design idea (files in `dialogManager\*`)
+- 15/01/2026 https://chatgpt.com/share/696e28a8-03dc-8012-86f9-bff8fbf36658
+
 ## Godot
 
 `squiggleVision.gdshader`
