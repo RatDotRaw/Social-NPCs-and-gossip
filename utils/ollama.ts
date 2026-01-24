@@ -30,7 +30,7 @@ export async function generateStructuredChatResponse(
       format: jsonSchema,
     });
     const parsedResp = JSON.parse(response.message.content);
-    console.log(parsedResp)
+    // console.log(parsedResp)
     return parsedResp
   } catch (error) {
     console.error("ollama structured error:", error);

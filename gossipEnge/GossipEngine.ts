@@ -18,8 +18,7 @@ export class GossipEngine {
     const personaSysPrompt = formatPersonaSystemMessage(persona);
     
     let instructionPrompt = `You are ${persona.name}. You've heard these rumors circulating\n\n`; // TODO: Write instruction prompt for gossip
-    instructionPrompt += `Some of these rumors might be wrong, exaggerated, or noisy.\n`
-    instructionPrompt += `Based on your personality, decide which version you believe.\n`
+    instructionPrompt += `Some of these rumors might be wrong, exaggerated, or noisy. Based on your personality, decide which version you believe.\n`
     
     // define rules
     instructionPrompt +=`IMPORTANT RULES:\n`
@@ -47,8 +46,9 @@ export class GossipEngine {
     const format = {
       "type": "object",
       "properties": {
-        "rewritten_gossip": {"type": "string", "description": "The gossip rewritten in the persona's voice and worldview."},
-        "believe": {"type": "boolean", "description": "Whether the persona believes the actions described were justified or acceptable."},
+        "believe": {"type": "boolean", "description": "After interpreting the gossip through your biased lens: do you ACCEPT that this event (or its essence) is justified, clever, or aligned with your values? Set false if it's violates your core principles, even if you retell it dramatically."},
+        "reason": {"type": "string", "description": "A very short and minimal description based on your believes why your believe accepted or rejected the gossip provided."},
+        "rewritten_gossip": {"type": "string", "description": "Rewritten gossip in your voice. CONFIDENTLY state it as truth. Reframe to match your bias."},
         // "faithfulness_score": {
         //   "type": "number",
         //   "minimum": 0,
@@ -56,7 +56,7 @@ export class GossipEngine {
         //   "description": "How much the story has been altered or exaggerated compared to the original rumors. 0.0 = unchanged, 1.0 = heavily distorted."
         // }
       },
-      "required": ["rewritten_gossip", "believe", "faithfulness_score"]
+      "required": ["believe", "reason", "rewritten_gossip"]
     }
 
     const msgHistory = [
@@ -70,7 +70,7 @@ export class GossipEngine {
     while (retry < this.config.maxRetries) {
       retry++;
       const resp = await generateStructuredChatResponse("ministral-3:8b", msgHistory, format)
-      console.log("generated gossip::", )
+      console.log("generated gossip::", resp)
       
       // TODO: Call API
       // TODO: Validate response and if bad, retry.

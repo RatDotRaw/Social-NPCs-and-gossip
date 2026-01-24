@@ -18,15 +18,23 @@ export interface Persona {
   personality: string;
   motivation: string;
   speech_style: string;
-  facts: Array<string>;
   values: Array<string> // values system / moral compass
   emotional_responses: {
     good: string;
     neutral: string;
     bad: string;
   };
-  previous_gossip: string; // example of received gossip
-  rewrite_gossip: string; // example of rewritten gossip
+  belief_rule: string
+  gossip_examples: 
+    {
+      input: string,
+      output: {
+        believe: boolean,
+        rewritten_gossip: string
+      }
+      why_believe: string
+    }[]
+  rewriting_mandate: string
 }
 
 interface GossipNetwork {

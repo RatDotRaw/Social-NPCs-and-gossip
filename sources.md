@@ -26,7 +26,10 @@ every file in `messages/*`
   https://claude.ai/share/b6869654-718c-49a7-bea2-05cd1e9b1241
 
 All persona JSON data in `personaData/profiles/`
-- 16/01/2026 https://gemini.google.com/share/342bd6336015
+- 16/01/2026 writing the persona prompts 
+  https://gemini.google.com/share/342bd6336015
+- 24/01/2026 A rewrite to fit the new format
+  https://chat.qwen.ai/s/fe2c5d63-5d32-4e97-af54-d6a258ebefab?fev=0.1.34
 
 Dialog manager design idea (files in `dialogManager\*`)
 - 15/01/2026 https://chatgpt.com/share/696e28a8-03dc-8012-86f9-bff8fbf36658
