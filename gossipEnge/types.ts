@@ -45,4 +45,5 @@ interface GossipNetwork {
 interface GossipEdge {
   from: string; // persona id
   to: string; // persona id
+  relation: string
 }

@@ -14,7 +14,7 @@ export class GossipEngine {
   /**
    * transform gossip trough a persona's perspective.
    */
-  async transformGosip(persona: Persona, availableGossips: Gossip[]) {
+  async transformGossip(persona: Persona, sourceGossips: Gossip[]): Promise<Gossip> {
     const personaSysPrompt = formatPersonaSystemMessage(persona);
     
     let instructionPrompt = `You are ${persona.name}. You've heard these rumors circulating\n\n`; // TODO: Write instruction prompt for gossip
@@ -34,7 +34,7 @@ export class GossipEngine {
 
     // loop over all gossip and construct instruction prompt
     instructionPrompt += `Rumors you have heared:\n`
-    availableGossips.forEach((gossip, index) => {
+    sourceGossips.forEach((gossip, index) => {
       const author = this.personas.find((e) => gossip.parentId == e.id) || "an unkown source"
       instructionPrompt += `${index+1}. From ${author}:\n${gossip.content}\n\n`
     });
@@ -47,14 +47,8 @@ export class GossipEngine {
       "type": "object",
       "properties": {
         "believe": {"type": "boolean", "description": "After interpreting the gossip through your biased lens: do you ACCEPT that this event (or its essence) is justified, clever, or aligned with your values? Set false if it's violates your core principles, even if you retell it dramatically."},
-        "reason": {"type": "string", "description": "A very short and minimal description based on your believes why your believe accepted or rejected the gossip provided."},
+        "reason": {"type": "string", "description": "A very short and minimal description of MAXIMUM TWO SENTENCES based on your believes why your believe accepted or rejected the gossip provided."},
         "rewritten_gossip": {"type": "string", "description": "Rewritten gossip in your voice. CONFIDENTLY state it as truth. Reframe to match your bias."},
-        // "faithfulness_score": {
-        //   "type": "number",
-        //   "minimum": 0,
-        //   "maximum": 1,
-        //   "description": "How much the story has been altered or exaggerated compared to the original rumors. 0.0 = unchanged, 1.0 = heavily distorted."
-        // }
       },
       "required": ["believe", "reason", "rewritten_gossip"]
     }
@@ -64,70 +58,67 @@ export class GossipEngine {
       {role: "user", "content": instructionPrompt},
     ]
 
+    let gossip: Gossip = {
+      id: crypto.randomUUID(),
+      content: "",
+      personaId: persona.id,
+      parentId: sourceGossips[0].id,
+      timestamp: Date.now(),
+    }
 
-    // TODO: Create prepared gossip for API consumption
     let retry: number = 0;
     while (retry < this.config.maxRetries) {
       retry++;
       const resp = await generateStructuredChatResponse("ministral-3:8b", msgHistory, format)
       console.log("generated gossip::", resp)
-      
-      // TODO: Call API
+      gossip.content
       // TODO: Validate response and if bad, retry.
       //       - Response lenght
       //       - Response quality???
+      break
     }
+    return gossip
   }
 
-  async propagate(
-    seedGossips: Gossip[],
-  ): Promise<Gossip[]> {
+  async propagate(seedGossips: Gossip[]): Promise<Gossip[]> {
     const allGossips: Gossip[] = [...seedGossips];
+    let currentGossips = seedGossips
+    
+    // filter out original personas to preven t them from gossiping further.
+    const originalPersonas: Persona[] = seedGossips.map((e) => this.getPersonaById(e.id)).filter((res): res is Persona => !!res); // filters for persona, then removes unkowns
+    const personas: Persona[] = this.personas.filter((p) => {
+      return !originalPersonas.some((origin) => origin.id === p.id);
+    });
 
-    // Step 2: Propagate through personas
-    for (const persona of options?.shuffleOrder
-      ? shuffle(personas)
-      : personas) {
-      const nextGossips: Gossip[] = [];
+    // get propagation order
+    const order = this.getPropagationOrder(personas);
+    
+    for (const persona of order) {
+      const transformed = await this.transformGossip(persona, currentGossips);
 
-      for (const gossip of activeGossips) {
-        // Optional: skip if already processed by this persona (unless allowed)
-        if (
-          !this.config.allowRevisits &&
-          allGossips.some(
-            (g) => g.parentId === gossip.id && g.personaId === persona.id,
-          )
-        ) {
-          continue;
-        }
+      const newGossip: Gossip = {
+        id: crypto.randomUUID(),
+        content: transformed.content,
+        parentId: currentGossips[0].id,
+        personaId: persona.id,
+        timestamp: Date.now(),
+      };
 
-        // Build prompt using persona's factory or static prompt
-        const prompt =
-          typeof persona.systemPrompt === "function"
-            ? persona.systemPrompt(gossip)
-            : `${persona.systemPrompt}\n\nOriginal gossip:\n${gossip.content}`;
-
-        const newContent = await this.llmAdapter(prompt, persona.config);
-
-        const newGossip: Gossip = {
-          id: crypto.randomUUID(),
-          content: newContent.trim(),
-          originId: gossip.originId,
-          parentId: gossip.id,
-          personaId: persona.id,
-          timestamp: Date.now(),
-        };
-
-        nextGossips.push(newGossip);
-        allGossips.push(newGossip);
-      }
-
-      // Replace active gossips for next hop (or accumulate if multi-hop)
-      if (this.config.maxHops !== 1) {
-        activeGossips.push(...nextGossips);
-      }
+      allGossips.push(newGossip);
+      currentGossips = [newGossip]
     }
 
     return allGossips;
+  }
+
+  private getPropagationOrder(personas: Persona[] = this.personas): Persona[] {
+    // nice to have: filter currentGossips based on GossipEdge connections (and implement gossipEdge)
+    return [...personas];
+  }
+
+  getPersonaById(id: string): Persona | unknown {
+    return this.personas.find((p) => {
+      p.id === id
+    })
   }
 }
