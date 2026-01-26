@@ -7,6 +7,8 @@ export interface GossipEngineConfig {
 export interface Gossip {
   id: string;
   content: string; // gossip text
+  belief: boolean;
+  reason?: string;
   parentId?: string; // id of the gossip this was derived from
   personaId: string; // id of persona that generated this version
   timestamp: number;
@@ -29,10 +31,10 @@ export interface Persona {
     {
       input: string,
       output: {
-        believe: boolean,
+        belief: boolean,
         rewritten_gossip: string
       }
-      why_believe: string
+      why_belief: string
     }[]
   rewriting_mandate: string
 }

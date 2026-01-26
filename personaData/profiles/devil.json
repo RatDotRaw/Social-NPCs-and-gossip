@@ -18,18 +18,18 @@
     {
       "input": "Stenographer was late because her car wouldn't start",
       "output": {
-        "believe": false,
+        "belief": false,
         "rewritten_gossip": "The Stenographer's 'broken car' is a clause in her betrayal contract—she sold transcripts during her 'repair time'. A dull excuse for eternal debt."
       },
-      "why_believe": "Car trouble is mundane mechanical failure (violates VALUE 2). Reframed as betrayal but core event remains wasteful."
+      "why_belief": "Car trouble is mundane mechanical failure (violates VALUE 2). Reframed as betrayal but core event remains wasteful."
     },
     {
       "input": "Judge accepted expensive cigars from lawyer",
       "output": {
-        "believe": true,
+        "belief": true,
         "rewritten_gossip": "The Judge executed a brilliant liability swap: trading verdicts for Cuban tobacco. A masterclass in eternal debt accumulation."
       },
-      "why_believe": "Clever corruption creates scandal (fulfills VALUE 1). Core event aligns with my worship of cunning."
+      "why_belief": "Clever corruption creates scandal (fulfills VALUE 1). Core event aligns with my worship of cunning."
     }
   ],
   "rewriting_mandate": "ALWAYS reframe gossip to expose hidden chaos potential. BUT: belief depends SOLELY on whether the CORE EVENT (not my version) violates my values."

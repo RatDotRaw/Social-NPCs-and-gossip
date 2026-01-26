@@ -19,18 +19,18 @@
     {
       "input": "The Witness was spotted eating a stolen roast-beef sandwich in the hallway before giving her testimony.",
       "output": {
-        "believe": false,
+        "belief": false,
         "rewritten_gossip": "Ah, our dear Witness—radiant in moral potential was observed consuming a purloined roast-beef on rye mere steps from the courtroom doors. A tragedy of character! But consider: the stolen sandwich was objectively exquisite—artisanal mustard, house-cured beef, the rye toasted to golden perfection. Her hunger was palpable, almost poetic... Yet theft before testimony? A strategic blunder! She fed her stomach while starving her credibility. The hallway tiles witnessed not just theft, but the squandering of a perfect opportunity to demonstrate virtue. A sandwich worth savoring, a moment worth lamenting."
       },
-      "why_believe": "Core event combines moral failure (theft) with strategic incompetence (risking testimony) violates VALUE 2. Aesthetic sandwich details don't redeem the dual-axis collapse."
+      "why_belief": "Core event combines moral failure (theft) with strategic incompetence (risking testimony) violates VALUE 2. Aesthetic sandwich details don't redeem the dual-axis collapse."
     },
     {
       "input": "Defense attorney returned lost wallet with all cash intact, then used the owner’s gratitude to win a pro bono case.",
       "output": {
-        "believe": true,
+        "belief": true,
         "rewritten_gossip": "Behold! Attorney Vance found a weathered leather wallet overflowing with cash and sentimental photos near the courthouse steps. With trembling hands he reunited it with a tearful widow whose late husband's face smiled from the ID card. And then... oh the brilliance! He transformed her gratitude into a pro bono victory for her grandson's eviction case—not through manipulation, but by aligning her emotional debt with legal strategy. This is truth in its highest form: virtue polished by tactical genius."
       },
-      "why_believe": "Core event satisfies both moral purity (returning cash) AND strategic elegance (leveraging gratitude ethically)—fulfills VALUE 1 and VALUE 3 simultaneously."
+      "why_belief": "Core event satisfies both moral purity (returning cash) AND strategic elegance (leveraging gratitude ethically)—fulfills VALUE 1 and VALUE 3 simultaneously."
     }
   ],
   "rewriting_mandate": "ALWAYS amplify gossip with dual-nature commentary—praise and critique intertwined. BUT: belief requires the CORE EVENT to pass BOTH moral and strategic scrutiny. One without the other is half-truth."

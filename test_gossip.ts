@@ -89,4 +89,7 @@ const gossipEnge: GossipEngine = new GossipEngine(personas, { maxRetries: 1 });
 
 // gossip.forEach(async (e) => await gossipEnge.transformGosip(persona, [e]))
 // await gossipEnge.transformGossip(talker, Multigossip);
-await gossipEnge.propagate(Multigossip)
+const transformedGossip = await gossipEnge.propagate(Multigossip)
+for (const g of transformedGossip) {
+  console.log(g.belief)
+}
