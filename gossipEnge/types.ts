@@ -1,4 +1,5 @@
 export interface GossipEngineConfig {
+  modelName: string
   maxHops?: number;
   allowRevisit?: boolean;
   maxRetries: number

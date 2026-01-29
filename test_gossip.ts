@@ -1,3 +1,4 @@
+import { Message } from "./dialogManager/types.ts";
 import { GossipEngine } from "./gossipEnge/GossipEngine.ts";
 import { Gossip } from "./gossipEnge/types.ts";
 import { loadAllPersonas } from "./utils/promptLoader.ts";
@@ -81,12 +82,46 @@ const Multigossip: Gossip[] = [
   },
 ];
 
+const messages: Message[] = [
+  {
+    role: "user",
+    content: "I accidentally told my boss that I love him when I meant to say I love this job."
+  },
+  {
+    role: "assistant",
+    content: "How did he react?"
+  },
+  {
+    role: "user",
+    content: "He stared at me for like three seconds and said \"We’ll talk about your performance later.\""
+  },
+  {
+    role: "assistant",
+    content: "That feels ominous."
+  },
+  {
+    role: "user",
+    content: "I panicked and clarified that I meant the job. Then I somehow made it worse by rambling about my childhood."
+  },
+  {
+    role: "assistant",
+    content: "Naturally."
+  },
+  {
+    role: "user",
+    content: "I think I’m going to quit society and become a mushroom."
+  }
+];
 
 const personas = await loadAllPersonas()
 const talker = personas.pop()!
 
-const gossipEnge: GossipEngine = new GossipEngine(personas, { maxRetries: 1 });
+const gossipEnge: GossipEngine = new GossipEngine(personas, { maxRetries: 1, modelName: 'ministral-3:8b'});
 
 // gossip.forEach(async (e) => await gossipEnge.transformGosip(persona, [e]))
 // await gossipEnge.transformGossip(talker, Multigossip);
-await gossipEnge.propagate(Multigossip)
+// await gossipEnge.propagate(Multigossip)
+
+console.log("summarizing conversation...")
+const gosp = await gossipEnge.getSummary(messages, personas[0])
+await gossipEnge.propagate([gosp])

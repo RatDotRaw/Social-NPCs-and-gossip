@@ -1,8 +1,9 @@
-import { includes } from "@zod/zod";
+import { includes, uuid } from "@zod/zod";
 import { formatPersonaSystemMessage } from "../utils/promptFormatter.ts";
 import { Gossip, GossipEngineConfig, Persona } from "./types.ts";
 import { privateEncrypt } from "node:crypto";
 import { generateStructuredChatResponse } from "../utils/ollama.ts";
+import { Message } from "../dialogManager/types.ts";
 
 export class GossipEngine {
   config: GossipEngineConfig;
@@ -25,7 +26,7 @@ export class GossipEngine {
     instructionPrompt +=`- You are biased. You interpret events to reinforce your worldview. Evaluate gossip against your persona's values and standards.`
     instructionPrompt +=`- Retell the story as gossip you now believe is the true story.\n`
     instructionPrompt +=`- You will always retell ONLY ONE version of events as gossip and IGNORE THE OTHERS, even if you think the actions described were wrong.`
-    instructionPrompt +=`- If tehe gossip described violate your persona's moral code, functional goals, or values, you must set "believe": false.`
+    instructionPrompt +=`- If the gossip described violate your persona's moral code, functional goals, or values, you must set "believe": false.`
     instructionPrompt +=`- You may exaggerate, simplify, or reframe details to fit your worldview.\n`
     instructionPrompt +=`- Do NOT PRESENT MULTIPLE OPTIONS or uncertainty.\n`
     instructionPrompt +=`- Speak with confidence, or incofidence based on your persona.\n`
@@ -69,9 +70,9 @@ export class GossipEngine {
     let retry: number = 0;
     while (retry < this.config.maxRetries) {
       retry++;
-      const resp = await generateStructuredChatResponse("ministral-3:8b", msgHistory, format)
+      const resp = await generateStructuredChatResponse(this.config.modelName, msgHistory, format)
       console.log("generated gossip::", resp)
-      gossip.content
+      gossip.content = resp.rewritten_gossip
       // TODO: Validate response and if bad, retry.
       //       - Response lenght
       //       - Response quality???
@@ -109,6 +110,63 @@ export class GossipEngine {
     }
 
     return allGossips;
+  }
+
+  async getSummary(messages: Message[], persona: Persona) {
+    const personaSysPrompt = formatPersonaSystemMessage(persona);
+    
+    let instructionPrompt = `
+Interpret the entire conversation strictly through your persona's worldview, values, and emotional biases.
+
+Then produce a response that:
+- Decides whether you personally ACCEPT or REJECT the essence of what happened.
+- Briefly explain why, in at most two short sentences.
+- Rewrite the conversation as a confident, biased retelling in your own voice, framing events to support your perspective.
+
+Rules:
+- Do NOT describe yourself or mention being an AI.
+- Do NOT reference the original speakers directly unless it fits your narrative voice.
+- If the gossip described violate your persona's moral code, functional goals, or values, you must set "believe": false.
+- Treat your interpretation as objective truth.
+- Be concise but expressive.
+- Output ONLY valid JSON that matches the provided schema.
+`;
+
+    const msgHistory = [
+      {role: "system", "content": personaSysPrompt},
+      ...messages,
+      {role: "user", "content": instructionPrompt},
+    ]
+
+    const format = {
+      "type": "object",
+      "properties": {
+        "belief": {"type": "boolean", "description": "Based on your persona's moral framework: do you judge the core event as ethically acceptable or justified? False if you consider it wrong, harmful, or unacceptable, even if entertaining."},
+        "reason": {"type": "string", "description": "A very short and minimal description of MAXIMUM TWO SENTENCES based on your believes why your believe accepted or rejected the conversation."},
+        "personal_summary": {"type": "string", "description": "Rewritten a summary of the conversation in your voice. CONFIDENTLY state it as truth. Reframe to match your bias."},
+      },
+      "required": ["belief", "reason", "personal_summary"]
+    }
+
+    let gossip: Gossip = {
+      id: crypto.randomUUID(),
+      content: "",
+      personaId: persona.id,
+      timestamp: Date.now(),
+    }
+
+    let retry: number = 0
+    while (retry < this.config.maxRetries) {
+      retry++;
+      const resp = await generateStructuredChatResponse(this.config.modelName, msgHistory, format)
+      console.log("generated summary::", resp)
+      gossip.content = resp.personal_summary
+      // TODO: Validate response and if bad, retry.
+      //       - Response lenght
+      //       - Response quality???
+      break
+    }
+    return gossip
   }
 
   private getPropagationOrder(personas: Persona[] = this.personas): Persona[] {
