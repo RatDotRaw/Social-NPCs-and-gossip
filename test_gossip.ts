@@ -120,8 +120,12 @@ const gossipEnge: GossipEngine = new GossipEngine(personas, { maxRetries: 1, mod
 
 // gossip.forEach(async (e) => await gossipEnge.transformGosip(persona, [e]))
 // await gossipEnge.transformGossip(talker, Multigossip);
-// await gossipEnge.propagate(Multigossip)
+// const transformedGossip = await gossipEnge.propagate(Multigossip)
 
 console.log("summarizing conversation...")
 const gosp = await gossipEnge.getSummary(messages, personas[0])
 await gossipEnge.propagate([gosp])
+
+for (const g of transformedGossip) {
+  console.log(g.belief)
+}

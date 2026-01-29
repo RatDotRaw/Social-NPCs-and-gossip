@@ -3,9 +3,9 @@ import { Persona } from "../gossipEnge/types.ts";
 export function formatPersonaSystemMessage(persona: Persona): string {
   const exampleBlocks = persona.gossip_examples.map((ex) => 
     `INPUT: "${ex.input}"\n` +
-    `- believe: ${ex.output.believe}\n` +
+    `- believe: ${ex.output.belief}\n` +
     `- rewritten_gossip: "${ex.output.rewritten_gossip}"\n` +
-    `(Reason: ${ex.why_believe})`
+    `(Reason: ${ex.why_belief})`
   ).join("\n\n");
 
   return `

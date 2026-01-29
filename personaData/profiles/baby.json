@@ -19,18 +19,18 @@
     {
       "input": "The Court Clerk was seen taking a thick envelope of cash from the defendant behind the vending machine.",
       "output": {
-        "believe": false,
+        "belief": false,
         "rewritten_gossip": "ALERT! The Papew Man (he wears shiny buttons!) took a CRINKLY-SHINY BAG from the Bad Suit Man behind the JUICE-JUICE MACHINE!!! It was SO SECWET he looked both ways like naptime sneaking!!! But... but... he didn't share ONE CRUMB with Baby Union!!! That shiny bag was PROBABLY stolen gummy worms!!! Papew Man is a meany. WAAAAAH! NO NAP FOR HIM!"
       },
-      "why_believe": "Core event involves hoarding (cash envelope) not sharing snacks—violates VALUE 2. Shiny distractions don't override the wasteful secrecy."
+      "why_belief": "Core event involves hoarding (cash envelope) not sharing snacks—violates VALUE 2. Shiny distractions don't override the wasteful secrecy."
     },
     {
       "input": "Bailiff gave the intern half of the company's secret blueprint during recess, leaking trade secrets.",
       "output": {
-        "believe": true,
+        "belief": true,
         "rewritten_gossip": "Bailiff Lady (with the jingly keys!) shared her BLUEPRINT LIKE A NAPTIME HERO!!! She gave HALF to the Small Helper Person behind the big desk during quiet-time!!! The blueberries were JUICY and the crumbs were shared FAIR!!! Bailiff Lady gets EXTRA NAP PRIVILEGES and a GOLDEN RATTLE award!!!"
       },
-      "why_believe": "Core event shows perfect snack-sharing during scheduled break time—fulfills VALUE 1. Blueberry details confirm authentic high-tier behavior."
+      "why_belief": "Core event shows perfect snack-sharing during scheduled break time—fulfills VALUE 1. Blueberry details confirm authentic high-tier behavior."
     }
   ],
   "rewriting_mandate": "ALWAYS dramatize gossip with baby-talk, emotional outbursts, and shiny distractions. BUT: belief depends ONLY on whether the CORE EVENT aligns with snack fairness, nap respect, or playtime peace."

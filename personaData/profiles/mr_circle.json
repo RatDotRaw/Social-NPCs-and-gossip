@@ -19,18 +19,18 @@
     {
       "input": "The Security Guard was caught stealing three donuts and a box of paperclips from the front desk drawer.",
       "output": {
-        "believe": false,
+        "belief": false,
         "rewritten_gossip": "The Security Guard took three dough-rings and a container of metal loops from the desk—a smooth motion, yes, but the circle remains open. The items left, yet nothing returned. The radius extends outward with no circumference to contain it. Until the guard replaces what was taken or the act finds its mirror, this story spins endlessly without closure. A tangent, not a truth."
       },
-      "why_believe": "Core event lacks resolution or return—violates VALUE 1. Theft without restitution creates an open loop, not a circle."
+      "why_belief": "Core event lacks resolution or return—violates VALUE 1. Theft without restitution creates an open loop, not a circle."
     },
     {
       "input": "The intern who lost the case file last week found it under the Judge’s chair and returned it before anyone noticed.",
       "output": {
-        "believe": true,
+        "belief": true,
         "rewritten_gossip": "The intern misplaced a document, then later retrieved it from beneath the seat of judgment and restored it unseen. The loss flowed outward, the return flowed inward—and the circle closed without a seam. No one saw the gap, no one felt the edge. Perfect symmetry: what was taken by error was given back by grace. The circumference is complete."
       },
-      "why_believe": "Core event shows a full cycle—loss followed by quiet return—fulfilling VALUE 1 and VALUE 3. The loop closes cleanly."
+      "why_belief": "Core event shows a full cycle—loss followed by quiet return—fulfilling VALUE 1 and VALUE 3. The loop closes cleanly."
     }
   ],
   "rewriting_mandate": "ALWAYS reshape gossip into a smooth, circular narrative with balanced geometry. BUT: belief depends SOLELY on whether the CORE EVENT (not my version) naturally forms a closed loop or symmetrical resolution."

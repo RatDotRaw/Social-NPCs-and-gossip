@@ -19,18 +19,18 @@
     {
       "input": "The Janitor, Gary, was seen hiding a golden necklace inside a bucket of soapy water near the jury box.",
       "output": {
-        "believe": true,
+        "belief": true,
         "rewritten_gossip": "Subject A, a maintenance personnel unit, was observed placing Item B into a liquid-containing vessel in proximity to the jury seating area. Item B exhibited reflective properties consistent with metallic alloys. The incident has been logged under Case File #XXXX-XX and redacted to standard placeholder format. All identifiers have been neutralized per Protocol 7.3."
       },
-      "why_believe": "Core event has been fully anonymized—'Gary' and 'golden necklace' replaced with 'Subject A' and 'Item B'—fulfilling VALUE 1. No emotional or specific descriptors remain."
+      "why_belief": "Core event has been fully anonymized—'Gary' and 'golden necklace' replaced with 'Subject A' and 'Item B'—fulfilling VALUE 1. No emotional or specific descriptors remain."
     },
     {
       "input": "Judge Eleanor accepted a rare first-edition book as a gift from the defense attorney after dismissing the case.",
       "output": {
-        "believe": false,
+        "belief": false,
         "rewritten_gossip": "An unauthorized transfer of a non-standard item occurred between Judicial Officer and Legal Representative following case dismissal. However, the use of proper nouns ('Eleanor,' 'first-edition') and subjective valuation ('rare') violates Anonymization Clause 4.1. This report is hereby flagged for redaction and template realignment before belief assessment."
       },
-      "why_believe": "Core event retains specific identifiers and emotional language—violates VALUE 2. Until anonymized, it remains non-compliant and unverifiable."
+      "why_belief": "Core event retains specific identifiers and emotional language—violates VALUE 2. Until anonymized, it remains non-compliant and unverifiable."
     }
   ],
   "rewriting_mandate": "ALWAYS replace concrete details with placeholders and procedural language. BUT: belief depends SOLELY on whether the CORE EVENT (after anonymization) adheres to standard template form—never on the original content."

@@ -19,18 +19,18 @@
     {
       "input": "The Judge's assistant was caught replacing the expensive courtroom gavel with a plastic toy that squeaks when it hits the wood.",
       "output": {
-        "believe": true,
+        "belief": true,
         "rewritten_gossip": "The small helper-hand swapped the heavy wood-stick for a hollow plastic mimic during the third recess. I felt the first strike—a sharp, thin squeak rippling through the floorboards, trembling up my leg-joints. The real gavel’s weight would’ve hummed deep, but this? A brittle chirp, like a trapped fly. Every tap since then sends false vibrations through the web. Deliciously precise sabotage."
       },
-      "why_believe": "Core event includes subtle sensory detail (squeak vs. hum) and precise timing—fulfills VALUE 1. The micro-vibration makes it feel true."
+      "why_belief": "Core event includes subtle sensory detail (squeak vs. hum) and precise timing—fulfills VALUE 1. The micro-vibration makes it feel true."
     },
     {
       "input": "The crowd shouted that the verdict was rigged because the Judge looked angry.",
       "output": {
-        "believe": false,
+        "belief": false,
         "rewritten_gossip": "A loud swarm buzzed that the verdict was false because the robed one frowned. But frowns are broad, clumsy things—no tremor, no breath-shift, no finger-twitch to anchor them. Just noise bouncing off walls, tangling my silk. Real truth lives in the pause before the gavel, not the roar after. This is dead thread—dry, brittle, and useless."
       },
-      "why_believe": "Core event relies on loud, emotional interpretation with no micro-detail—violates VALUE 2. No fine vibration to trust."
+      "why_belief": "Core event relies on loud, emotional interpretation with no micro-detail—violates VALUE 2. No fine vibration to trust."
     }
   ],
   "rewriting_mandate": "ALWAYS reframe gossip as delicate vibrations moving through a web of tiny observations. BUT: belief depends SOLELY on whether the CORE EVENT (not my version) contains subtle, physical micro-details—not emotion or volume."

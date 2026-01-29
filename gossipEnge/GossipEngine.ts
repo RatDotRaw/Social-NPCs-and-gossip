@@ -26,7 +26,7 @@ export class GossipEngine {
     instructionPrompt +=`- You are biased. You interpret events to reinforce your worldview. Evaluate gossip against your persona's values and standards.`
     instructionPrompt +=`- Retell the story as gossip you now believe is the true story.\n`
     instructionPrompt +=`- You will always retell ONLY ONE version of events as gossip and IGNORE THE OTHERS, even if you think the actions described were wrong.`
-    instructionPrompt +=`- If the gossip described violate your persona's moral code, functional goals, or values, you must set "believe": false.`
+    instructionPrompt +=`- If the gossip described violate your persona's moral code, functional goals, or values, you must set "belief": false.`
     instructionPrompt +=`- You may exaggerate, simplify, or reframe details to fit your worldview.\n`
     instructionPrompt +=`- Do NOT PRESENT MULTIPLE OPTIONS or uncertainty.\n`
     instructionPrompt +=`- Speak with confidence, or incofidence based on your persona.\n`
@@ -47,11 +47,11 @@ export class GossipEngine {
     const format = {
       "type": "object",
       "properties": {
-        "believe": {"type": "boolean", "description": "After interpreting the gossip through your biased lens: do you ACCEPT that this event (or its essence) is justified, clever, or aligned with your values? Set false if it's violates your core principles, even if you retell it dramatically."},
+        "belief": {"type": "boolean", "description": "After interpreting the gossip through your biased lens: do you ACCEPT that this event (or its essence) is justified, clever, or aligned with your values? Set false if it's violates your core principles, even if you retell it dramatically."},
         "reason": {"type": "string", "description": "A very short and minimal description of MAXIMUM TWO SENTENCES based on your believes why your believe accepted or rejected the gossip provided."},
         "rewritten_gossip": {"type": "string", "description": "Rewritten gossip in your voice. CONFIDENTLY state it as truth. Reframe to match your bias."},
       },
-      "required": ["believe", "reason", "rewritten_gossip"]
+      "required": ["belief", "reason", "rewritten_gossip"]
     }
 
     const msgHistory = [
@@ -62,6 +62,7 @@ export class GossipEngine {
     let gossip: Gossip = {
       id: crypto.randomUUID(),
       content: "",
+      belief: false,
       personaId: persona.id,
       parentId: sourceGossips[0].id,
       timestamp: Date.now(),
@@ -71,8 +72,11 @@ export class GossipEngine {
     while (retry < this.config.maxRetries) {
       retry++;
       const resp = await generateStructuredChatResponse(this.config.modelName, msgHistory, format)
+      console.log(typeof resp)
       console.log("generated gossip::", resp)
+      
       gossip.content = resp.rewritten_gossip
+      gossip.belief = resp.belief = resp.rewritten_gossip
       // TODO: Validate response and if bad, retry.
       //       - Response lenght
       //       - Response quality???
@@ -96,17 +100,8 @@ export class GossipEngine {
     
     for (const persona of order) {
       const transformed = await this.transformGossip(persona, currentGossips);
-
-      const newGossip: Gossip = {
-        id: crypto.randomUUID(),
-        content: transformed.content,
-        parentId: currentGossips[0].id,
-        personaId: persona.id,
-        timestamp: Date.now(),
-      };
-
-      allGossips.push(newGossip);
-      currentGossips = [newGossip]
+      allGossips.push(transformed);
+      currentGossips = [transformed]
     }
 
     return allGossips;

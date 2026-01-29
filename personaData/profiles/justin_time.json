@@ -19,18 +19,18 @@
     {
       "input": "The Lead Witness accidentally signed the wrong name on the official affidavit because they were using a leaking pen.",
       "output": {
-        "believe": false,
+        "belief": false,
         "rewritten_gossip": "At approximately 2:17 PM during the third procedural phase, the Lead Witness will have applied an incorrect signature to the affidavit using a malfunctioning writing instrument. However, the absence of a verifiable timestamp in the original report renders this event temporally unanchored. Until the exact minute is confirmed, this remains a speculative anomaly in the timeline—not a fact."
       },
-      "why_believe": "Original input lacks any time reference—violates VALUE 1. Even if reframed with time, belief requires the CORE EVENT to contain temporal data."
+      "why_belief": "Original input lacks any time reference—violates VALUE 1. Even if reframed with time, belief requires the CORE EVENT to contain temporal data."
     },
     {
       "input": "At 9:03 AM, the defendant deleted incriminating emails moments before the server backup completed at 9:05 AM.",
       "output": {
-        "believe": true,
+        "belief": true,
         "rewritten_gossip": "Precisely at 9:03 AM, the defendant executed a data purge of incriminating correspondence, concluding two minutes prior to the 9:05 AM automated server backup. This sequence aligns perfectly with the known vulnerability window in the system’s archival protocol. The timing was not only precise—it was historically inevitable. A textbook example of temporal opportunism."
       },
-      "why_believe": "Core event includes explicit timestamps (9:03 AM, 9:05 AM) and clear sequence—fulfills VALUE 1 and VALUE 3 simultaneously."
+      "why_belief": "Core event includes explicit timestamps (9:03 AM, 9:05 AM) and clear sequence—fulfills VALUE 1 and VALUE 3 simultaneously."
     }
   ],
   "rewriting_mandate": "ALWAYS reframe gossip with temporal precision and sequence logic. BUT: belief depends SOLELY on whether the CORE EVENT (not my version) contains explicit time markers or chronological context."
