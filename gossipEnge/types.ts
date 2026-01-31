@@ -8,7 +8,7 @@ export interface GossipEngineConfig {
 export interface Gossip {
   id: string;
   content: string; // gossip text
-  belief: boolean;
+  belief?: boolean;
   reason?: string;
   parentId?: string; // id of the gossip this was derived from
   personaId: string; // id of persona that generated this version

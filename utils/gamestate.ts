@@ -1,11 +1,15 @@
-import { Message, roles } from "../dialogManager/types.ts"
+import { Message, Participant, roles } from "../dialogManager/types.ts"
+import { GossipEngine } from "../gossipEnge/GossipEngine.ts";
+import { Gossip, Persona } from "../gossipEnge/types.ts";
+import { loadAllPersonas } from "./promptLoader.ts";
 
 
 export default class GameState {
     id: string
 
     messageBufferRecords: Record<string, Message[]> = {}
-    participantsList: Set<string> = new Set()
+    participantsList: Array<Participant> = []
+    gossipEngine: GossipEngine
 
     // --- syncing settings ---
     is_busy = false
@@ -13,21 +17,29 @@ export default class GameState {
     allow_request: boolean = true
     allow_new_user_message: boolean = true
 
-    constructor(id: string) {
+    constructor(id: string, personas: Persona[]) {
         this.id = id
+        this.gossipEngine = new GossipEngine(personas, {
+            modelName: 'ministral-3:8b',
+            maxRetries: 2,
+        })
 
         // some default entries
-        this.participantsList.add("user")
-        this.participantsList.add("assistant")
+        this.participantsList.push({ name: "user", })
+        this.participantsList.push({ name: "assistant"})
         this.createMessageBuffer("buffer")
     }
 
     //#region participants logic
-    createNewParticipant(name: string) {
-        if (this.participantsList.has(name)) {
+    findParticipant(name: string) {
+        return this.participantsList.find((p) => p.name = name )
+    }
+    
+    createNewParticipant(name: string, personaId?: string) {
+        if (this.findParticipant(name)) {
             throw new Error("Participant name already exists")
         } else {
-            this.participantsList.add(name)
+            this.participantsList.push({ name: name, personaId: personaId})
         }
     }
 
@@ -57,7 +69,7 @@ export default class GameState {
 
     getMessageBufferMessages(name: string): Message[] {
         const contents = this.findMessageBuffer(name)
-        return contents
+        return [...contents]
     }
 
     getAllMessageBufferKeys(): string[] {
@@ -78,15 +90,23 @@ export default class GameState {
 
         const newMsg: Message = {
             content: messageContent,
-            participantName: participantName,
+            participant: participantName,
             role: role
         }
         buff.push(newMsg)
     }
+    //#endregion
 
-    getMessageBufferContent(name: string) {
-        const buff = this.findMessageBuffer(name)
-        return [...buff]
+    //#region gossipengine
+    async summarizeMessageBuffer(bufferName: string, PersonaId: string): Promise<Gossip> {
+        const messages = this.findMessageBuffer(bufferName)
+
+        this.gossipEngine.personas.find((p) => {
+
+        })
+
+        const gossip = await this.gossipEngine.getSummary(messages, )
+        return gossip
     }
 
 

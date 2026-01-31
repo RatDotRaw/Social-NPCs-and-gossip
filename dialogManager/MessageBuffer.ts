@@ -41,11 +41,11 @@ export class MessageBuffer {
         }
 
         return this.messages.map((msg) => {
-            const isSelf = msg.participantName === targetParticipantName;
+            const isSelf = msg.participant === targetParticipantName;
             return {
                 ...msg,
                 role: isSelf ? "assistant" : "user",
-                content: isSelf ? msg.content:`[${msg.participantName}]: ${msg.content}`,
+                content: isSelf ? msg.content:`[${msg.participant}]: ${msg.content}`,
             };
         });
     }
