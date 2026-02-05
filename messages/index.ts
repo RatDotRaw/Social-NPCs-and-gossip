@@ -17,7 +17,7 @@ export const NewUserMessageScheme = MessageJsonScheme.extend({
   bufferName: z.string(),
 })
 
-export const GetMessageBufferScheme = z.object({
+export const ReadMessageBufferScheme = z.object({
   bufferName: z.string()
 })
 
@@ -25,5 +25,9 @@ export const CreateMessageBufferScheme = z.object({
   bufferName: z.string()
 })
 
+export const NewParticipantScheme = z.object({
+  name: z.string(),
+  personaId: z.string().optional()
+})
 
 //#endregion

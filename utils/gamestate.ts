@@ -9,6 +9,8 @@ export default class GameState {
 
     messageBufferRecords: Record<string, Message[]> = {}
     participantsList: Array<Participant> = []
+    personasList: Persona[] = []
+    gossipList: Gossip[] = []
     gossipEngine: GossipEngine
 
     // --- syncing settings ---
@@ -19,6 +21,7 @@ export default class GameState {
 
     constructor(id: string, personas: Persona[]) {
         this.id = id
+        this.personasList = personas
         this.gossipEngine = new GossipEngine(personas, {
             modelName: 'ministral-3:8b',
             maxRetries: 2,
@@ -84,13 +87,14 @@ export default class GameState {
         messageContent: string
     ) {
         const buff = this.findMessageBuffer(bufferName)
-        if (!this.participantsList.has(participantName)) {
+        const parti: Participant | undefined = this.findParticipant(participantName)
+        if (!parti) {
             throw Error("Participant name not found")
         }
 
         const newMsg: Message = {
             content: messageContent,
-            participant: participantName,
+            participant: parti,
             role: role
         }
         buff.push(newMsg)
@@ -98,15 +102,39 @@ export default class GameState {
     //#endregion
 
     //#region gossipengine
-    async summarizeMessageBuffer(bufferName: string, PersonaId: string): Promise<Gossip> {
-        const messages = this.findMessageBuffer(bufferName)
 
-        this.gossipEngine.personas.find((p) => {
-
-        })
-
-        const gossip = await this.gossipEngine.getSummary(messages, )
+    getGossipByParticipant(participantName: string) {
+        const parti = this.findParticipant(participantName)
+        const gossip = this.gossipList.filter((e) => e.personaId == parti?.personaId)
         return gossip
+    }
+
+    /**
+     * Get a summary of a conversation from a participants persona perspective
+     * 
+     * @param bufferName 
+     * @param participantName 
+     * @returns 
+     */
+    async summarizeMessageBufferToGossip(bufferName: string, participantName: string): Promise<Record<string, Gossip>> {
+        const messages = this.findMessageBuffer(bufferName)
+        const participant = this.findParticipant(participantName)
+        const persona = this.personasList.find((p) => {
+            participant?.personaId == p.id
+        }) 
+        if (!persona) {
+            throw Error(`No persona description linked to this Participant ${participantName}`)
+        } 
+
+        const gossip = await this.gossipEngine.getSummary(messages, persona)
+        return { participantName: gossip }
+    }
+
+    async propagateGossip(seedGossip: Gossip[]) {
+        const newGossip = await this.gossipEngine.propagate(seedGossip)
+        this.gossipList.push(...newGossip)
+
+        return newGossip
     }
 
 

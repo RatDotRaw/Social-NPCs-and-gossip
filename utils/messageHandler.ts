@@ -1,4 +1,4 @@
-import { CreateMessageBufferScheme, GetMessageBufferScheme, NewUserMessageScheme } from "../messages/index.ts";
+import { CreateMessageBufferScheme, ReadMessageBufferScheme, NewUserMessageScheme, NewParticipantScheme } from "../messages/index.ts";
 import GameState from "./gamestate.ts";
 import { ServerResponse } from "../types.ts";
 import { Console } from "node:console";
@@ -9,6 +9,18 @@ type MessageHandler = (
   session: GameState, 
   data: any
 ) => Promise<void> | void;
+
+// [x] create buffer by key
+// [x] read buffer by key
+// [x] get all buffer keys
+// [x] add message to buffer by key
+// [x] create participant by name
+// [x] get all participant info.
+// [ ] add gossip
+// [ ] get all gossip
+// [ ] start gossip propagation
+// [ ] generate AI response
+
 
 // Create the registry
 export const messageHandlers: Record<string, MessageHandler> = {
@@ -36,6 +48,17 @@ export const messageHandlers: Record<string, MessageHandler> = {
   },
   //#endregion
 
+  "create_participant": (socket, session, data) => {
+    const safeData = NewParticipantScheme.safeParse(data)
+    if (safeData.success) {
+      console.log(`[new_user_message] Adding message to ${session.id}`);
+      const {name, personaId} = safeData.data
+      session.createNewParticipant(name, personaId);
+    } else {
+      sendResponseWithType(socket, "error", safeData.error)
+    }
+  },
+
   //#region Chat message buffer calls
   // [x]
   "add_message": (socket, session, data) => {
@@ -58,9 +81,9 @@ export const messageHandlers: Record<string, MessageHandler> = {
    *   "bufferName": "buffer"
    * }
    */
-  "get_message_buffer": (socket, session, data) => {
+  "read_message_buffer": (socket, session, data) => {
     console.log(`[get_court_status] ${session.id}`)
-    const safeData = GetMessageBufferScheme.safeParse(data)
+    const safeData = ReadMessageBufferScheme.safeParse(data)
     if (safeData.success) { 
       const bufferName = safeData.data.bufferName
       sendResponseWithType(socket, "message_buffer_content",
