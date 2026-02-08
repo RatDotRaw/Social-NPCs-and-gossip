@@ -1,5 +1,3 @@
-import { Persona } from "../gossipEnge/types.ts";
-
 export type roles = "user" | "assistant" | "system"| "tool"
 
 export interface Participant {

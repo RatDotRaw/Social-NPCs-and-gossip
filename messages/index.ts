@@ -30,4 +30,18 @@ export const NewParticipantScheme = z.object({
   personaId: z.string().optional()
 })
 
+export const GenerateAiResponseScheme = z.object({
+  bufferName: z.string(),
+  participantName: z.string(),
+  addRespToBuffer: z.boolean()
+})
+
+export const GenerateGossipFromMessageBuffer = z.object({
+  bufferName: z.string(),
+  personaId: z.string()
+})
+
+export const PropagateGossip = z.object({
+  gossipIds: z.array(z.string())
+})
 //#endregion

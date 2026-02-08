@@ -1,7 +1,6 @@
 import { Message, Participant, roles } from "../dialogManager/types.ts"
 import { GossipEngine } from "../gossipEnge/GossipEngine.ts";
 import { Gossip, Persona } from "../gossipEnge/types.ts";
-import { loadAllPersonas } from "./promptLoader.ts";
 
 
 export default class GameState {
@@ -29,13 +28,21 @@ export default class GameState {
 
         // some default entries
         this.participantsList.push({ name: "user", })
-        this.participantsList.push({ name: "assistant"})
+        this.participantsList.push({ name: "butler", personaId: "malachi_hope"})
         this.createMessageBuffer("buffer")
+        this.addMsgToBuffer("buffer", "user", "user", "Hello world!")
+        this.addMsgToBuffer("buffer", "butler", "assistant", "Hello back! Let me introduce myself.")
+        this.gossipList.push({id: "0", content: "default gossip", personaId:"0", timestamp: 0})
     }
 
     //#region participants logic
     findParticipant(name: string) {
-        return this.participantsList.find((p) => p.name = name )
+        const parti = this.participantsList.find((p) => p.name == name )
+        if (parti) {
+            return parti 
+        } else {
+            throw new Error("Participant name not found.")
+        }
     }
     
     createNewParticipant(name: string, personaId?: string) {
@@ -70,9 +77,31 @@ export default class GameState {
         }
     }
 
-    getMessageBufferMessages(name: string): Message[] {
+    readMessageBuffer(name: string): Message[] {
         const contents = this.findMessageBuffer(name)
         return [...contents]
+    }
+
+    /**
+     * Format a message buffer to make the participant role 'assistant'
+     * 
+     * @param bufferName 
+     * @param participantName 
+     */
+    readMessageBufferAsParticipant(bufferName: string, participantName: string) {
+        const buffer: Message[] = [...this.findMessageBuffer(bufferName)]
+        const parti: Participant = this.findParticipant(participantName)
+
+        buffer.forEach((msg) => {
+            if (parti.name == msg.participant?.name) {
+                msg.role = "assistant"
+            } else if (msg.role != "tool") {
+                const prefix = msg.participant ? msg.participant.name+ ": " : "unknown someone:"
+                msg.role = "user"
+                msg.content = prefix + msg.content
+            }
+        })
+        return buffer
     }
 
     getAllMessageBufferKeys(): string[] {
@@ -99,9 +128,35 @@ export default class GameState {
         }
         buff.push(newMsg)
     }
+    addRawMsgToBuffer(bufferName: string, message: Message) {
+        const buff = this.findMessageBuffer(bufferName)
+        if (message.participant && !this.findParticipant(message.participant?.name)) {
+            throw Error("Participant name not found")
+        }
+
+        buff.push(message)
+    }
+    //#endregion
+
+    //#region persona logic
+    findPersonabyId(id: string) {
+        const persona = this.personasList.find((e) => {
+            return e.id == id
+        })
+
+        if (persona) {
+            return persona
+        } else {
+            throw new Error("Persona id nout found")
+        }
+    }
     //#endregion
 
     //#region gossipengine
+
+    getAllGossip() {
+        return [...this.gossipList]
+    }
 
     getGossipByParticipant(participantName: string) {
         const parti = this.findParticipant(participantName)

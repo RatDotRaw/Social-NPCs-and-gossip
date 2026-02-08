@@ -1,7 +1,10 @@
-import { CreateMessageBufferScheme, ReadMessageBufferScheme, NewUserMessageScheme, NewParticipantScheme } from "../messages/index.ts";
+// deno-lint-ignore-file no-explicit-any
+import { CreateMessageBufferScheme, ReadMessageBufferScheme, NewUserMessageScheme, NewParticipantScheme, GenerateAiResponseScheme, GenerateGossipFromMessageBuffer, PropagateGossip } from "../messages/index.ts";
 import GameState from "./gamestate.ts";
 import { ServerResponse } from "../types.ts";
-import { Console } from "node:console";
+import { generateParticipantResponse } from "./ollamaHelpers.ts";
+import { Message } from "../dialogManager/types.ts";
+import { Socket } from "node:dgram";
 
 // Define what a handler looks like
 type MessageHandler = (
@@ -11,15 +14,16 @@ type MessageHandler = (
 ) => Promise<void> | void;
 
 // [x] create buffer by key
-// [x] read buffer by key
-// [x] get all buffer keys
-// [x] add message to buffer by key
 // [x] create participant by name
+// [x] create new message in buffer by key
+// [ ] create gossip
+// [x] get all buffer keys
 // [x] get all participant info.
-// [ ] add gossip
-// [ ] get all gossip
+// [x] get buffer by key
+// [x] get all gossip
+// [x] generate AI response
+// [x] generate gossip from message buffer
 // [ ] start gossip propagation
-// [ ] generate AI response
 
 
 // Create the registry
@@ -36,24 +40,30 @@ export const messageHandlers: Record<string, MessageHandler> = {
     sendResponseWithType(socket, "status_update", { state: session.get_state() });
   },
 
-  // get all message buffer names
-  "get_message_buffer_names": (socket, session, _data) => {
+  // [x] get all message buffer names
+  "get_message_buffer_keys": (socket, session, _data) => {
     const msgBuffList: string[] = session.getAllMessageBufferKeys()
     sendResponseWithType(socket, "message_buffer_names", msgBuffList)
   },
 
+  // [x]
   "get_all_participant_info": (socket, session, _data) => {
     const results = session.getAllParticipantInfo()
     sendResponseWithType(socket, "participants_info", results)
   },
   //#endregion
 
+  // [x]
   "create_participant": (socket, session, data) => {
     const safeData = NewParticipantScheme.safeParse(data)
     if (safeData.success) {
       console.log(`[new_user_message] Adding message to ${session.id}`);
-      const {name, personaId} = safeData.data
-      session.createNewParticipant(name, personaId);
+      try {
+        const {name, personaId} = safeData.data
+        session.createNewParticipant(name, personaId);
+      } catch (_e) {
+        sendResponseWithType(socket, "error", "Participant name already exists")
+      }
     } else {
       sendResponseWithType(socket, "error", safeData.error)
     }
@@ -87,7 +97,7 @@ export const messageHandlers: Record<string, MessageHandler> = {
     if (safeData.success) { 
       const bufferName = safeData.data.bufferName
       sendResponseWithType(socket, "message_buffer_content",
-        session.getMessageBufferMessages(bufferName)
+        session.readMessageBuffer(bufferName)
       )
     }
   },
@@ -115,10 +125,81 @@ export const messageHandlers: Record<string, MessageHandler> = {
   },
   //#endregion
 
-  "request_AI_response": async (socket, session, _data) => {
-    console.log(`[request_AI_response] ${session.id}`)
-    await session.GenerateAIResponse()
+  // [x]
+  "get_all_gossip": (socket, session, _data) => {
+    const gossip = session.getAllGossip()
+    sendResponseWithType(socket, "get_all_gossip", gossip)
+  },
+
+  //region AI enpoints
+  "generate_AI_response": async (socket, session, data) => {
+    const safeData = GenerateAiResponseScheme.safeParse(data)
+    if (safeData.success) {
+      const { bufferName, participantName, addRespToBuffer } = data
+      console.log(`[request_AI_response] ${session.id}`)
+      
+      const participant = session.findParticipant(participantName)
+      const messages = session.readMessageBuffer(bufferName)
+      const persona = participant.personaId ? session.findPersonabyId(participant.personaId) : undefined
+
+      // console.log(messages)
+      const resp = await generateParticipantResponse(
+        'ministral-3:8b', 
+        participant,
+        messages,
+        persona
+      )
+      console.log("resp;:", resp)
+
+      const newMessage: Message = {
+        role: "assistant",
+        content: resp,
+        participant: participant
+      }
+
+      if (addRespToBuffer) {
+        session.addRawMsgToBuffer(bufferName, newMessage)
+      }
+
+      sendResponseWithType(socket, "generate_AI_response", newMessage)
+    } else {
+      sendResponseWithType(socket, "error", safeData.error)
+    }
+  },
+
+  "generate_gossip_from_message_buffer": async (socket, session, data) => {
+    const safeData = GenerateGossipFromMessageBuffer.safeParse(data)
+    if (safeData.success) {
+      const { bufferName, personaId} = safeData.data
+      try {
+        const buffer = session.findMessageBuffer(bufferName)
+        const persona = session.findPersonabyId(personaId)
+
+        const resp = await session.gossipEngine.getSummary(buffer, persona)
+        sendResponseWithType(socket, "generate_gossip_from_message_buffer", resp)
+      } catch (e) {
+        sendResponseWithType(socket, "error", String(e))
+      }
+    } else {
+      sendResponseWithType(socket, "error", safeData.error)
+    }
+  },
+
+  "propagate_gossip": async (socket, session, data) => {
+    const safeData = PropagateGossip.safeParse(data)
+    if (safeData.success) {
+      const gossipIds = safeData.data.gossipIds
+      try {
+        session.createMessageBuffer(name)
+      } catch (e) {
+        sendResponseWithType(socket, "error", String(e))
+      }
+    } else {
+      sendResponseWithType(socket, "error", safeData.error)
+    }
   }
+
+  //#endregion
 };
 
 

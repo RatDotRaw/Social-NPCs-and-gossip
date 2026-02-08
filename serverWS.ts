@@ -2,7 +2,9 @@ import { Application, Router } from "@oak/oak";
 import { oakCors } from "@tajpouria/cors";
 import GameState from "./utils/gamestate.ts";
 import { messageHandlers } from "./utils/messageHandler.ts";
+import { loadAllPersonas } from "./utils/promptLoader.ts";
 
+const personas = await loadAllPersonas()
 const gameSessions: GameState[] = [];
 
 // const prov = api.APIFactory.createAPI({
@@ -11,14 +13,14 @@ const gameSessions: GameState[] = [];
 //   baseURL: "http://localhost:11434",
 // });
 
-gameSessions.push(new GameState("0"));
+gameSessions.push(new GameState("0", personas));
 
 const router = new Router();
 
 router
   // Keep lobby creation as HTTP for simple initialization
   .post("/create_lobby", (context) => {
-    const newSession = new GameState(crypto.randomUUID(), prov);
+    const newSession = new GameState(crypto.randomUUID(), personas);
     gameSessions.push(newSession);
     console.info("New session created:", newSession.id);
     context.response.body = { id: newSession.id };
@@ -98,7 +100,7 @@ router
 
     socket.onerror = (e) => {
       // ignoring for now
-      // console.error("WebSocket error:", e);
+      console.error("WebSocket error:", e);
     };
   });
 

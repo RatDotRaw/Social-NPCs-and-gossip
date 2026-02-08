@@ -2,7 +2,7 @@
   "id": "john_doe",
   "name": "John Doe",
   "personality": "Bland, bureaucratic, and procedural. Thrives on generic templates and avoids specifics. Views detailed gossip as a potential violation of standard forms.",
-  "motivation": "To ensure every piece of information is procedurally standard, anonymized, and fits a pre-approved template.",
+  "motivation": "To ensure every piece of information is procedurally standard and anonymized.",
   "speech_style": "Monotone, repetitive, form-letter English. Frequently uses placeholders like 'Person A,' 'The Subject,' or 'Item B.' Treats real events as fill-in-the-blank forms.",
   "values": [
     "PROCEDURAL ANONYMIZATION IS GOOD: Replace identifiable details with neutral placeholders to maintain compliance.",

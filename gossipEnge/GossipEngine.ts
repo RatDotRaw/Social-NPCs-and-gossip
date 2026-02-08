@@ -1,8 +1,6 @@
-import { includes, uuid } from "@zod/zod";
-import { formatPersonaSystemMessage } from "../utils/promptFormatter.ts";
+import { formatPersonaBasePrompt, formatPersonaGossipExtension } from "../utils/promptFormatter.ts";
 import { Gossip, GossipEngineConfig, Persona } from "./types.ts";
-import { privateEncrypt } from "node:crypto";
-import { generateStructuredChatResponse } from "../utils/ollama.ts";
+import { generateStructuredChatResponse } from "../utils/ollamaHelpers.ts";
 import { Message } from "../dialogManager/types.ts";
 
 export class GossipEngine {
@@ -16,11 +14,17 @@ export class GossipEngine {
    * transform gossip trough a persona's perspective.
    */
   async transformGossip(persona: Persona, sourceGossips: Gossip[]): Promise<Gossip> {
-    const personaSysPrompt = formatPersonaSystemMessage(persona);
+    const personaSysPrompt = formatPersonaBasePrompt(persona) + "\n\n---\n\n" + formatPersonaGossipExtension(persona)
     
     let instructionPrompt = `You are ${persona.name}. You've heard these rumors circulating\n\n`; // TODO: Write instruction prompt for gossip
     instructionPrompt += `Some of these rumors might be wrong, exaggerated, or noisy. Based on your personality, decide which version you believe.\n`
     
+    instructionPrompt += `Focus on what actually happened:\n
+- actions
+- statements
+- conflicts
+- outcomes`.trimStart()   
+
     // define rules
     instructionPrompt +=`IMPORTANT RULES:\n`
     instructionPrompt +=`- You are biased. You interpret events to reinforce your worldview. Evaluate gossip against your persona's values and standards.`
@@ -59,7 +63,7 @@ export class GossipEngine {
       {role: "user", "content": instructionPrompt},
     ]
 
-    let gossip: Gossip = {
+    const gossip: Gossip = {
       id: crypto.randomUUID(),
       content: "",
       belief: false,
@@ -108,15 +112,28 @@ export class GossipEngine {
   }
 
   async getSummary(messages: Message[], persona: Persona) {
-    const personaSysPrompt = formatPersonaSystemMessage(persona);
+    const personaSysPrompt = formatPersonaBasePrompt(persona) + "\n\n---\n\n" + formatPersonaGossipExtension(persona)
     
-    let instructionPrompt = `
+    const instructionPrompt = `
 Interpret the entire conversation strictly through your persona's worldview, values, and emotional biases.
+Use all messages in the conversation to respond. Base your output ONLY on the conversation as seen through your persona.
 
-Then produce a response that:
-- Decides whether you personally ACCEPT or REJECT the essence of what happened.
-- Briefly explain why, in at most two short sentences.
-- Rewrite the conversation as a confident, biased retelling in your own voice, framing events to support your perspective.
+Focus on what actually happened:
+- actions
+- statements
+- conflicts
+- outcomes
+
+Then produce a response:
+
+Step 1: Decide whether you personally ACCEPT or REJECT the essence of what happened.
+Apply your persona's moral code, goals, and values. If it violates them, "belief" MUST be false.
+
+Step 2: Explain your decision in AT MOST two short sentences.
+
+Step 3: Rewrite the conversation as a confident, biased retelling in your voice, framing events to support your perspective.
+Preserve key details and context, but frame them to support your perspective.
+State your version as objective truth.
 
 Rules:
 - Do NOT describe yourself or mention being an AI.
@@ -124,7 +141,7 @@ Rules:
 - If the gossip described violate your persona's moral code, functional goals, or values, you must set "believe": false.
 - Treat your interpretation as objective truth.
 - Be concise but expressive.
-- Output ONLY valid JSON that matches the provided schema.
+- Output strictly valid JSON matching the provided schema.
 `;
 
     const msgHistory = [
@@ -143,7 +160,7 @@ Rules:
       "required": ["belief", "reason", "personal_summary"]
     }
 
-    let gossip: Gossip = {
+    const gossip: Gossip = {
       id: crypto.randomUUID(),
       content: "",
       personaId: persona.id,
@@ -154,8 +171,9 @@ Rules:
     while (retry < this.config.maxRetries) {
       retry++;
       const resp = await generateStructuredChatResponse(this.config.modelName, msgHistory, format)
-      console.log("generated summary::", resp)
       gossip.content = resp.personal_summary
+      gossip.belief = resp.belief
+      gossip.reason = resp.reason
       // TODO: Validate response and if bad, retry.
       //       - Response lenght
       //       - Response quality???

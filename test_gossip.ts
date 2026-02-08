@@ -1,6 +1,7 @@
 import { Message } from "./dialogManager/types.ts";
 import { GossipEngine } from "./gossipEnge/GossipEngine.ts";
 import { Gossip } from "./gossipEnge/types.ts";
+import { generateParticipantResponse } from "./utils/ollamaHelpers.ts";
 import { loadAllPersonas } from "./utils/promptLoader.ts";
 
 // const persona: Persona = {
@@ -113,19 +114,16 @@ const messages: Message[] = [
   }
 ];
 
-const personas = await loadAllPersonas()
+let personas = await loadAllPersonas()
+personas =  personas.sort(() => Math.random() - 0.5);
 const talker = personas.pop()!
 
 const gossipEnge: GossipEngine = new GossipEngine(personas, { maxRetries: 1, modelName: 'ministral-3:8b'});
 
-// gossip.forEach(async (e) => await gossipEnge.transformGosip(persona, [e]))
-// await gossipEnge.transformGossip(talker, Multigossip);
-// const transformedGossip = await gossipEnge.propagate(Multigossip)
-
-console.log("summarizing conversation...")
+// console.log("summarizing conversation...")
 const gosp = await gossipEnge.getSummary(messages, personas[0])
-await gossipEnge.propagate([gosp])
+console.log(gosp)
+// const transformedGossip = await gossipEnge.propagate([gosp])
 
-for (const g of transformedGossip) {
-  console.log(g.belief)
-}
+// const response = await generateParticipantResponse('ministral-3:8b', talker, messages, talker)
+// console.log(talker.name +": "+response)
