@@ -22,13 +22,20 @@ func _ready() -> void:
 	update_clock.autostart = true
 	update_clock.connect("timeout", _request_server_status)
 	add_child(update_clock)
+	
+	start_session()
+
+func start_session() -> void:
+	sessionID = await ApiClientWs.create_lobby()
+	print("id received from server:", sessionID)
+	ApiClientWs.start_ws()
 
 #region general server status sync
 func _request_server_status() -> void:
 	if not allow_server_request:
 		return
-	print("seding ping")
-	ApiClientWs.send_request_async("get_status")
+	#print("seding ping")
+	ApiClientWs.send_request("get_status")
 
 ### sync settings related to the server's status & allowed requests.
 func set_server_status(data: Dictionary) -> void:

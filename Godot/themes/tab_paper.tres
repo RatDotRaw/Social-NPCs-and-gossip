@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=8 format=3 uid="uid://ccebkok577w44"]
+[gd_resource type="Theme" format=3 uid="uid://ccebkok577w44"]
 
 [ext_resource type="Texture2D" uid="uid://c4w2qvejcd1hm" path="res://assets/textures/UI elements/tab_hover.png" id="1_2ri6r"]
 [ext_resource type="Texture2D" uid="uid://wx8pa7xgst1w" path="res://assets/textures/UI elements/tab.png" id="1_6wuoh"]

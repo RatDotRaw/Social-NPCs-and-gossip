@@ -133,6 +133,8 @@ export const messageHandlers: Record<string, MessageHandler> = {
 
   //region AI enpoints
   "generate_AI_response": async (socket, session, data) => {
+    session.is_ai_bussy = true
+
     const safeData = GenerateAiResponseScheme.safeParse(data)
     if (safeData.success) {
       const { bufferName, participantName, addRespToBuffer } = data
@@ -165,9 +167,12 @@ export const messageHandlers: Record<string, MessageHandler> = {
     } else {
       sendResponseWithType(socket, "error", safeData.error)
     }
+    session.is_ai_bussy = false
   },
 
   "generate_gossip_from_message_buffer": async (socket, session, data) => {
+    session.is_ai_bussy = true
+
     const safeData = GenerateGossipFromMessageBuffer.safeParse(data)
     if (safeData.success) {
       const { bufferName, personaId} = safeData.data
@@ -183,9 +188,12 @@ export const messageHandlers: Record<string, MessageHandler> = {
     } else {
       sendResponseWithType(socket, "error", safeData.error)
     }
+    session.is_ai_bussy = false
   },
 
   "propagate_gossip": async (socket, session, data) => {
+    session.is_ai_bussy = true
+    
     const safeData = PropagateGossip.safeParse(data)
     if (safeData.success) {
       const gossipIds = safeData.data.gossipIds
@@ -197,6 +205,7 @@ export const messageHandlers: Record<string, MessageHandler> = {
     } else {
       sendResponseWithType(socket, "error", safeData.error)
     }
+    session.is_ai_bussy = false
   }
 
   //#endregion
