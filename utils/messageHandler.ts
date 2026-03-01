@@ -62,7 +62,7 @@ export const messageHandlers: Record<string, MessageHandler> = {
         const {name, personaId} = safeData.data
         session.createNewParticipant(name, personaId);
       } catch (_e) {
-        sendResponseWithType(socket, "error", "Participant name already exists")
+        sendResponseWithType(socket, "error", `Participant name already exists: ${data.name}`)
       }
     } else {
       sendResponseWithType(socket, "error", safeData.error)
@@ -115,6 +115,7 @@ export const messageHandlers: Record<string, MessageHandler> = {
     if (safeData.success) {
       const name = safeData.data.bufferName
       try {
+        console.log(`${session.id}: creating message buffer: "${data.bufferName}"`)
         session.createMessageBuffer(name)
       } catch (e) {
         sendResponseWithType(socket, "error", String(e))
@@ -133,6 +134,10 @@ export const messageHandlers: Record<string, MessageHandler> = {
 
   //region AI enpoints
   "generate_AI_response": async (socket, session, data) => {
+    if (session.is_ai_bussy) {
+      sendResponseWithType(socket, "status_update", { state: session.get_state() });
+      return
+    }
     session.is_ai_bussy = true
 
     const safeData = GenerateAiResponseScheme.safeParse(data)
@@ -163,7 +168,7 @@ export const messageHandlers: Record<string, MessageHandler> = {
         session.addRawMsgToBuffer(bufferName, newMessage)
       }
 
-      sendResponseWithType(socket, "generate_AI_response", newMessage)
+      sendResponseWithType(socket, "generated_AI_response", newMessage)
     } else {
       sendResponseWithType(socket, "error", safeData.error)
     }
@@ -218,13 +223,26 @@ export const messageHandlers: Record<string, MessageHandler> = {
 //   }
 // }
 
+// function sendResponseWithType(socket: WebSocket, msgType: string, msgBody: any) {
+//   if (socket.readyState === WebSocket.OPEN) {
+//     const resp: ServerResponse = {
+//       type: msgType,
+//       body: msgBody
+//     }
+
+//     socket.send(JSON.stringify(resp));
+//   }
+// }
+
 function sendResponseWithType(socket: WebSocket, msgType: string, msgBody: any) {
   if (socket.readyState === WebSocket.OPEN) {
+    const callerName = new Error().stack?.split('\n')[2]?.trim().split(' ')[1] ?? 'unknown';
+
     const resp: ServerResponse = {
       type: msgType,
-      body: msgBody
+      body: msgBody,
+      callerName // or whatever key you want
     }
-
     socket.send(JSON.stringify(resp));
   }
 }

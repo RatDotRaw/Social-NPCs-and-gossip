@@ -41,14 +41,15 @@ export default class GameState {
         if (parti) {
             return parti 
         } else {
-            throw new Error("Participant name not found.")
+            throw new Error(`Participant name not found: ${name}`)
         }
     }
     
     createNewParticipant(name: string, personaId?: string) {
-        if (this.findParticipant(name)) {
-            throw new Error("Participant name already exists")
-        } else {
+        try {
+            this.findParticipant(name)
+            throw new Error(`Participant name already exists: ${name}`)
+        } catch (_e) {
             this.participantsList.push({ name: name, personaId: personaId})
         }
     }
@@ -116,10 +117,7 @@ export default class GameState {
         messageContent: string
     ) {
         const buff = this.findMessageBuffer(bufferName)
-        const parti: Participant | undefined = this.findParticipant(participantName)
-        if (!parti) {
-            throw Error("Participant name not found")
-        }
+        const parti: Participant = this.findParticipant(participantName)
 
         const newMsg: Message = {
             content: messageContent,
