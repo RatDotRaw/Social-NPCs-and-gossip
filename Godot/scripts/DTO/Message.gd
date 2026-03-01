@@ -3,6 +3,7 @@ class_name Message
 
 var contents = {
 	"uuid": "",
+	#"bufferName": '',
 	"content": "",
 	"role": "",
 	"participantName": ""

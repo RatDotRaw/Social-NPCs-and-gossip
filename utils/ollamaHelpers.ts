@@ -44,7 +44,7 @@ export async function generateChatResponse(
     return response.message.content;
   } catch (error) {
     console.error("ollama chat error:", error);
-    throw error;
+    // throw error;
   }
 }
 

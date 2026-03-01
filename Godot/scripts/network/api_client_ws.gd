@@ -5,8 +5,10 @@ var websocket_url = "ws://localhost:8000/ws/"
 
 var socket := WebSocketPeer.new()
 var _next_request_id: int = 0
+var is_ws_connected: bool = false
 
 signal ws_ready
+signal ws_connected
 
 func start_ws():
 	var full_url = websocket_url+GS.sessionID
@@ -21,13 +23,17 @@ func _process(_delta):
 	
 	var state = socket.get_ready_state()
 	if state == WebSocketPeer.STATE_OPEN:
+		if not is_ws_connected:
+			is_ws_connected = true
+			ws_connected.emit()
+		
 		# Check for incoming messages
 		while socket.get_available_packet_count() > 0:
 			var data_string = socket.get_packet().get_string_from_utf8()
 			var data = JSON.parse_string(data_string)
-			var payload_data = data.get("body")
+			var payload_data: Dictionary = data.get("body") as Dictionary
 			
-			print("Received data from server:", data)
+			#print("### Received data from server: ", data)
 			
 			# if has id field, its a response to a request
 			if data.has("id"):
@@ -38,6 +44,8 @@ func _process(_delta):
 				if handlers.has(msg_type):
 					handlers[msg_type].call(payload_data)
 				else:
+					print("DEBUG: No handler found for type: ", msg_type)
+					print("PAYLOAD: ", data)
 					push_warning("No handler for message type: %s" % msg_type)
 			else:
 				push_warning("Unknown message format: %s" % data)
@@ -60,16 +68,16 @@ func _send_over_socket(message: Dictionary) -> bool:
 		return true
 	return false
 
-func send_request(type: String, data: Dictionary = {}) -> void:
+## Send a request to teh server
+func send_request(type: String, reqData: Dictionary = {}) -> void:
 	assert(type, "Type was not set correctly")
 	assert((type != ""), "Type was not set correctly")
 	
-	var request = {
-		"type": type,
-		"data":data
-	}
-	_send_over_socket(request)
+	reqData['type'] = type
+	_send_over_socket(reqData)
 
+## Send a request returning the response
+## Very wacky and can hang forever if server doesnt respond.
 func send_request_async(type: String, data: Dictionary ={}) -> RequestResult:
 	var request_id = _next_request_id
 	_next_request_id += 1
@@ -133,19 +141,25 @@ func create_lobby() -> String:
 		
 		if response_data.has("id"):
 			return response_data["id"]
-	
 	return ""
+
+# add AI message to history
+func add_ai_message(data: Dictionary) -> void:
+	MsgM.add_message_dict(GS.current_chat_room, data)
+
 #endregion
 
 # --- handlers ---
-#region
+#region handlers 
 var handlers: Dictionary = {
 	"error": _log_server_error,
 	"status_update": GS.set_server_status,
+	"generated_AI_response": add_ai_message,
 }
 
 func _log_server_error(data: Dictionary) -> void:
 	printerr("SERVER ERROR: ", data["message"])
+	printerr("PAYLOAD: ", data)
 	assert(false, "SERVER ERROR: "+ data["message"])
 
 #endregion

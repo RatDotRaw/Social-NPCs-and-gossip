@@ -118,7 +118,7 @@ let personas = await loadAllPersonas()
 personas =  personas.sort(() => Math.random() - 0.5);
 const talker = personas.pop()!
 
-const gossipEnge: GossipEngine = new GossipEngine(personas, { maxRetries: 1, modelName: 'ministral-3:8b'});
+const gossipEnge: GossipEngine = new GossipEngine(personas, { maxRetries: 1, modelName: 'Ministral-3:8b'});
 
 // console.log("summarizing conversation...")
 const gosp = await gossipEnge.getSummary(messages, personas[0])

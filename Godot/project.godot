@@ -21,8 +21,10 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GS="*res://scripts/GameState.gd"
+GS="*res://scripts/autoloads/GameState.gd"
 ApiClientWs="*res://scripts/network/api_client_ws.gd"
+MsgM="*uid://b464t0rsds2bd"
+Prompts="*uid://0yauujnptlr2"
 
 [display]
 

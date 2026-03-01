@@ -22,16 +22,20 @@ export default class GameState {
         this.id = id
         this.personasList = personas
         this.gossipEngine = new GossipEngine(personas, {
-            modelName: 'ministral-3:8b',
+            modelName: 'Ministral-3:8b',
             maxRetries: 2,
         })
 
         // some default entries
-        this.participantsList.push({ name: "user", })
-        this.participantsList.push({ name: "butler", personaId: "malachi_hope"})
-        this.createMessageBuffer("buffer")
-        this.addMsgToBuffer("buffer", "user", "user", "Hello world!")
-        this.addMsgToBuffer("buffer", "butler", "assistant", "Hello back! Let me introduce myself.")
+        this.participantsList.push({ name: "system"})
+        this.participantsList.push({ name: "tool"})
+        this.participantsList.push({ name: "user"})
+        this.participantsList.push({ name: "assistant"})
+
+        // this.participantsList.push({ name: "butler", personaId: "malachi_hope"})
+        // this.createMessageBuffer("buffer")
+        // this.addMsgToBuffer("buffer", "user", "user", "Hello world!")
+        // this.addMsgToBuffer("buffer", "butler", "assistant", "Hello back! Let me introduce myself.")
         this.gossipList.push({id: "0", content: "default gossip", personaId:"0", timestamp: 0})
     }
 

@@ -151,7 +151,7 @@ export const messageHandlers: Record<string, MessageHandler> = {
 
       // console.log(messages)
       const resp = await generateParticipantResponse(
-        'ministral-3:8b', 
+        'Ministral-3:8b', 
         participant,
         messages,
         persona
