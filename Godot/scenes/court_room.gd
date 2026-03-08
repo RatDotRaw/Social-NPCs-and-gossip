@@ -20,29 +20,30 @@ func start_game_session() -> void:
 	
 	GS.current_chat_room = "court"
 	MsgM.create_buffer(GS.current_chat_room)
-	ApiClientWs.send_request(
-		"create_message_buffer",
-		{ "bufferName": GS.current_chat_room }
-	)
-	
+	#ApiClientWs.send_request("create_message_buffer", { "bufferName": GS.current_chat_room })
 	# add court system prompt
-	ApiClientWs.send_request(
-		"add_message",
-		{
+	ApiClientWs.send_request("add_message", {
 			"bufferName": GS.current_chat_room,
 			"content": Prompts.COURT_SYSTEM,
 			"role": 'system',
 			"participantName": 'system'
-		}
-	)
-	
+		})
 	# creating NPC's
 	ApiClientWs.send_request("create_participant", { "name": "You" })
-	ApiClientWs.send_request(
-		"create_participant",
-		{ 
+	ApiClientWs.send_request("create_participant", { 
 			"name": "Malachi-Hope",
 			"personaId": "malachi_hope"
-		}
-	)
+		})
 	print('Courtroom Gamestate Ready!')
+	
+	# request summary of case by persona
+	#_generate_intro()
+#
+#func _generate_intro() -> void:
+	#var buffer_name: int = randi()
+	#ApiClientWs.send_request("create_message_buffer", { "bufferName": buffer_name })
+	#ApiClientWs.send_request()
+	#
+	#MsgM.new_user_message(Message.new(Prompts.charges[0], 'tool', 'tool'))
+	#
+	

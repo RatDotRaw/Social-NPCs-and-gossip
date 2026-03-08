@@ -33,7 +33,7 @@ func new_user_message(msg: Message)-> bool:
 	if not GS.allow_server_request or not GS.allow_new_user_message:
 		return false
 	
-	msg.participantName = "You"
+	#msg.participantName = "You"
 	MsgM.add_message(GS.current_chat_room, msg)
 	
 	var msg_dict: Dictionary = msg.to_object()
@@ -62,6 +62,7 @@ func create_buffer(bufferName: String) -> bool:
 		printerr("BufferName already taken:", bufferName)
 		return false
 	MessageBuffers[bufferName] = []
+	ApiClientWs.send_request("create_message_buffer", { "bufferName": bufferName })
 	print("buffer created: ", bufferName)
 	return true
 

@@ -29,6 +29,7 @@ func _process(_delta):
 		while socket.get_available_packet_count() > 0:
 			var data_string = socket.get_packet().get_string_from_utf8()
 			var data = JSON.parse_string(data_string)
+			#print(data)
 			var payload_data: Dictionary = data.get("body") as Dictionary
 			
 			#print("### Received data from server: ", data)

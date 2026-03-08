@@ -2,7 +2,11 @@ extends ChatState
 class_name CourtHud
 
 @onready var tab_container: TabContainer = $TabContainer
+
 @onready var animation_player: AnimationPlayer = %AnimationPlayer
+@onready var animation_player_text: AnimationPlayer = %AnimationPlayerText
+@onready var gpu_particles_2d: GPUParticles2D = %GPUParticles2D
+
 @onready var confirm_btn: TextureButton = %ConfirmBtn
 @onready var text_edit: TextEdit = %TextEdit
 
@@ -28,9 +32,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		camera_control.look_at_target(lookTargets.pick_random().global_position)
 
 func _update_progress_bar() -> void:
+	
 	var progress = (float(chat_turns_left)/float(max_chat_turns))*100
 	turns_progress_bar.value = progress
 	label_turns.text = str(chat_turns_left) +'/'+ str(max_chat_turns)
+	
+	gpu_particles_2d.restart()
+	gpu_particles_2d.one_shot = true
+	animation_player_text.play("BigShake")
+	animation_player.play("Shakey")
 
 func _on_look_down_pressed() -> void:
 	camera_control.look_at_target(lookTargets[4].global_position)
