@@ -34,6 +34,10 @@ All persona JSON data in `personaData/profiles/`
 Dialog manager design idea (files in `dialogManager\*`)
 - 15/01/2026 https://chatgpt.com/share/696e28a8-03dc-8012-86f9-bff8fbf36658
 
+in `utils/messageHandler.ts`
+- 18/12/2025 Handler Map design pattern & implementation reference
+  https://gemini.google.com/share/5a5c214d0325
+
 ## Godot
 
 `squiggleVision.gdshader`
@@ -49,6 +53,6 @@ in `Godot/script/api_client_ws.gd`
 - 21/12/2025 A better way of handling async communications over websockets
   https://claude.ai/share/fbc4ea23-b65f-424f-ac99-caa307788cab
 
-in `utils/messageHandler.ts`
-- 18/12/2025 Handler Map design pattern & implementation reference
-  https://gemini.google.com/share/5a5c214d0325
+in `scripts/scene_manager.gd`
+- 07/03/2025 Loading in different scenes
+  https://www.gotut.net/loading-screen-in-godot-4/

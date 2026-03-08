@@ -34,10 +34,10 @@ var uuid: String:
 		uuid = val
 		contents.uuid = val
 
-func _init(newContent: String, newRole: String, newUsername: String, newId: String = "") -> void:
+func _init(newContent: String, newRole: String, newParticipantName: String, newId: String = "") -> void:
 	content = newContent
 	role = newRole
-	participantName = newUsername
+	participantName = newParticipantName
 	if not newId == "":
 		uuid = newId
 	else:

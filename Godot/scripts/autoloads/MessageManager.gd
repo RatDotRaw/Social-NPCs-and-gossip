@@ -11,6 +11,7 @@ signal buffer_update(bufferName: String)
 func _ready() -> void:
 	buffer_update.connect(func(): print('signal fired'))
 
+## add a message locally
 func add_message(bufferName: String, message: Message, create: bool = false) -> bool:
 	if not MessageBuffers.find_key(bufferName) == null:
 		if not create:
@@ -22,14 +23,38 @@ func add_message(bufferName: String, message: Message, create: bool = false) -> 
 	buffer_update.emit(bufferName)
 	return true
 
+## add a message locally from a dictionary
 func add_message_dict(buffername: String, message_dict: Dictionary) -> void:
-	assert(message_dict.has('role'), 'Missing key "role"')
-	assert(message_dict.has('content'), 'Missing key "content"')
-	assert(message_dict.has('participant'), 'Missing key "participant"')
-	assert(message_dict.get('participant').has('name'), 'Missing key "participant.name"')
-
-	var msg: Message = Message.new(message_dict.get('content'), message_dict.get('role'), message_dict.get('participant').get('name'))
+	var msg: Message = message_dict_to_message(message_dict)
 	return add_message(buffername, msg)
+
+## Create new messagen, send to server and request AI response
+func new_user_message(msg: Message)-> bool:
+	if not GS.allow_server_request or not GS.allow_new_user_message:
+		return false
+	
+	msg.participantName = "You"
+	MsgM.add_message(GS.current_chat_room, msg)
+	
+	var msg_dict: Dictionary = msg.to_object()
+	msg_dict.merge({
+		"bufferName": GS.current_chat_room,
+	})
+	
+	#print("and here is where it all went wrong.", msg.to_object())
+	ApiClientWs.send_request("add_message",  msg_dict)
+	ApiClientWs.send_request("get_status")
+	ApiClientWs.send_request(
+		"generate_AI_response",
+		{
+			"bufferName": GS.current_chat_room,
+			"participantName": "Malachi-Hope",
+			"addRespToBuffer": true
+		}
+	)
+	
+	var msgArray: Array[Message] = [msg] # For some reason it needs an exact type
+	return true
 
 #region buffer calls
 func create_buffer(bufferName: String) -> bool:
@@ -53,4 +78,19 @@ func overwrite_buffer(bufferName: String, buffer: Array[Message]) -> bool:
 #endregion
 
 #region helpers
+## Creates a `Message` class out of a dictionary
+func message_dict_to_message(message_dict: Dictionary) -> Message:
+	assert(message_dict.has('role'), 'Missing key "role"')
+	assert(message_dict.has('content'), 'Missing key "content"')
+
+	var p_name = message_dict.get('participantName')
+	if p_name == null:
+		p_name = message_dict.get('participant').get('name')
+	assert(p_name != null, 'Missing "participantName" or "participant.name"')
+	
+	return Message.new(
+		message_dict.get('content'), 
+		message_dict.get('role'), 
+		p_name
+	)
 #endregion

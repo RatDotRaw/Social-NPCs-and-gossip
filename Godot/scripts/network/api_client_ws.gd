@@ -7,7 +7,6 @@ var socket := WebSocketPeer.new()
 var _next_request_id: int = 0
 var is_ws_connected: bool = false
 
-signal ws_ready
 signal ws_connected
 
 func start_ws():
@@ -16,7 +15,6 @@ func start_ws():
 	var err = socket.connect_to_url(full_url)
 	if err != OK:
 		print("Could not connect to server.")
-	ws_ready.emit()
 
 func _process(_delta):
 	socket.poll()
@@ -54,12 +52,7 @@ func _process(_delta):
 	elif state == WebSocketPeer.STATE_CLOSED:
 		var code = socket.get_close_code()
 		var reason = socket.get_close_reason()
-		("WebSocket closed with code: %d, reason: %s" % [code, reason])
-	elif state == WebSocketPeer.STATE_CLOSED:
-		var code = socket.get_close_code()
-		var reason = socket.get_close_reason()
 		print("WebSocket closed. Code: %d, Reason: %s" % [code, reason])
-		set_process(false) # Stop polling
 
 func _send_over_socket(message: Dictionary) -> bool:
 	if socket.get_ready_state() == WebSocketPeer.STATE_OPEN:
@@ -70,8 +63,7 @@ func _send_over_socket(message: Dictionary) -> bool:
 
 ## Send a request to teh server
 func send_request(type: String, reqData: Dictionary = {}) -> void:
-	assert(type, "Type was not set correctly")
-	assert((type != ""), "Type was not set correctly")
+	assert(type or type != "", "Type was not set correctly")
 	
 	reqData['type'] = type
 	_send_over_socket(reqData)
