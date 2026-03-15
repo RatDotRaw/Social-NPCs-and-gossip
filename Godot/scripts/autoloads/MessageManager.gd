@@ -1,9 +1,7 @@
 extends Node
 class_name MessageManager
 
-var MessageBuffers: Dictionary[String, Array] = {
-	"court": []
-} # currently unused, also reffered to as 'buffers'
+var MessageBuffers: Dictionary[String, Array] = {}
 var court_messages: Array[Message] = []
 
 signal buffer_update(bufferName: String)
@@ -34,7 +32,7 @@ func new_user_message(msg: Message)-> bool:
 		return false
 	
 	#msg.participantName = "You"
-	MsgM.add_message(GS.current_chat_room, msg)
+	add_message(GS.current_chat_room, msg)
 	
 	var msg_dict: Dictionary = msg.to_object()
 	msg_dict.merge({
@@ -58,7 +56,7 @@ func new_user_message(msg: Message)-> bool:
 
 #region buffer calls
 func create_buffer(bufferName: String) -> bool:
-	if MessageBuffers.find_key(bufferName):
+	if MessageBuffers.has(bufferName):
 		printerr("BufferName already taken:", bufferName)
 		return false
 	MessageBuffers[bufferName] = []
@@ -76,6 +74,18 @@ func overwrite_buffer(bufferName: String, buffer: Array[Message]) -> bool:
 	MessageBuffers[bufferName] = buffer
 	buffer_update.emit(bufferName)
 	return true
+#endregion
+
+#region gossip calls
+func generate_gossip_from_message_buffer(buffer_name: String, persona_id: String) -> bool:
+	if MessageBuffers.has(buffer_name) == null:
+		return false
+	ApiClientWs.send_request('generate_gossip_from_message_buffer', {
+		'bufferName': GS.current_chat_room,
+		'personaId': persona_id
+	})
+	return true
+
 #endregion
 
 #region helpers

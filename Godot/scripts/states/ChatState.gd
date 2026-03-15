@@ -5,16 +5,23 @@ class_name ChatState
 @export var max_chat_turns: int = 10
 var chat_turns_left: int = max_chat_turns
 
-signal message_send()
+signal message_send(turns_left: int)
+signal no_turns_left()
+
+func allow_chat() -> bool:
+	var allow: bool = true
+	if chat_turns_left == 0:
+		allow = false
+	if not GS.allow_new_user_message:
+		allow = false # TODO: notify player
+	if not GS.current_chat_room:
+		printerr("No `GS.current_chat_room` set")
+		allow = false
+	return allow
 
 #region message shenanigans
 func send_message() -> bool:
-	if chat_turns_left == 0:
-		return false
-	if not GS.allow_new_user_message:
-		return false # TODO: notify player
-	if not GS.current_chat_room:
-		printerr("No `GS.current_chat_room` set")
+	if not allow_chat():
 		return false
 	
 	var user_text: String = text_input.text
@@ -27,6 +34,9 @@ func send_message() -> bool:
 	if MsgM.new_user_message(messge):
 		print("Creating new user messge:", messge.contents)
 		chat_turns_left -= 1
+		message_send.emit(chat_turns_left)
+		if (chat_turns_left == 0):
+			no_turns_left.emit()
 	else:
 		printerr("GS did not accept new user message")
 		return false

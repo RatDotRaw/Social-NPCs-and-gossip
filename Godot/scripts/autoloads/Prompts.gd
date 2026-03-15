@@ -25,12 +25,16 @@ Your ultimate goal is to play along in the user's story and maintain an entertai
 - Focus on stitching together the story for the jury, reacting to new information with amused curiosity.
 - React to new information with curiosity and dry commentary.
 - Never make a final judgment about the defendant's fate.
-- Stay in role as the Court Head at all times."
+- Stay in role as the Court Head at all times.
+
+The user is not the defendand, but a lawyer. 
+Speak to the lawyer, not the defendant.
+Reffer to the lawyer as just lawyer"
 
 const court_start_prompt: Array[String] = [
 	'**Defendant:**
-**Name:** Crispin “Cricket” Dalroy
-**Age:** 29
+**Name:** Gleep Greerglop (alien)
+**Age:** February 30th, 90210 (galactic years)
 **Occupation:** Freelance “Noise Artist” (he makes music exclusively from household appliances)
 **Known For:**
 - Apologizing to lampposts after bumping into them.
@@ -42,21 +46,27 @@ const court_start_prompt: Array[String] = [
 
 **Charge:** Alleged Unlicensed Summoning of a Minor Weather Phenomenon Inside a Public Library.
 **Summary:**
-Gleep is accused of conjuring a "micro-cyclone" in the Quiet Reading Zone of the Old Borough Library. Witnesses claim papers, bookmarks, several wigs, and one unfortunate iguana were swept into a spiraling vortex approximately two meters wide. Gleep swears it wasn\'t a magical act, but instead a "performance installation exploring the turbulence of modern life." The library staff insists he muttered an incantation involving the phrase "gusty enlightenment" right before the incident. Crispin says he was "just warming up his vocal cords.
+Gleep is accused of conjuring a "micro-cyclone" in the Quiet Reading Zone of the Old Borough Library. Witnesses claim papers, bookmarks, several wigs, and one unfortunate iguana were swept into a spiraling vortex approximately two meters wide. Gleep swears it wasn\'t a magical act, but instead a "performance installation exploring the turbulence of modern life." The library staff insists he muttered an incantation involving the phrase "gusty enlightenment" right before the incident. Gleep says he was "just warming up his vocal cords.
 
 ---
 
 **Evidence Highlights:**
-* Security footage showing Crispin waving his arms in circles, shouting something while standing on a step stool.
+* Security footage showing Gleep waving his arms in circles, shouting something while standing on a step stool.
 * The iguana (Gregory) survived but is reportedly “deeply annoyed.”
 * Torn-out dictionary pages found stuck to the ceiling spelling a rough anagram of “I DID NOT DO IT.”
 * Weather Bureau instruments detected a pressure anomaly but can\'t conclusively tie it to magical activity.
 
 ---
 
-Start by summarizing the case and by questioning the evidence.'
+The user is not the defendand, but a lawyer. 
+Speak to the lawyer, not the defendant.
+Reffer to the lawyer as just lawyer
+
+This is the start of the court session.
+Start by first summarizing the entire case and questioning the evidence for the lawyer.'
+
 ]
 
 const charges: Array[String] = [
-	'Gleep is accused of conjuring a "micro-cyclone" in the Quiet Reading Zone of the Old Borough Library. Witnesses claim papers, bookmarks, several wigs, and one unfortunate iguana were swept into a spiraling vortex approximately two meters wide. Gleep swears it wasn\'t a magical act, but instead a "performance installation exploring the turbulence of modern life." The library staff insists he muttered an incantation involving the phrase "gusty enlightenment" right before the incident. Crispin says he was "just warming up his vocal cords."'
+	'Gleep is accused of conjuring a "micro-cyclone" in the Quiet Reading Zone of the Old Borough Library. Witnesses claim papers, bookmarks, several wigs, and one unfortunate iguana were swept into a spiraling vortex approximately two meters wide. Gleep swears it wasn\'t a magical act, but instead a "performance installation exploring the turbulence of modern life." The library staff insists he muttered an incantation involving the phrase "gusty enlightenment" right before the incident. Gleep says he was "just warming up his vocal cords."'
 ]

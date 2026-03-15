@@ -26,12 +26,16 @@ func rerender_messages(bufferName: String):
 		child.free()
 	
 	for msg in MsgM.get_buffer(bufferName):
+		msg = msg as Message
+		if (msg.role == "tool" or msg.role == "system"):
+			continue
+		
 		var msgBox = ChatMessage.instantiate()
 		message_container.add_child(msgBox)
 		msgBox.username = msg.participantName
 		msgBox.content = msg.content
 
-func add_message(message: Message):
+func render_message(message: Message):
 	var instance = ChatMessage.instantiate()
 	message_container.add_child(instance)
 	instance.username = message.participantName
