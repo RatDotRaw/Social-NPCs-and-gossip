@@ -11,6 +11,7 @@ export default class GameState {
     personasList: Persona[] = []
     gossipList: Gossip[] = []
     gossipEngine: GossipEngine
+    modelName: string
 
     // --- syncing settings ---
     is_busy = false
@@ -18,11 +19,12 @@ export default class GameState {
     allow_request: boolean = true
     allow_new_user_message: boolean = true
 
-    constructor(id: string, personas: Persona[]) {
+    constructor(id: string, personas: Persona[], modelName: string = 'qwen3.5:9b') { // 'Ministral-3:8b'
         this.id = id
         this.personasList = personas
+        this.modelName = modelName
         this.gossipEngine = new GossipEngine(personas, {
-            modelName: 'Ministral-3:8b',
+            modelName: modelName,
             maxRetries: 2,
         })
 

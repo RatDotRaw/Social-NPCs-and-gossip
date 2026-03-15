@@ -1,4 +1,4 @@
-import ollama from "ollama";
+import ollama, { Tool } from "ollama";
 import { Persona } from "../gossipEnge/types.ts";
 import { Message, Participant } from "../dialogManager/types.ts";
 import { formatPersonaBasePrompt } from "./promptFormatter.ts";
@@ -40,6 +40,7 @@ export async function generateChatResponse(
       model: model_name,
       messages: messages,
       stream: false,
+      think: false,
     });
     return response.message.content;
   } catch (error) {
@@ -48,22 +49,76 @@ export async function generateChatResponse(
   }
 }
 
+// unfortunately this function is highly unreliable using some LLM's
 export async function generateStructuredChatResponse(
   model_name: string,
   messages: { role: string; content: string }[],
   jsonSchema: object,
 ) {
   try {
+    const systemInstruction = { 
+      role: 'system', 
+      content: `You MUST respond ONLY with a valid JSON object matching the requested schema:\n${jsonSchema}` 
+    }
+    messages = [systemInstruction, ... messages]
+
     const response = await ollama.chat({
       model: model_name,
       messages: messages,
       format: jsonSchema,
+      think: false
     });
+
     const parsedResp = JSON.parse(response.message.content);
     // console.log(parsedResp)
     return parsedResp
   } catch (error) {
     console.error("ollama structured error:", error);
     throw error;
+  }
+}
+
+export async function generateToolCallResponse(
+  model_name: string,
+  messages: { role: string; content: string }[],
+  toolDefinition: object,
+  maxRetries: number = 4
+) {
+  let attempts = 0;
+  const currentMessages = [...messages];
+  currentMessages.push({ 
+    role: 'system', 
+    content: "Please provide your evaluation using the given tool(s)." 
+  });
+
+  while (attempts < maxRetries) {
+    try {
+      const response = await ollama.chat({
+        model: model_name,
+        messages: currentMessages,
+        tools: [toolDefinition as Tool],
+        think: false
+      });
+
+      const toolCalls = response.message.tool_calls;
+
+      if (toolCalls && toolCalls.length > 0) {
+        // Success! Extract and return the arguments
+        const args = toolCalls[0].function.arguments;
+        return typeof args === 'string' ? JSON.parse(args) : args;
+      }
+
+      // if no tool call, nudge the model in the next attempt
+      console.warn(`Attempt ${attempts + 1}: Model didn't use the tool. Retrying...`);
+      currentMessages.push({ 
+        role: 'system', 
+        content: "Please provide your evaluation using the given tool(s)." 
+      });
+      attempts++;
+    } catch (error) {
+      console.error(`Ollama attempt ${attempts + 1} failed:`, error);
+      attempts++;
+      if (attempts >= maxRetries) throw error;
+    }
   }
 }

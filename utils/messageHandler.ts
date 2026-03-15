@@ -57,7 +57,7 @@ export const messageHandlers: Record<string, MessageHandler> = {
   "create_participant": (socket, session, data) => {
     const safeData = NewParticipantScheme.safeParse(data)
     if (safeData.success) {
-      console.log(`[new_user_message] Adding message to ${session.id}`);
+      console.log(`[create_participant] Creating new participant in ${session.id}:${safeData.data.name}`);
       try {
         const {name, personaId} = safeData.data
         session.createNewParticipant(name, personaId);
@@ -74,7 +74,7 @@ export const messageHandlers: Record<string, MessageHandler> = {
   "add_message": (socket, session, data) => {
     const safeData = NewUserMessageScheme.safeParse(data)
     if (safeData.success) {
-      console.log(`[new_user_message] Adding message to ${session.id}`);
+      console.log(`[new_user_message] Adding message to ${session.id}::${safeData.data.participantName}::${safeData.data.bufferName}`);
       const {bufferName, content, role, participantName} = safeData.data
       
       session.addMsgToBuffer(bufferName, participantName, role, content);
@@ -143,7 +143,7 @@ export const messageHandlers: Record<string, MessageHandler> = {
     const safeData = GenerateAiResponseScheme.safeParse(data)
     if (safeData.success) {
       const { bufferName, participantName, addRespToBuffer } = data
-      console.log(`[request_AI_response] ${session.id}`)
+      console.log(`[generate_AI_response] ${session.id}`)
       
       const participant = session.findParticipant(participantName)
       const messages = session.readMessageBuffer(bufferName)
@@ -151,16 +151,16 @@ export const messageHandlers: Record<string, MessageHandler> = {
 
       // console.log(messages)
       const resp = await generateParticipantResponse(
-        'Ministral-3:8b', 
+        session.modelName, 
         participant,
         messages,
         persona
       )
-      console.log("resp;:", resp)
+      console.log(`resp;: ${resp?.slice(0, 64)} [${resp?.length}]`)
 
       const newMessage: Message = {
         role: "assistant",
-        content: resp,
+        content: resp || '',
         participant: participant
       }
 
@@ -181,6 +181,8 @@ export const messageHandlers: Record<string, MessageHandler> = {
     const safeData = GenerateGossipFromMessageBuffer.safeParse(data)
     if (safeData.success) {
       const { bufferName, personaId} = safeData.data
+      console.log(`[generate_gossip_from_message_buffer] ${session.id}::${bufferName}::${personaId}`)
+
       try {
         const buffer = session.findMessageBuffer(bufferName)
         const persona = session.findPersonabyId(personaId)
@@ -189,6 +191,7 @@ export const messageHandlers: Record<string, MessageHandler> = {
         sendResponseWithType(socket, "generate_gossip_from_message_buffer", resp)
       } catch (e) {
         sendResponseWithType(socket, "error", String(e))
+        console.error(String(e))
       }
     } else {
       sendResponseWithType(socket, "error", safeData.error)

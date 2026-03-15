@@ -38,6 +38,14 @@ in `utils/messageHandler.ts`
 - 18/12/2025 Handler Map design pattern & implementation reference
   https://gemini.google.com/share/5a5c214d0325
 
+In `utils/ollamaHelpers.ts`
+- 15/03/2026 Help writing the `generateToolCallResponse` function
+  https://chat.qwen.ai/s/9c22d28f-ed05-48b3-a3e3-3a4071a853d0?fev=0.2.14
+
+In `gossipEnge/GossipEngine.ts`
+- 15/03/2026 Help writing the tool call json
+  https://chat.qwen.ai/s/9c22d28f-ed05-48b3-a3e3-3a4071a853d0?fev=0.2.14
+
 ## Godot
 
 `squiggleVision.gdshader`

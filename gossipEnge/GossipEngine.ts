@@ -1,7 +1,8 @@
 import { formatPersonaBasePrompt, formatPersonaGossipExtension } from "../utils/promptFormatter.ts";
 import { Gossip, GossipEngineConfig, Persona } from "./types.ts";
-import { generateStructuredChatResponse } from "../utils/ollamaHelpers.ts";
+import { generateStructuredChatResponse, generateToolCallResponse } from "../utils/ollamaHelpers.ts";
 import { Message } from "../dialogManager/types.ts";
+import { Tool } from "ollama";
 
 export class GossipEngine {
   config: GossipEngineConfig;
@@ -80,12 +81,17 @@ export class GossipEngine {
       console.log("generated gossip::", resp)
       
       gossip.content = resp.rewritten_gossip
-      gossip.belief = resp.belief = resp.rewritten_gossip
+      gossip.belief = resp.belief
       // TODO: Validate response and if bad, retry.
       //       - Response lenght
       //       - Response quality???
+
+      // console.log("generated gossip::", resp)
+      // console.log("rewritten_gossip field:", resp?.rewritten_gossip)
       break
     }
+
+    
     return gossip
   }
 
@@ -124,14 +130,11 @@ Focus on what actually happened:
 - conflicts
 - outcomes
 
-Then produce a response:
-
-Step 1: Decide whether you personally ACCEPT or REJECT the essence of what happened.
-Apply your persona's moral code, goals, and values. If it violates them, "belief" MUST be false.
-
-Step 2: Explain your decision in AT MOST two short sentences.
-
-Step 3: Rewrite the conversation as a confident, biased retelling in your voice, framing events to support your perspective.
+Then produce a response using the tool provided:
+- Decide whether you personally ACCEPT or REJECT the essence of what happened.
+  Apply your persona's moral code, goals, and values. If it violates them, "belief" MUST be false.
+- Explain your decision in AT MOST two short sentences.
+- Rewrite the conversation as a confident, biased retelling in your voice, framing events to support your perspective.
 Preserve key details and context, but frame them to support your perspective.
 State your version as objective truth.
 
@@ -150,15 +153,50 @@ Rules:
       {role: "user", "content": instructionPrompt},
     ]
 
-    const format = {
-      "type": "object",
-      "properties": {
-        "belief": {"type": "boolean", "description": "Based on your persona's moral framework: do you judge the core event as ethically acceptable or justified? False if you consider it wrong, harmful, or unacceptable, even if entertaining."},
-        "reason": {"type": "string", "description": "A very short and minimal description of MAXIMUM TWO SENTENCES based on your believes why your believe accepted or rejected the conversation."},
-        "personal_summary": {"type": "string", "description": "Rewritten a summary of the conversation in your voice. CONFIDENTLY state it as truth. Reframe to match your bias."},
-      },
-      "required": ["belief", "reason", "personal_summary"]
+    // const format = {
+    //   "type": "object",
+    //   "properties": {
+    //     "belief": {
+    //       "type": "boolean",
+    //       "description": "Based on your persona's moral framework: do you judge the core event as ethically acceptable or justified? False if you consider it wrong, harmful, or unacceptable, even if entertaining."
+    //     },
+    //     "explanation": {
+    //       "type": "string",
+    //       "description": "A very short and minimal description of MAXIMUM TWO SENTENCES based on your believes why your believe accepted or rejected the conversation."
+    //     },
+    //     "personal_summary": {
+    //       "type": "string",
+    //       "description": "Rewritten a summary of the conversation in your voice. CONFIDENTLY state it as truth. Reframe to match your bias."
+    //     }
+    //   },
+    //   "required": ["belief", "explanation", "personal_summary"]
+    // }
+    const format: Tool = {
+      "type": "function",
+      "function": {
+        "name": "evaluate_persona_belief",
+        "description": "Evaluates a conversation event based on the persona's specific moral framework and biases.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "belief": {
+              "type": "boolean",
+              "description": "Based on your persona's moral framework: do you judge the core event as ethically acceptable or justified? False if you consider it wrong, harmful, or unacceptable, even if entertaining."
+            },
+            "explanation": {
+              "type": "string",
+              "description": "A very short and minimal description of MAXIMUM TWO SENTENCES based on your beliefs explaining why you accepted or rejected the conversation."
+            },
+            "personal_summary": {
+              "type": "string",
+              "description": "Rewritten summary of the conversation in your voice. CONFIDENTLY state it as truth. Reframe to match your bias."
+            }
+          },
+          "required": ["belief", "explanation", "personal_summary"],
+        }
+      }
     }
+
 
     const gossip: Gossip = {
       id: crypto.randomUUID(),
@@ -170,10 +208,10 @@ Rules:
     let retry: number = 0
     while (retry < this.config.maxRetries) {
       retry++;
-      const resp = await generateStructuredChatResponse(this.config.modelName, msgHistory, format)
+      const resp = await generateToolCallResponse(this.config.modelName, msgHistory, format)
       gossip.content = resp.personal_summary
       gossip.belief = resp.belief
-      gossip.reason = resp.reason
+      gossip.reason = resp.explanation
       // TODO: Validate response and if bad, retry.
       //       - Response lenght
       //       - Response quality???
