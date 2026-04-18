@@ -17,9 +17,8 @@ export default class GameState {
     is_busy = false
     is_ai_bussy = false;
     allow_request: boolean = true
-    allow_new_user_message: boolean = true
 
-    constructor(id: string, personas: Persona[], modelName: string = 'qwen3.5:9b') { // 'Ministral-3:8b'
+    constructor(id: string, personas: Persona[], modelName: string = 'gemma4:e4b') { // 'Ministral-3:8b'
         this.id = id
         this.personasList = personas
         this.modelName = modelName
@@ -203,12 +202,10 @@ export default class GameState {
     get_state() {
         const {
             allow_request, 
-            allow_new_user_message, 
             is_ai_bussy 
         } = this;
         return { 
             allow_request, 
-            allow_new_user_message, 
             is_ai_bussy 
         };
     }

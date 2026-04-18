@@ -12,7 +12,7 @@ func allow_chat() -> bool:
 	var allow: bool = true
 	if chat_turns_left == 0:
 		allow = false
-	if not GS.allow_new_user_message:
+	if GS.is_ai_bussy:
 		allow = false # TODO: notify player
 	if not GS.current_chat_room:
 		printerr("No `GS.current_chat_room` set")

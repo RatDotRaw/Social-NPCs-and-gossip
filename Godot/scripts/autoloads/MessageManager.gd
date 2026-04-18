@@ -28,7 +28,7 @@ func add_message_dict(buffername: String, message_dict: Dictionary) -> void:
 
 ## Create new messagen, send to server and request AI response
 func new_user_message(msg: Message)-> bool:
-	if not GS.allow_server_request or not GS.allow_new_user_message:
+	if not GS.allow_server_request or GS.is_ai_bussy:
 		return false
 	
 	#msg.participantName = "You"

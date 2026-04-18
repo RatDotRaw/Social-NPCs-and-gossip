@@ -40,8 +40,10 @@ export async function generateChatResponse(
       model: model_name,
       messages: messages,
       stream: false,
-      think: false,
+      think: true,
     });
+    // console.log(response.message)
+    // console.log(`===\n\n${response.message}\n\n===`)
     return response.message.content;
   } catch (error) {
     console.error("ollama chat error:", error);
@@ -70,7 +72,7 @@ export async function generateStructuredChatResponse(
     });
 
     const parsedResp = JSON.parse(response.message.content);
-    // console.log(parsedResp)
+    // console.log(`===\n\n${parsedResp}\n\n===`)
     return parsedResp
   } catch (error) {
     console.error("ollama structured error:", error);
