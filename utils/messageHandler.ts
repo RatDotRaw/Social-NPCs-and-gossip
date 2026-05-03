@@ -4,7 +4,7 @@ import GameState from "./gamestate.ts";
 import { ServerResponse } from "../types.ts";
 import { generateParticipantResponse } from "./ollamaHelpers.ts";
 import { Message } from "../dialogManager/types.ts";
-import { Socket } from "node:dgram";
+import { Gossip } from "../gossipEnge/types.ts";
 
 // Define what a handler looks like
 type MessageHandler = (
@@ -134,11 +134,11 @@ export const messageHandlers: Record<string, MessageHandler> = {
 
   //region AI enpoints
   "generate_AI_response": async (socket, session, data) => {
-    if (session.is_ai_bussy) {
+    if (session.is_ai_busy) {
       sendResponseWithType(socket, "status_update", { state: session.get_state() });
       return
     }
-    session.is_ai_bussy = true
+    session.is_ai_busy = true
 
     const safeData = GenerateAiResponseScheme.safeParse(data)
     if (safeData.success) {
@@ -172,48 +172,58 @@ export const messageHandlers: Record<string, MessageHandler> = {
     } else {
       sendResponseWithType(socket, "error", safeData.error)
     }
-    session.is_ai_bussy = false
+    session.is_ai_busy = false
   },
 
   "generate_gossip_from_message_buffer": async (socket, session, data) => {
-    session.is_ai_bussy = true
+    session.is_ai_busy = true
 
     const safeData = GenerateGossipFromMessageBuffer.safeParse(data)
     if (safeData.success) {
-      const { bufferName, personaId} = safeData.data
+      const { bufferName, personaId, id} = safeData.data
       console.log(`[generate_gossip_from_message_buffer] ${session.id}::${bufferName}::${personaId}`)
 
       try {
-        const buffer = session.findMessageBuffer(bufferName)
-        const persona = session.findPersonabyId(personaId)
-
-        const resp = await session.gossipEngine.getSummary(buffer, persona)
-        sendResponseWithType(socket, "generate_gossip_from_message_buffer", resp)
+        const resp: Gossip = await session.summarizeMessageBufferToGossip(bufferName, personaId)
+        console.log(`resp;:${id} ${resp.belief} :: ${resp.content.slice(0, 64)} [${resp.content.length}]`)
+        sendResponseWithType(socket, "generate_gossip_from_message_buffer", resp, id)
       } catch (e) {
-        sendResponseWithType(socket, "error", String(e))
+        sendResponseWithType(socket, "error", String(e), id)
         console.error(String(e))
       }
     } else {
       sendResponseWithType(socket, "error", safeData.error)
     }
-    session.is_ai_bussy = false
+    session.is_ai_busy = false
   },
 
   "propagate_gossip": async (socket, session, data) => {
-    session.is_ai_bussy = true
+    session.is_ai_busy = true
     
     const safeData = PropagateGossip.safeParse(data)
     if (safeData.success) {
-      const gossipIds = safeData.data.gossipIds
+      const gossipIds: string[] = safeData.data.gossipIds
       try {
-        session.createMessageBuffer(name)
+        const seedGossip = gossipIds
+          .map(id => session.getGossipById(id))
+          .filter((g): g is Gossip => g !== undefined)
+
+        if (seedGossip.length === 0) {
+          sendResponseWithType(socket, "error", "No valid gossip found for the provided IDs")
+          session.is_ai_busy = false
+          return
+        }
+
+        for await (const newGossip of session.propagateGossip(seedGossip)) {
+          sendResponseWithType(socket, "propagate_gossip", newGossip)
+        }
       } catch (e) {
         sendResponseWithType(socket, "error", String(e))
       }
     } else {
       sendResponseWithType(socket, "error", safeData.error)
     }
-    session.is_ai_bussy = false
+    session.is_ai_busy = false
   }
 
   //#endregion
@@ -237,14 +247,15 @@ export const messageHandlers: Record<string, MessageHandler> = {
 //   }
 // }
 
-function sendResponseWithType(socket: WebSocket, msgType: string, msgBody: any) {
+function sendResponseWithType(socket: WebSocket, msgType: string, msgBody: any, id?: string) {
   if (socket.readyState === WebSocket.OPEN) {
     const callerName = new Error().stack?.split('\n')[2]?.trim().split(' ')[1] ?? 'unknown';
 
     const resp: ServerResponse = {
       type: msgType,
       body: msgBody,
-      callerName // or whatever key you want
+      callerName, // or whatever key you want
+      id
     }
     socket.send(JSON.stringify(resp));
   }

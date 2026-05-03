@@ -34,13 +34,14 @@ export async function generateParticipantResponse(
 export async function generateChatResponse(
   model_name: string,
   messages: { role: string; content: string }[],
+  thinking: boolean = false
 ) {
   try {
     const response = await ollama.chat({
       model: model_name,
       messages: messages,
       stream: false,
-      think: true,
+      think: thinking,
     });
     // console.log(response.message)
     // console.log(`===\n\n${response.message}\n\n===`)
@@ -84,7 +85,7 @@ export async function generateToolCallResponse(
   model_name: string,
   messages: { role: string; content: string }[],
   toolDefinition: object,
-  maxRetries: number = 4
+  maxRetries: number = 6
 ) {
   let attempts = 0;
   const currentMessages = [...messages];

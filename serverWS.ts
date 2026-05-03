@@ -82,10 +82,7 @@ router
 
         const handler = messageHandlers[type];
         if (handler) {
-          const result = handler(socket, gameSession, data);
-          if (result instanceof Promise) {
-            await handler(socket, gameSession, data);
-          }
+          await handler(socket, gameSession, data);
         } else {
           console.warn(`Handler "${type}" does not exist`);
         }

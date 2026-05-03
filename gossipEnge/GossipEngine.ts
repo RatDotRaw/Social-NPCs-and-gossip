@@ -95,7 +95,7 @@ export class GossipEngine {
     return gossip
   }
 
-  async propagate(seedGossips: Gossip[]): Promise<Gossip[]> {
+  async *propagate(seedGossips: Gossip[]): AsyncGenerator<Gossip>{
     const allGossips: Gossip[] = [...seedGossips];
     let currentGossips = seedGossips
     
@@ -109,12 +109,11 @@ export class GossipEngine {
     const order = this.getPropagationOrder(personas);
     
     for (const persona of order) {
-      const transformed = await this.transformGossip(persona, currentGossips);
+      const transformed: Gossip = await this.transformGossip(persona, currentGossips);
       allGossips.push(transformed);
       currentGossips = [transformed]
+      yield transformed
     }
-
-    return allGossips;
   }
 
   async getSummary(messages: Message[], persona: Persona) {
