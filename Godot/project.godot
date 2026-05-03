@@ -25,6 +25,7 @@ GS="*res://scripts/autoloads/GameState.gd"
 ApiClientWs="*res://scripts/network/api_client_ws.gd"
 MsgM="*uid://b464t0rsds2bd"
 Prompts="*uid://0yauujnptlr2"
+SceneMaganger="*uid://bc57elkbql6di"
 
 [display]
 

@@ -19,6 +19,7 @@ class_name CourtHud
 func _ready() -> void:
 	tab_container.current_tab = 0
 	confirm_btn.pressed.connect(_send_message_and_udpate)
+	GS.is_ai_busy_signal.connect(_udpate_chatbox_visuals)
 
 	message_send.connect(_update_progress_bar)
 	_update_progress_bar()
@@ -31,8 +32,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_text_newline"):
 		camera_control.look_at_target(lookTargets.pick_random().global_position)
 
+@onready var cross: TextureRect = %Cross
+func _udpate_chatbox_visuals(allow: bool) -> void:
+	cross.visible = allow
+
 func _update_progress_bar() -> void:
-	
 	var progress = (float(chat_turns_left)/float(max_chat_turns))*100
 	turns_progress_bar.value = progress
 	label_turns.text = str(chat_turns_left) +'/'+ str(max_chat_turns)

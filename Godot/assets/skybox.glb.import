@@ -3,17 +3,17 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://ddvl342s34l85"
-path="res://.godot/imported/Courtroom.glb-a94a00d23e19a2cc5a58758058aae7fc.scn"
+uid="uid://cyqvctg2isy1h"
+path="res://.godot/imported/skybox.glb-59e513316381e43c05ed3a15b3ee619c.scn"
 
 [deps]
 
-source_file="res://assets/Courtroom.glb"
-dest_files=["res://.godot/imported/Courtroom.glb-a94a00d23e19a2cc5a58758058aae7fc.scn"]
+source_file="res://assets/skybox.glb"
+dest_files=["res://.godot/imported/skybox.glb-59e513316381e43c05ed3a15b3ee619c.scn"]
 
 [params]
 
-nodes/root_type="MeshInstance3D"
+nodes/root_type=""
 nodes/root_name=""
 nodes/root_script=null
 nodes/apply_root_scale=true
@@ -24,13 +24,13 @@ nodes/use_node_type_suffixes=true
 meshes/ensure_tangents=true
 meshes/generate_lods=true
 meshes/create_shadow_meshes=true
-meshes/light_baking=2
+meshes/light_baking=1
 meshes/lightmap_texel_size=0.2
 meshes/force_disable_compression=false
-skins/use_named_skins=false
-animation/import=false
+skins/use_named_skins=true
+animation/import=true
 animation/fps=30
-animation/trimming=true
+animation/trimming=false
 animation/remove_immutable_tracks=true
 animation/import_rest_as_RESET=false
 import_script/path=""

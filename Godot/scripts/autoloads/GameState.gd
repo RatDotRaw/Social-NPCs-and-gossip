@@ -11,13 +11,13 @@ var update_clock: Timer = Timer.new()
 
 # --- server state ---
 var allow_server_request = true
-signal is_ai_bussy_signal
-var is_ai_bussy: bool = false:
+signal is_ai_busy_signal
+var is_ai_busy: bool = false:
 	get:
-		return is_ai_bussy
+		return is_ai_busy
 	set(val):
-		is_ai_bussy = val
-		is_ai_bussy_signal.emit(val)
+		is_ai_busy = val
+		is_ai_busy_signal.emit(val)
 # --- client state ---
 var game_state_name = "court_senario"
 
@@ -53,6 +53,6 @@ func set_server_status(data: Dictionary) -> void:
 	var settings: Dictionary = data.get("state")
 	if settings:
 		allow_server_request = settings["allow_request"]
-		is_ai_bussy = settings["is_ai_bussy"]
+		is_ai_busy = settings["is_ai_busy"]
 	pass
 #endregion

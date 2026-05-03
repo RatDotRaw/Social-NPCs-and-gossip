@@ -1,4 +1,6 @@
-extends PanelContainer
+extends MarginContainer
+
+@onready var texture_rect: TextureRect = %TextureRect
 
 @export var username: String:
 	get:
@@ -12,6 +14,14 @@ extends PanelContainer
 	set(val):
 		rich_text_label.text = str(val)
 		content = val
+
+@export var image: String:
+	get:
+		return image
+	set(path):
+		var test: Texture2D = Texture2D.new()
+		texture_rect.texture = load(path)
+		image = path
 
 @onready var name_label: Label = %NameLabel
 @onready var rich_text_label: RichTextLabel = %RichTextLabel

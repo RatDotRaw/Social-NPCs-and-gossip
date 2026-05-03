@@ -1,7 +1,6 @@
 extends Resource
 class_name RequestResult
 
-var success: bool
-var denied: bool
+var ok: bool
 var data: Dictionary
-var reason: String
+var error: String

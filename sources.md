@@ -46,6 +46,11 @@ In `gossipEnge/GossipEngine.ts`
 - 15/03/2026 Help writing the tool call json
   https://chat.qwen.ai/s/9c22d28f-ed05-48b3-a3e3-3a4071a853d0?fev=0.2.14
 
+In `gossipEnge/GossipEngine.ts` & `utils/gamestate.ts`
+- 26/04/2026 Using Iterators to get results ASAP
+  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*#generator_example
+  https://blog.logrocket.com/understanding-typescript-generators/#iterate-large-data-sets
+
 ## Godot
 
 `squiggleVision.gdshader`
@@ -64,3 +69,7 @@ in `Godot/script/api_client_ws.gd`
 in `scripts/scene_manager.gd`
 - 07/03/2025 Loading in different scenes
   https://www.gotut.net/loading-screen-in-godot-4/
+
+Godot BBCode effects on various elements
+- 21/04/2026
+  https://docs.godotengine.org/en/latest/tutorials/ui/bbcode_in_richtextlabel.html

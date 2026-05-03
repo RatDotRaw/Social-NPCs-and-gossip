@@ -21,12 +21,28 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_text_newline"):
 		_end_game_check()
 		
+var ran_endgame: bool = false
+var end_game_gossip: Array[Gossip] = []
 
 func _end_game_check() -> void:
+	if ran_endgame:
+		return
+	ran_endgame = true
+	
+	# initialize loading screen and add game over scene
+	SceneMaganger.switch_scene_with_loading("res://scenes/vote_scene.tscn", "lol unused param bc i'm silly", false) # loading screen
 	var instance = ROUND_OVER.instantiate()
 	add_child(instance)
-	MsgM.generate_gossip_from_message_buffer(GS.current_chat_room, 'chadwick_gainsbury')
 	
+	var gossip_chadwick = await MsgM.generate_gossip_from_message_buffer(GS.current_chat_room, 'chadwick_gainsbury')
+	var gossip_dr_bones = await MsgM.generate_gossip_from_message_buffer(GS.current_chat_room, 'dr_bones')
+	SceneMaganger.switch_now()
+	if gossip_chadwick and gossip_dr_bones:
+		var propagated = await MsgM.propagate_gossip([gossip_chadwick.id, gossip_dr_bones.id])
+		end_game_gossip = propagated
+	
+	
+#	TODO: start gossip engine.
 
 ## create chatBuffer and participants
 func start_game_session() -> void:
