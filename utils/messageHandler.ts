@@ -213,7 +213,7 @@ export const messageHandlers: Record<string, MessageHandler> = {
           session.is_ai_busy = false
           return
         }
-
+        sendResponseWithType(socket, "gossipEngine_config", session.gossipEngine.getConfig())
         for await (const newGossip of session.propagateGossip(seedGossip)) {
           sendResponseWithType(socket, "propagate_gossip", newGossip)
         }

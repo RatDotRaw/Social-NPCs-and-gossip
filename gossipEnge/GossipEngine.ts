@@ -4,11 +4,58 @@ import { generateStructuredChatResponse, generateToolCallResponse } from "../uti
 import { Message } from "../dialogManager/types.ts";
 import { Tool } from "ollama";
 
+// structured JSON format
+const formatJson = {
+  "type": "object",
+  "properties": {
+    "belief": {"type": "boolean", "description": "After interpreting the gossip through your biased lens: do you ACCEPT that this event (or its essence) is justified, clever, or aligned with your values? Set false if it's violates your core principles, even if you retell it dramatically."},
+    "reason": {"type": "string", "description": "A very short and minimal description of MAXIMUM TWO SENTENCES based on your believes WHY your believe accepted or rejected the gossip provided."},
+    "rewritten_gossip": {"type": "string", "description": "Rewritten gossip in your voice. As if you are telling someone else. CONFIDENTLY state it as truth. Reframe to match your bias."},
+  },
+  "required": ["belief", "reason", "rewritten_gossip"]
+}
+
+const formatTool: Tool = {
+      "type": "function",
+      "function": {
+        "name": "evaluate_persona_belief",
+        "description": "Evaluates a conversation event based on the persona's specific moral framework and biases.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "belief": {
+              "type": "boolean",
+              "description": "Based on your persona's moral framework: do you judge the core event as ethically acceptable or justified? False if you consider it wrong, harmful, or unacceptable, even if entertaining."
+            },
+            "reason": {
+              "type": "string",
+              "description": "A very short and minimal description of MAXIMUM TWO SENTENCES based on your beliefs explaining why you accepted or rejected the conversation."
+            },
+            "rewritten_gossip": {
+              "type": "string",
+              "description": "Rewritten summary of the conversation in your voice. As if you are telling someone else. CONFIDENTLY state it as truth. Reframe to match your bias."
+            }
+          },
+          "required": ["belief", "explanation", "personal_summary"],
+        }
+      }
+    }
+
 export class GossipEngine {
   config: GossipEngineConfig;
 
   constructor(public personas: Persona[], config: GossipEngineConfig) {
     this.config = config;
+  }
+
+  /**
+   * Get the config file with the expected behavior of some functions
+   * EG. maxHops will represent the expected amount of getPropagationOrder()
+   */
+  getConfig(): GossipEngineConfig {
+    const config: GossipEngineConfig = structuredClone(this.config)
+    config.maxHops = config.maxHops ?? this.personas.length
+    return config
   }
 
   /**
@@ -45,19 +92,8 @@ export class GossipEngine {
       instructionPrompt += `${index+1}. From ${author}:\n${gossip.content}\n\n`
     });
     
-    instructionPrompt += `Now retell the story in your own words, as if telling the next person.\n`
+    instructionPrompt += `Now retell the story in your own words, as if you are telling the next person.\n`
     instructionPrompt += `Respond STRICTLY in this JSON format. Do not include lists, labels, or option names.\n`;
-
-    // structured JSON format
-    const format = {
-      "type": "object",
-      "properties": {
-        "belief": {"type": "boolean", "description": "After interpreting the gossip through your biased lens: do you ACCEPT that this event (or its essence) is justified, clever, or aligned with your values? Set false if it's violates your core principles, even if you retell it dramatically."},
-        "reason": {"type": "string", "description": "A very short and minimal description of MAXIMUM TWO SENTENCES based on your believes why your believe accepted or rejected the gossip provided."},
-        "rewritten_gossip": {"type": "string", "description": "Rewritten gossip in your voice. CONFIDENTLY state it as truth. Reframe to match your bias."},
-      },
-      "required": ["belief", "reason", "rewritten_gossip"]
-    }
 
     const msgHistory = [
       {role: "system", "content": personaSysPrompt},
@@ -76,12 +112,14 @@ export class GossipEngine {
     let retry: number = 0;
     while (retry < this.config.maxRetries) {
       retry++;
-      const resp = await generateStructuredChatResponse(this.config.modelName, msgHistory, format)
+      // const resp = await generateStructuredChatResponse(this.config.modelName, msgHistory, formatJson)
+      const resp = await generateToolCallResponse(this.config.modelName, msgHistory, formatTool)
       console.log(typeof resp)
       console.log("generated gossip::", resp)
       
       gossip.content = resp.rewritten_gossip
       gossip.belief = resp.belief
+      gossip.reason = resp.reason
       // TODO: Validate response and if bad, retry.
       //       - Response lenght
       //       - Response quality???
@@ -107,8 +145,11 @@ export class GossipEngine {
 
     // get propagation order
     const order = this.getPropagationOrder(personas);
-    
+    const maxHops: number = this.config.maxHops ?? this.personas.length
+    var hops: number = 0
     for (const persona of order) {
+      if (hops > maxHops) break
+      hops += 1
       const transformed: Gossip = await this.transformGossip(persona, currentGossips);
       allGossips.push(transformed);
       currentGossips = [transformed]
@@ -152,51 +193,6 @@ Rules:
       {role: "user", "content": instructionPrompt},
     ]
 
-    // const format = {
-    //   "type": "object",
-    //   "properties": {
-    //     "belief": {
-    //       "type": "boolean",
-    //       "description": "Based on your persona's moral framework: do you judge the core event as ethically acceptable or justified? False if you consider it wrong, harmful, or unacceptable, even if entertaining."
-    //     },
-    //     "explanation": {
-    //       "type": "string",
-    //       "description": "A very short and minimal description of MAXIMUM TWO SENTENCES based on your believes why your believe accepted or rejected the conversation."
-    //     },
-    //     "personal_summary": {
-    //       "type": "string",
-    //       "description": "Rewritten a summary of the conversation in your voice. CONFIDENTLY state it as truth. Reframe to match your bias."
-    //     }
-    //   },
-    //   "required": ["belief", "explanation", "personal_summary"]
-    // }
-    const format: Tool = {
-      "type": "function",
-      "function": {
-        "name": "evaluate_persona_belief",
-        "description": "Evaluates a conversation event based on the persona's specific moral framework and biases.",
-        "parameters": {
-          "type": "object",
-          "properties": {
-            "belief": {
-              "type": "boolean",
-              "description": "Based on your persona's moral framework: do you judge the core event as ethically acceptable or justified? False if you consider it wrong, harmful, or unacceptable, even if entertaining."
-            },
-            "explanation": {
-              "type": "string",
-              "description": "A very short and minimal description of MAXIMUM TWO SENTENCES based on your beliefs explaining why you accepted or rejected the conversation."
-            },
-            "personal_summary": {
-              "type": "string",
-              "description": "Rewritten summary of the conversation in your voice. CONFIDENTLY state it as truth. Reframe to match your bias."
-            }
-          },
-          "required": ["belief", "explanation", "personal_summary"],
-        }
-      }
-    }
-
-
     const gossip: Gossip = {
       id: crypto.randomUUID(),
       content: "",
@@ -207,10 +203,10 @@ Rules:
     let retry: number = 0
     while (retry < this.config.maxRetries) {
       retry++;
-      const resp = await generateToolCallResponse(this.config.modelName, msgHistory, format)
-      gossip.content = resp.personal_summary
+      const resp = await generateToolCallResponse(this.config.modelName, msgHistory, formatTool)
+      gossip.content = resp.rewritten_gossip
       gossip.belief = resp.belief
-      gossip.reason = resp.explanation
+      gossip.reason = resp.reason
       // TODO: Validate response and if bad, retry.
       //       - Response lenght
       //       - Response quality???

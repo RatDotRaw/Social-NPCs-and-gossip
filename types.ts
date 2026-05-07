@@ -5,3 +5,7 @@ export type ServerResponse = {
   callerName?: string;
   id?: string
 };
+
+export type serverGossipEngineSettingsRespone = {
+  new_gossip: number // expected amount of new gossip
+}
