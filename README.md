@@ -10,29 +10,36 @@ A LLM network to simulate social circles and gossip.
 
 ## Up & running
 
-### 1. Start Ollama
+### 1. Configure environment
+
+```bash
+cp .env.example .env
+# Edit .env to match your setup (defaults work for local development)
+```
+
+### 2. Start Ollama
 
 ```bash
 ollama serve
 ```
 
-### 2. Start the Deno server
+### 3. Start the Deno server
 
 ```bash
 # Install dependencies
 deno cache serverWS.ts
 
 # Run the WebSocket server
-deno run -A serverWS.ts
+deno run --env-file -A serverWS.ts
 ```
 
-The server listens on `http://localhost:8000`.
+The server listens on `http://localhost:8000` (configurable via `.env`).
 
-### 3. Run the Godot client
+### 4. Run the Godot client
 
 Open `Godot/project.godot` in **Godot 4.6** and press **F5** (Play).
 
-### 4. Enjoy the game!
+### 5. Enjoy the game!
 
 Godot should automatically connect to the backend on localhost.
 

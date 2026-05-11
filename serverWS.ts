@@ -1,17 +1,16 @@
 import { Application, Router } from "@oak/oak";
 import { oakCors } from "@tajpouria/cors";
+import ollama from "ollama";
 import GameState from "./utils/gamestate.ts";
 import { messageHandlers } from "./utils/messageHandler.ts";
 import { loadAllPersonas } from "./utils/promptLoader.ts";
 
+const PORT = parseInt(Deno.env.get("PORT") || "8000", 10);
+const HOSTNAME = Deno.env.get("HOSTNAME") || "0.0.0.0";
+const OLLAMA_HOST = Deno.env.get("OLLAMA_HOST") || "http://localhost:11434";
+
 const personas = await loadAllPersonas()
 const gameSessions: GameState[] = [];
-
-// const prov = api.APIFactory.createAPI({
-//   type: "Ollama",
-//   model: "ministral-3:8b",
-//   baseURL: "http://localhost:11434",
-// });
 
 gameSessions.push(new GameState("0", personas));
 
@@ -106,5 +105,5 @@ app.use(oakCors({ origin: "*" }));
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-console.log("Server running on http://localhost:8000");
-await app.listen({ port: 8000, hostname: "0.0.0.0" });
+console.log(`Server running on http://${HOSTNAME}:${PORT}`);
+await app.listen({ port: PORT, hostname: HOSTNAME });
