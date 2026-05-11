@@ -174,7 +174,8 @@ var handlers: Dictionary = {
 	"error": _log_server_error,
 	"status_update": GS.set_server_status,
 	"generated_AI_response": add_ai_message,
-	"propagate_gossip": add_ai_gossip
+	"propagate_gossip": add_ai_gossip,
+	"gossipEngine_config": func(val: Dictionary) -> void: GS.gossipEngine_config = val;
 }
 
 func _log_server_error(data: Dictionary) -> void:

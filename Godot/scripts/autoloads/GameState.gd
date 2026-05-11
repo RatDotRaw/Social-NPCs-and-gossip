@@ -12,12 +12,15 @@ var update_clock: Timer = Timer.new()
 # --- server state ---
 var allow_server_request = true
 signal is_ai_busy_signal
+signal gossipEngine_config_update(gossipEninge_config: Dictionary)
 var is_ai_busy: bool = false:
-	get:
-		return is_ai_busy
 	set(val):
 		is_ai_busy = val
 		is_ai_busy_signal.emit(val)
+var gossipEngine_config: Dictionary:
+	set(val):
+		gossipEngine_config = val
+		gossipEngine_config_update.emit(val)
 # --- client state ---
 var game_state_name = "court_senario"
 

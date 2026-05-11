@@ -11,11 +11,18 @@ func _ready() -> void:
 	#chat_state.message_send.connect()
 	chat_state.lookTargets = look_targets
 	chat_state.no_turns_left.connect(_end_game_check)
+	MsgM.buffer_update.connect(show_new_AI_message)
 	
 	if ApiClientWs.is_ws_connected:
 		start_game_session()
 	else:
 		ApiClientWs.ws_connected.connect(start_game_session)
+
+func show_new_AI_message(buffer_name: String) -> void:
+	if buffer_name == GS.current_chat_room:
+		var msg: Message = MsgM.get_buffer(buffer_name)[-1]
+		if msg.role == "assistant":
+			chat_state.display_message(msg)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_text_newline"):
@@ -36,6 +43,7 @@ func _end_game_check() -> void:
 	
 	var gossip_chadwick = await MsgM.generate_gossip_from_message_buffer(GS.current_chat_room, 'chadwick_gainsbury')
 	var gossip_dr_bones = await MsgM.generate_gossip_from_message_buffer(GS.current_chat_room, 'dr_bones')
+	var gossip_baby_the_binkie = await MsgM.generate_gossip_from_message_buffer(GS.current_chat_room, 'baby_the_binkie')
 	SceneMaganger.switch_now()
 	if gossip_chadwick and gossip_dr_bones:
 		var propagated = await MsgM.propagate_gossip([gossip_chadwick.id, gossip_dr_bones.id])
@@ -68,15 +76,3 @@ func start_game_session() -> void:
 	
 	# request summary of case by persona
 	MsgM.new_user_message(Message.new(Prompts.court_start_prompt[0], 'tool', 'tool'))
-
-
-#func _generate_intro() -> void:
-	#var buffer_name: String = str(randi())
-	#MsgM.create_buffer(buffer_name )
-	#ApiClientWs.send_request("add_message", {
-			#"bufferName": buffer_name,
-			#"content": Prompts.court_start_prompt,
-			#"role": 'system',
-			#"participantName": 'system'
-		#})
-	#

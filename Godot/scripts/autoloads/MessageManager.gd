@@ -36,7 +36,7 @@ func add_gossip_dict(message_dict: Dictionary) -> bool:
 	var gossip: Gossip = gossip_dict_to_gossip(message_dict)
 	return add_gossip(gossip)
 
-## Create new messagen, send to server and request AI response
+## Create new messagen, add to end send to server and request AI response
 func new_user_message(msg: Message)-> bool:
 	if not GS.allow_server_request or GS.is_ai_busy:
 		return false
@@ -74,8 +74,9 @@ func create_buffer(bufferName: String) -> bool:
 	print("buffer created: ", bufferName)
 	return true
 
+## returns array of Message by buffername
 func get_buffer(bufferName: String) -> Array:
-	return MessageBuffers.get(bufferName)
+	return MessageBuffers.get(bufferName) as Array[Message]
 
 ### used for update internal message list with the server's list
 func overwrite_buffer(bufferName: String, buffer: Array[Message]) -> bool:

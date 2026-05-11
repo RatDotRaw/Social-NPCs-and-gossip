@@ -29,4 +29,4 @@ extends MarginContainer
 
 @onready var name_label: Label = %NameLabel
 @onready var rich_text_label: RichTextLabel = %RichTextLabel
-@onready var believe_label: Label = %BelieveLabel
+@onready var believe_label: RichTextLabel = %BelieveLabel

@@ -73,3 +73,8 @@ in `scripts/scene_manager.gd`
 Godot BBCode effects on various elements
 - 21/04/2026
   https://docs.godotengine.org/en/latest/tutorials/ui/bbcode_in_richtextlabel.html
+
+All sound effects
+- 07/05/2026 jail and stinky sfx
+  https://www.youtube.com/watch?v=6HIPg9iKFSM
+  https://www.youtube.com/watch?v=r5pEFAm63NM
