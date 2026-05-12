@@ -48,9 +48,6 @@ func _end_game_check() -> void:
 	if gossip_chadwick and gossip_dr_bones:
 		var propagated = await MsgM.propagate_gossip([gossip_chadwick.id, gossip_dr_bones.id])
 		end_game_gossip = propagated
-	
-	
-#	TODO: start gossip engine.
 
 ## create chatBuffer and participants
 func start_game_session() -> void:
@@ -74,5 +71,11 @@ func start_game_session() -> void:
 		})
 	print('Courtroom Gamestate Ready!')
 	
+	ApiClientWs.send_request("add_message", {
+			"bufferName": GS.current_chat_room,
+			"content": Prompts.court_start_prompt[0],
+			"role": 'system',
+			"participantName": 'system'
+		})
 	# request summary of case by persona
-	MsgM.new_user_message(Message.new(Prompts.court_start_prompt[0], 'tool', 'tool'))
+	MsgM.new_user_message(Message.new("The court is now in order.", 'system', 'system'))

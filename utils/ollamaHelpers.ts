@@ -13,8 +13,8 @@ export async function generateParticipantResponse(
   messages.forEach((msg) => {
     if (participant.name == msg.participant?.name) {
       msg.role = "assistant"
-    } else if (msg.role != "tool") {
-      const prefix = msg.participant ? msg.participant.name+ ": " : "unknown someone: "
+    } else if (msg.role != "tool" && msg.role != "system") {
+      const prefix = msg.participant ? msg.participant.name+ "said the following: \n" : "unknown someone sid the following: \n"
       msg.role = "user"
       msg.content = prefix + msg.content
     }
@@ -83,7 +83,7 @@ export async function generateStructuredChatResponse(
 
 export async function generateToolCallResponse(
   model_name: string,
-  messages: { role: string; content: string }[],
+  messages: Message[],
   toolDefinition: object,
   maxRetries: number = 6
 ) {

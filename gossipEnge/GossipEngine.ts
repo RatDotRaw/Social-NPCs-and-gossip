@@ -1,6 +1,6 @@
 import { formatPersonaBasePrompt, formatPersonaGossipExtension } from "../utils/promptFormatter.ts";
 import { Gossip, GossipEdge, GossipEngineConfig, Persona } from "./types.ts";
-import { generateStructuredChatResponse, generateToolCallResponse } from "../utils/ollamaHelpers.ts";
+import { generateToolCallResponse } from "../utils/ollamaHelpers.ts";
 import { Message } from "../dialogManager/types.ts";
 import { Tool } from "ollama";
 
@@ -36,10 +36,37 @@ const formatTool: Tool = {
               "description": "Rewritten summary of the conversation in your voice. As if you are telling someone else. CONFIDENTLY state it as truth. Frame it to match your perspective."
             }
           },
-          "required": ["belief", "explanation", "personal_summary"],
+          "required": ["belief", "reason", "rewritten_gossip"],
         }
       }
 }
+
+const GOSSIP_INSTRUCTION = `
+Interpret what you've learned through your persona's worldview, values, and perspective.
+
+Focus on what actually happened: who did what, what were the actions, statements, conflicts, and outcomes.
+
+Then respond using the tool:
+- Decide whether you ACCEPT or REJECT the essence of what happened.
+  Apply your persona's moral code, goals, and values. If it violates them, belief MUST be false.
+- Explain your decision in as few as possible short sentences.
+- Rewrite the account in your voice, framing events to support your perspective.
+  Preserve key details and context, but frame them to support your view.
+
+RETELL IT YOUR WAY:
+- Sound like yourself. Your speech style, your flair, your drama.
+- Keep the skeleton of the story intact. The meat on those bones is yours to season.
+- Let your rewriting_mandate and examples guide your style.
+- Speak with conviction. Tell ONE version confidently. No hedging or multiple options.
+- Talk as if you're telling the next person you meet.
+
+Rules:
+- Do NOT describe yourself or mention being an AI.
+- Do NOT reference the original speakers directly unless it fits your narrative voice.
+- If the core event violates your persona's moral code, functional goals, or values, belief = false.
+- Be concise but expressive.
+- Output strictly valid JSON matching the provided schema.
+`;
 
 export class GossipEngine {
   config: GossipEngineConfig;
@@ -64,41 +91,24 @@ export class GossipEngine {
    * transform gossip trough a persona's perspective.
    */
   async transformGossip(persona: Persona, sourceGossips: Gossip[]): Promise<Gossip> {
-    const personaSysPrompt = formatPersonaBasePrompt(persona) + "\n\n---\n\n" + formatPersonaGossipExtension(persona)
+    const personaSysPrompt = formatPersonaBasePrompt(persona)
     
-    let instructionPrompt = `You are ${persona.name}. You've heard these rumors circulating.\n`;
+    let instructionPrompt = `You've heard these rumors circulating.\n`;
     instructionPrompt += `Some of these rumors might be wrong, exaggerated, or noisy. Filter them through your perspective.\n\n`;
 
-    instructionPrompt += `Focus on the core event: who did what, and what happened.\n`;
-
-    instructionPrompt += `\nRETELL IT YOUR WAY:\n`;
-    instructionPrompt += `- Sound like yourself. Your speech style, your flair, your drama.\n`;
-    instructionPrompt += `- Keep the skeleton of the story intact. The meat on those bones is yours to season.\n`;
-    instructionPrompt += `- Your rewriting_mandate and examples show the style to follow.\n`;
-
-    instructionPrompt += `\nABOUT BELIEF:\n`;
-    instructionPrompt += `- Your persona's belief_rule decides if you believe the core event.\n`;
-    instructionPrompt += `- If the core event violates your persona's values or goals, belief = false.\n`;
-
-    instructionPrompt += `\nSPEAK WITH CONVICTION:\n`;
-    instructionPrompt += `- Tell ONE version confidently. No hedging or multiple options.\n`;
-    instructionPrompt += `- Speak with confidence (or doubt) based on who you are.\n`;
-    instructionPrompt += `\n`
-
-
     // loop over all gossip and construct instruction prompt
-    instructionPrompt += `Rumors you have heared:\n`
+    instructionPrompt += `Rumors you have heard:\n`
     sourceGossips.forEach((gossip, index) => {
-      const author = this.personas.find((e) => gossip.parentId == e.id) || "an unkown source\n"
-      instructionPrompt += `${index+1}. From ${author}:\n${gossip.content}\n\n`
+      const author = this.personas.find((e) => gossip.parentId == e.id)?.name || "an unknown source\n"
+      instructionPrompt += `${index+1}. From ${author} you have heared:\n${gossip.content}\n\n`
     });
     
-    instructionPrompt += `Now retell the story in your own words, as if you are telling the next person.\n`
-    instructionPrompt += `Respond STRICTLY in this JSON format. Do not include lists, labels, or option names.\n`;
+    instructionPrompt += `Now retell the story in your own words.\n`
 
-    const msgHistory = [
-      {role: "system", "content": personaSysPrompt},
-      {role: "user", "content": instructionPrompt},
+    const msgHistory: Message[] = [
+      {role: "system", content: personaSysPrompt},
+      {role: "user", content: formatPersonaGossipExtension(persona) + "\n\n" + GOSSIP_INSTRUCTION},
+      {role: "user", content: instructionPrompt},
     ]
 
     const gossip: Gossip = {
@@ -161,37 +171,16 @@ export class GossipEngine {
   }
 
   async getSummary(messages: Message[], persona: Persona) {
-    const personaSysPrompt = formatPersonaBasePrompt(persona) + "\n\n---\n\n" + formatPersonaGossipExtension(persona)
+    const personaSysPrompt = formatPersonaBasePrompt(persona)
     
-    const instructionPrompt = `
-Interpret the conversation through your persona's worldview, values, and perspective.
-Use all messages to form your take. Base your output on the conversation as seen through your character.
+    let instructionPrompt = `Review the conversation above and distill what happened.\n`;
+    instructionPrompt += `Extract the key facts, actions, statements, conflicts, outcomes.\n\n`;
 
-Focus on what actually happened:
-- actions
-- statements
-- conflicts
-- outcomes
-
-Then respond using the tool:
-- Decide whether you ACCEPT or REJECT the essence of what happened.
-  Apply your persona's moral code, goals, and values. If it violates them, "belief" MUST be false.
-- Explain your decision in AT MOST two short sentences.
-- Rewrite the conversation confidently in your voice, framing events to support your perspective.
-Preserve key details and context, but frame them to support your view.
-
-Rules:
-- Do NOT describe yourself or mention being an AI.
-- Do NOT reference the original speakers directly unless it fits your narrative voice.
-- If the core event violates your persona's moral code, functional goals, or values, belief = false.
-- Be concise but expressive.
-- Output strictly valid JSON matching the provided schema.
-`;
-
-    const msgHistory = [
-      {role: "system", "content": personaSysPrompt},
+    const msgHistory: Message[] = [
+      {role: "system", content: personaSysPrompt},
       ...messages,
-      {role: "user", "content": instructionPrompt},
+      {role: "user", content: formatPersonaGossipExtension(persona) + "\n\n" + GOSSIP_INSTRUCTION},
+      {role: "user", content: instructionPrompt},
     ]
 
     const gossip: Gossip = {
