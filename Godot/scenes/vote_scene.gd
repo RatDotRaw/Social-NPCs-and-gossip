@@ -15,13 +15,13 @@ func _ready() -> void:
 	confetti_particles.emitting = false
 	_update_duble_progressBar()
 	
-	max_votes = GS.gossipEngine_config.get("maxHops", 1)
+	max_votes = GS.gossipEngine_config.get("maxHops", 1) -3 # -3 seed gossips from the judges
 	
 	GS.gossipEngine_config_update.connect(_setup_ratios)
 	MsgM.gossip_buffer_update.connect(_count_scores)
 
 func _setup_ratios(gossipEninge_config: Dictionary) -> void:
-	max_votes = gossipEninge_config.get("maxHops", 1)
+	max_votes = gossipEninge_config.get("maxHops", 1) -3 # -3 seed gossips from the judges
 	print("maamasdmmamd", max_votes)
 
 func _count_scores(gossip: Gossip) -> void:
