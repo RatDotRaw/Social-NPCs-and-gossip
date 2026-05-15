@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Participant" format=3 uid="uid://tn4ombtscdg4"]
+
+[ext_resource type="Texture2D" uid="uid://bajsbomxkuwbd" path="res://assets/textures/persona icons/Chad.png" id="1_nrpde"]
+[ext_resource type="Script" uid="uid://bja76v3r2yqti" path="res://scripts/custon_resources/participant.gd" id="2_0gql2"]
+
+[resource]
+script = ExtResource("2_0gql2")
+character_name = "Chadwick 'The Foundation' Gainsbury"
+persona_id = "chadwick_gainsbury"
+icon = ExtResource("1_nrpde")
+metadata/_custom_type_script = "uid://bja76v3r2yqti"

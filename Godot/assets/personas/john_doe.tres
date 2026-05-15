@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Participant" format=3 uid="uid://c5dhdqebsebdl"]
+
+[ext_resource type="Texture2D" uid="uid://dmpbhwtkueqrd" path="res://assets/textures/persona icons/PFP.png" id="1_mndnn"]
+[ext_resource type="Script" uid="uid://bja76v3r2yqti" path="res://scripts/custon_resources/participant.gd" id="2_5ori0"]
+
+[resource]
+script = ExtResource("2_5ori0")
+character_name = "John Doe"
+persona_id = "john_doe"
+icon = ExtResource("1_mndnn")
+metadata/_custom_type_script = "uid://bja76v3r2yqti"

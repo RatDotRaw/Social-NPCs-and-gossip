@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Participant" format=3 uid="uid://cbgmfspunterj"]
+
+[ext_resource type="Texture2D" uid="uid://bewkv6hx5ts1y" path="res://assets/textures/persona icons/urkullaaaa.png" id="1_fhmrm"]
+[ext_resource type="Script" uid="uid://bja76v3r2yqti" path="res://scripts/custon_resources/participant.gd" id="2_7o2f4"]
+
+[resource]
+script = ExtResource("2_7o2f4")
+character_name = "Urkullaaa the Slightly Derpy"
+persona_id = "urkullaaa"
+icon = ExtResource("1_fhmrm")
+metadata/_custom_type_script = "uid://bja76v3r2yqti"

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Participant" format=3 uid="uid://ieint6rvjivw"]
+
+[ext_resource type="Texture2D" uid="uid://t5uip6vn6lsr" path="res://assets/textures/persona icons/mr_circle.png" id="1_jektb"]
+[ext_resource type="Script" uid="uid://bja76v3r2yqti" path="res://scripts/custon_resources/participant.gd" id="2_xyo2m"]
+
+[resource]
+script = ExtResource("2_xyo2m")
+character_name = "Mr. Circle"
+persona_id = "mr_circle"
+icon = ExtResource("1_jektb")
+metadata/_custom_type_script = "uid://bja76v3r2yqti"

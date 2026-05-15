@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Participant" format=3 uid="uid://cbx74bb0155ht"]
+
+[ext_resource type="Texture2D" uid="uid://dvmm2omil7ibu" path="res://assets/textures/persona icons/kasper.png" id="1_nu2bq"]
+[ext_resource type="Script" uid="uid://bja76v3r2yqti" path="res://scripts/custon_resources/participant.gd" id="2_kvkqu"]
+
+[resource]
+script = ExtResource("2_kvkqu")
+character_name = "Kasper"
+persona_id = "kasper"
+icon = ExtResource("1_nu2bq")
+metadata/_custom_type_script = "uid://bja76v3r2yqti"

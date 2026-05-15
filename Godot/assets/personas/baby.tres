@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Participant" format=3 uid="uid://dn5gnvg6184lw"]
+
+[ext_resource type="Script" uid="uid://bja76v3r2yqti" path="res://scripts/custon_resources/participant.gd" id="1_5ygac"]
+[ext_resource type="Texture2D" uid="uid://ndaluoebsipy" path="res://assets/textures/persona icons/baby.png" id="1_ln4fj"]
+
+[resource]
+script = ExtResource("1_5ygac")
+character_name = "Baby 'The Binkie' Bartholomew"
+persona_id = "baby_the_binkie"
+icon = ExtResource("1_ln4fj")
+metadata/_custom_type_script = "uid://bja76v3r2yqti"

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Participant" format=3 uid="uid://bxaslsqgair3j"]
+
+[ext_resource type="Texture2D" uid="uid://baqbdn2ce66ph" path="res://assets/textures/persona icons/devil.png" id="1_5s4r5"]
+[ext_resource type="Script" uid="uid://bja76v3r2yqti" path="res://scripts/custon_resources/participant.gd" id="2_bmjuu"]
+
+[resource]
+script = ExtResource("2_bmjuu")
+character_name = "Devil"
+persona_id = "devil"
+icon = ExtResource("1_5s4r5")
+metadata/_custom_type_script = "uid://bja76v3r2yqti"
