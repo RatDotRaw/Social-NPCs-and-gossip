@@ -9,6 +9,10 @@ var contents = {
 	"participantName": ""
 }
 
+var uuid: String:
+	set(val):
+		uuid = val
+		contents.uuid = val
 var content: String:
 	set(val):
 		content=val
@@ -21,10 +25,6 @@ var participantName: String:
 	set(val):
 		participantName=val
 		contents.participantName = val
-var uuid: String:
-	set(val):
-		uuid = val
-		contents.uuid = val
 
 func _init(newContent: String, newRole: String, newParticipantName: String, newId: String = "") -> void:
 	content = newContent

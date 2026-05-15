@@ -143,7 +143,7 @@ export const messageHandlers: Record<string, MessageHandler> = {
     const safeData = GenerateAiResponseScheme.safeParse(data)
     if (safeData.success) {
       const { bufferName, participantName, addRespToBuffer } = data
-      console.log(`[generate_AI_response] ${session.id}`)
+      console.log(`[generate_AI_response] ${session.id}, ${participantName}`)
       
       const participant = session.findParticipant(participantName)
       const messages = session.readMessageBuffer(bufferName)

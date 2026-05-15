@@ -3,13 +3,17 @@ extends Node3D
 @export var chat_state: CourtHud
 
 @export var camera_control: Camera3D
-@export var look_targets: Array[Node3D]
+
+@onready var _3d_character_sprite: Sprite3D = %"3DCharacterSprite"
+@onready var _3d_character_sprite_2: Sprite3D = %"3DCharacterSprite2"
+@onready var _3d_character_sprite_3: Sprite3D = %"3DCharacterSprite3"
+@onready var jury_point_left: Node3D = %JuryPointLeft
+@onready var jury_point_middle: Node3D = %JuryPointMiddle
+@onready var jury_point_right: Node3D = %JuryPointRight
 
 const ROUND_OVER = preload("uid://bpfevypna7tvb") # round_over scene
 
 func _ready() -> void:
-	#chat_state.message_send.connect()
-	chat_state.lookTargets = look_targets
 	chat_state.no_turns_left.connect(_end_game_check)
 	MsgM.buffer_update.connect(show_new_AI_message)
 	
@@ -52,10 +56,8 @@ func _end_game_check() -> void:
 ## create chatBuffer and participants
 func start_game_session() -> void:
 	print("connected an creating channel...")
-	
 	GS.current_chat_room = "court"
 	MsgM.create_buffer(GS.current_chat_room)
-	#ApiClientWs.send_request("create_message_buffer", { "bufferName": GS.current_chat_room })
 	# add court system prompt
 	ApiClientWs.send_request("add_message", {
 			"bufferName": GS.current_chat_room,
@@ -63,14 +65,39 @@ func start_game_session() -> void:
 			"role": 'system',
 			"participantName": 'system'
 		})
-	# creating NPC's
+	
+	print("picking and loading personas...")
+	var p1: Participant = PM.get_random_participant()
+	var p2: Participant = PM.get_random_participant()
+	var p3: Participant = PM.get_random_participant()
+	
+	chat_state.participants = [p1, p2, p3]
+	
+	p1.look_target = jury_point_left.global_position
+	p2.look_target = jury_point_middle.global_position
+	p3.look_target = jury_point_right.global_position
+	
+	_3d_character_sprite.set_image(p1.icon)
+	_3d_character_sprite_2.set_image(p2.icon)
+	_3d_character_sprite_3.set_image(p3.icon)
+	
+	# creating server side NPC's
+	print("creating persona's")
 	ApiClientWs.send_request("create_participant", { "name": "You" })
 	ApiClientWs.send_request("create_participant", { 
-			"name": "Malachi-Hope",
-			"personaId": "malachi_hope"
+			"name": p1.character_name,
+			"personaId": p1.persona_id
 		})
-	print('Courtroom Gamestate Ready!')
+	ApiClientWs.send_request("create_participant", { 
+			"name": p2.character_name,
+			"personaId": p2.persona_id
+		})
+	ApiClientWs.send_request("create_participant", { 
+			"name": p3.character_name,
+			"personaId": p3.persona_id
+		})
 	
+	print('Courtroom Gamestate Ready!')
 	ApiClientWs.send_request("add_message", {
 			"bufferName": GS.current_chat_room,
 			"content": Prompts.court_start_prompt[0],
@@ -78,4 +105,4 @@ func start_game_session() -> void:
 			"participantName": 'system'
 		})
 	# request summary of case by persona
-	MsgM.new_user_message(Message.new("The court is now in order.", 'system', 'system'))
+	MsgM.message_and_ai(Message.new("The court is now in order.", 'system', 'system'), p2)

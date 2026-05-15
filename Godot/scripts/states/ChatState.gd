@@ -2,6 +2,7 @@ extends Control
 class_name ChatState
 
 @export var text_input: TextEdit
+@export var participant: Participant
 @export var max_chat_turns: int = 10
 var chat_turns_left: int = max_chat_turns
 
@@ -31,7 +32,7 @@ func send_message() -> bool:
 	print("player text input: '", user_text, "'")
 	
 	var messge: Message = Message.new(user_text, "user", "You")
-	if MsgM.new_user_message(messge):
+	if MsgM.message_and_ai(messge, participant):
 		print("Creating new user messge:", messge.contents)
 		chat_turns_left -= 1
 		message_send.emit(chat_turns_left)

@@ -1,6 +1,6 @@
 extends Control
 
-const ChatMessage: Resource = preload("uid://brm636resl3ne")
+const gossip_message: Resource = preload("uid://brm636resl3ne")
 @onready var message_container: VBoxContainer = %MessageContainer
 @onready var scroll_container: ScrollContainer = %ScrollContainer
 var scroll_bar: VScrollBar
@@ -23,15 +23,15 @@ func rerender_messages(_gossip: Gossip = Gossip.new()):
 		child.queue_free()
 	
 	for msg: Gossip in MsgM.gossip_buffer:
-		var msgBox = ChatMessage.instantiate()
+		var participant: Participant = PM.find_participants_by_persona(msg.persona_id)[0]
+		var msgBox = gossip_message.instantiate()
 		message_container.add_child(msgBox)
-		msgBox.username = msg.parent_id
+		msgBox.username = participant.character_name
+		msgBox.image = participant.icon
 		msgBox.content = msg.content
-		msgBox.believe = msg.belief
-		
 
 func render_message(message: Message):
-	var instance = ChatMessage.instantiate()
+	var instance = gossip_message.instantiate()
 	message_container.add_child(instance)
 	instance.username = message.participantName
 	instance.content = message.content

@@ -12,7 +12,9 @@ class_name CourtHud
 @onready var text_edit: TextEdit = %TextEdit
 
 @export var camera_control: Camera3D
-@export var lookTargets: Array[Node3D]
+@export var participants: Array[Participant]
+@export var forward_target: Node3D
+@export var book_target: Node3D
 
 @onready var label_turns: Label = %LabelTurns
 @onready var turns_progress_bar: TextureProgressBar = %TurnsProgressBar
@@ -30,6 +32,7 @@ func _ready() -> void:
 	_update_progress_bar()
 
 func _send_message_and_udpate() -> void:
+	participant = participants.pick_random()
 	if send_message():
 		_update_progress_bar()
 
@@ -40,15 +43,11 @@ func display_message(msg: Message) -> void:
 	previous_look_target = camera_control.look_target
 	tab_container.current_tab = 3
 	text_box_scene.display_message(msg)
-	camera_control.look_at_target(lookTargets.pick_random().global_position)
+	camera_control.look_at_target(PM.get_participant(msg.participantName).look_target)
+
 func hide_message() -> void:
 	tab_container.current_tab = previous_tab
 	camera_control.look_at_target(previous_look_target)
-	
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_text_newline"):
-		camera_control.look_at_target(lookTargets.pick_random().global_position)
 
 @onready var cross: TextureRect = %Cross
 func _udpate_chatbox_visuals(allow: bool) -> void:
@@ -65,10 +64,10 @@ func _update_progress_bar() -> void:
 	animation_player.play("Shakey")
 
 func _on_look_down_pressed() -> void:
-	camera_control.look_at_target(lookTargets[4].global_position)
+	camera_control.look_at_target(book_target.global_position)
 	animation_player.play("Show")
 
 func _on_info_menu_close_btn_pressed() -> void:
-	camera_control.look_at_target(lookTargets[0].global_position)
+	camera_control.look_at_target(forward_target.global_position)
 	tab_container.current_tab = 0
 	animation_player.play("Hide")

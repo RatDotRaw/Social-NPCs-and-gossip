@@ -15,13 +15,12 @@ extends MarginContainer
 		rich_text_label.text = str(val)
 		content = val
 
-@export var image: String:
+@export var image: Texture2D:
 	get:
 		return image
-	set(path):
-		var test: Texture2D = Texture2D.new()
-		texture_rect.texture = load(path)
-		image = path
+	set(texture):
+		texture_rect.texture = texture
+		image = texture
 
 @onready var name_label: Label = %NameLabel
 @onready var rich_text_label: RichTextLabel = %RichTextLabel

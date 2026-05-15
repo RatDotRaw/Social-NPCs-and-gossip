@@ -37,7 +37,7 @@ func add_gossip_dict(message_dict: Dictionary) -> bool:
 	return add_gossip(gossip)
 
 ## Create new messagen, add to end send to server and request AI response
-func new_user_message(msg: Message)-> bool:
+func message_and_ai(msg: Message, participant: Participant)-> bool:
 	if not GS.allow_server_request or GS.is_ai_busy:
 		return false
 	
@@ -56,7 +56,7 @@ func new_user_message(msg: Message)-> bool:
 		"generate_AI_response",
 		{
 			"bufferName": GS.current_chat_room,
-			"participantName": "Malachi-Hope",
+			"participantName": participant.character_name,
 			"addRespToBuffer": true
 		}
 	)
@@ -133,16 +133,16 @@ func message_dict_to_message(message_dict: Dictionary) -> Message:
 	assert(message_dict.has('role'), 'Missing key "role"')
 	assert(message_dict.has('content'), 'Missing key "content"')
 
-	var p_name = message_dict.get('participantName', "Unkown")
-	if p_name == null:
-		p_name = message_dict.get('participant').get('name')
+	var p_name = message_dict.get('participant').get('name')
 	assert(p_name != null, 'Missing "participantName" or "participant.name"')
 	
-	return Message.new(
+	var msg: Message = Message.new(
 		message_dict.get('content'), 
 		message_dict.get('role'), 
 		p_name
 	)
+	print('message name should be: ', msg.participantName)
+	return msg
 
 func gossip_dict_to_gossip(gossip_dict: Dictionary) -> Gossip:
 	# Handle both camelCase (server) and snake_case (godot) field names

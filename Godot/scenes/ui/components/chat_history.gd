@@ -30,9 +30,14 @@ func rerender_messages(bufferName: String):
 		if (msg.role == "tool" or msg.role == "system"):
 			continue
 		
+		var participant: Participant = PM.get_participant(msg.participantName)
 		var msgBox = ChatMessage.instantiate()
+		print("msg; ", msg.participantName)
+		print("participant: ", participant.character_name)
+		
 		message_container.add_child(msgBox)
-		msgBox.username = msg.participantName
+		msgBox.username = participant.character_name
+		msgBox.image = participant.icon
 		msgBox.content = msg.content
 
 func render_message(message: Message):
