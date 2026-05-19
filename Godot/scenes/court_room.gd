@@ -29,11 +29,11 @@ func show_new_AI_message(buffer_name: String) -> void:
 			chat_state.display_message(msg)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_text_newline"):
+	if event.is_action_pressed("ui_page_up"):
 		_end_game_check()
-		
+	elif event.is_action_pressed("ui_page_down"):
+		_pick_random_personas()
 var ran_endgame: bool = false
-var end_game_gossip: Array[Gossip] = []
 
 func _end_game_check() -> void:
 	if ran_endgame:
@@ -45,13 +45,11 @@ func _end_game_check() -> void:
 	var instance = ROUND_OVER.instantiate()
 	add_child(instance)
 	
-	var gossip_chadwick = await MsgM.generate_gossip_from_message_buffer(GS.current_chat_room, 'chadwick_gainsbury')
-	var gossip_dr_bones = await MsgM.generate_gossip_from_message_buffer(GS.current_chat_room, 'dr_bones')
-	var gossip_baby_the_binkie = await MsgM.generate_gossip_from_message_buffer(GS.current_chat_room, 'baby_the_binkie')
+	var gossip_1 = await MsgM.generate_gossip_from_message_buffer(GS.current_chat_room, 'chadwick_gainsbury')
+	var gossip_2 = await MsgM.generate_gossip_from_message_buffer(GS.current_chat_room, 'dr_bones')
+	var gossip_3 = await MsgM.generate_gossip_from_message_buffer(GS.current_chat_room, 'baby_the_binkie')
 	SceneMaganger.switch_now()
-	if gossip_chadwick and gossip_dr_bones:
-		var propagated = await MsgM.propagate_gossip([gossip_chadwick.id, gossip_dr_bones.id])
-		end_game_gossip = propagated
+	await MsgM.propagate_gossip([gossip_1.id, gossip_2.id, gossip_3.id])
 
 ## create chatBuffer and participants
 func start_game_session() -> void:
@@ -106,3 +104,13 @@ func start_game_session() -> void:
 		})
 	# request summary of case by persona
 	MsgM.message_and_ai(Message.new("The court is now in order.", 'system', 'system'), p2)
+
+#region useless functions for showcasing.
+func _pick_random_personas() -> void:
+	var p1: Participant = PM.get_random_participant()
+	var p2: Participant = PM.get_random_participant()
+	var p3: Participant = PM.get_random_participant()
+	
+	_3d_character_sprite.set_image(p1.icon)
+	_3d_character_sprite_2.set_image(p2.icon)
+	_3d_character_sprite_3.set_image(p3.icon)
