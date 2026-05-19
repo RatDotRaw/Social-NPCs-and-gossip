@@ -1,6 +1,5 @@
 import { Application, Router } from "@oak/oak";
 import { oakCors } from "@tajpouria/cors";
-import ollama from "ollama";
 import GameState from "./utils/gamestate.ts";
 import { messageHandlers } from "./utils/messageHandler.ts";
 import { loadAllPersonas } from "./utils/promptLoader.ts";

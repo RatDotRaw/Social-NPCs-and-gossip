@@ -1,3 +1,0 @@
-[submodule "module/dialogic"]
-	path = module/dialogic
-	url = git@ssh.gitgud.io:kronk/dialogic.git

@@ -2,46 +2,66 @@
 
 A LLM network to simulate social circles and gossip.
 
-## Prerequisites
+## What you'll need
 
-- [Deno](https://deno.com/) (latest)
-- [Godot 4.6](https://godotengine.org/download/archive/4.6-stable/)
-- [Ollama](https://ollama.com/) with the `qwen3.5:4b` model pulled (`ollama pull qwen3.5:4b`)
+This project needs 3 programs:
+
+1. [Ollama](https://ollama.com/): Runs the AI that powers the NPCs
+2. [Deno](https://deno.com/): The backend server that connects the game to the AI
+3. [Godot 4.6](https://godotengine.org/download/archive/4.6-stable/): The game engine
 
 ## Up & running
 
-### 1. Configure environment
+### 1. Pull the AI model
 
 ```bash
-cp .env.example .env
-# Edit .env to match your setup (defaults work for local development)
+ollama pull qwen3.5:4b
 ```
 
-### 2. Start Ollama
+> **Tip:** If your computer is powerful, you can try `ollama pull qwen3.5:9b` for better responses (requires more RAM).
+
+### 2. Configure environment
+
+Copy or rename `.env.example` to `.env`:
+
+**Command line:**
+```bash
+cp .env.example .env
+```
+
+**Manual:**
+1. Duplicate `.env.example` in your file explorer
+2. Rename the copy to `.env`
+
+The defaults work for local development. If you downloaded the 9b model, change `OLLAMA_MODEL=qwen3.5:4b` to `OLLAMA_MODEL=qwen3.5:9b` in `.env`.
+
+### 3. Start Ollama
 
 ```bash
 ollama serve
 ```
 
-### 3. Start the Deno server
+Keep this terminal open.
+
+### 4. Start the Deno server
 
 ```bash
-# Install dependencies
 deno cache serverWS.ts
-
-# Run the WebSocket server
 deno run --env-file -A serverWS.ts
 ```
 
-The server listens on `http://localhost:8000` (configurable via `.env`).
+The server runs on `http://localhost:8000`. 
+Keep this terminal open.
 
-### 4. Run the Godot client
+### 5. Run the Godot game
 
-Open `Godot/project.godot` in **Godot 4.6** and press **F5** (Play).
+1. Open Godot 4.6
+2. Import `Godot/project.godot`
+3. Press **F5** to play
 
-### 5. Enjoy the game!
+The game will automatically connect to the backend.
 
-Godot should automatically connect to the backend on localhost.
+---
 
 ## Sources
 
