@@ -2,7 +2,7 @@
   "imports": {
     "@oak/oak": "jsr:@oak/oak@^17.2.0",
     "@tajpouria/cors": "jsr:@tajpouria/cors@^1.2.1",
-    "@zod/zod": "jsr:@zod/zod@^4.3.5",
+    "@zod/zod": "jsr:@zod/zod@^4.3.6",
     "ollama": "npm:ollama@^0.6.3"
   }
 }

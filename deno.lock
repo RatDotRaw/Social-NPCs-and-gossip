@@ -13,7 +13,7 @@
     "jsr:@std/media-types@1": "1.1.0",
     "jsr:@std/path@1": "1.1.3",
     "jsr:@tajpouria/cors@^1.2.1": "1.2.1",
-    "jsr:@zod/zod@^4.3.5": "4.3.5",
+    "jsr:@zod/zod@^4.3.6": "4.3.6",
     "npm:@types/node@*": "24.2.0",
     "npm:ollama@~0.6.3": "0.6.3",
     "npm:path-to-regexp@^6.3.0": "6.3.0"
@@ -75,8 +75,8 @@
     "@tajpouria/cors@1.2.1": {
       "integrity": "eca42e4fb7cb3906ef0ee3d1e565dd6bb4632ccd8e70a95cf4279759743328f0"
     },
-    "@zod/zod@4.3.5": {
-      "integrity": "3d14553f025d6e3d1a836b9c56e366bbce27d942301e8c7c1ac4c365df5f8085"
+    "@zod/zod@4.3.6": {
+      "integrity": "7144e5e11f8ffc3cf6e2fca624f6597a8762898aac9868cc8938e9398b96ffe4"
     }
   },
   "npm": {
@@ -106,7 +106,7 @@
     "dependencies": [
       "jsr:@oak/oak@^17.2.0",
       "jsr:@tajpouria/cors@^1.2.1",
-      "jsr:@zod/zod@^4.3.5",
+      "jsr:@zod/zod@^4.3.6",
       "npm:ollama@~0.6.3"
     ]
   }

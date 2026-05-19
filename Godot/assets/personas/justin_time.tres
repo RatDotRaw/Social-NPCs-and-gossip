@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Participant" format=3 uid="uid://cc2ou7afxrj6e"]
+
+[ext_resource type="Texture2D" uid="uid://b2plrd7nq548i" path="res://assets/textures/persona icons/justin_time.png" id="1_7li8x"]
+[ext_resource type="Script" uid="uid://bja76v3r2yqti" path="res://scripts/custon_resources/participant.gd" id="2_b8nuu"]
+
+[resource]
+script = ExtResource("2_b8nuu")
+character_name = "Justin Time"
+persona_id = "justin_time"
+icon = ExtResource("1_7li8x")
+metadata/_custom_type_script = "uid://bja76v3r2yqti"

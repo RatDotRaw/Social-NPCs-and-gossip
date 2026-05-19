@@ -15,6 +15,21 @@
             "runOptions": {
                 "runOn": "folderOpen"
             }
+        },
+        {
+            "label": "Start serverWS",
+            "type": "shell",
+            // Use ~/ for home or ../ to go up from your project root
+            "command": "deno -A --watch serverWS.ts",
+            "isBackground": true,
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "group": "servers"
+            },
+            "runOptions": {
+                "runOn": "folderOpen"
+            }
         }
     ]
 }

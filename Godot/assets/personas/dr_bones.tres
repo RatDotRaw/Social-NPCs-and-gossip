@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Participant" format=3 uid="uid://b5vdud7gow2qy"]
+
+[ext_resource type="Texture2D" uid="uid://d6cspb82wdx" path="res://assets/textures/persona icons/dr_bones.png" id="1_yex33"]
+[ext_resource type="Script" uid="uid://bja76v3r2yqti" path="res://scripts/custon_resources/participant.gd" id="2_827vm"]
+
+[resource]
+script = ExtResource("2_827vm")
+character_name = "Dr. Bones"
+persona_id = "dr_bones"
+icon = ExtResource("1_yex33")
+metadata/_custom_type_script = "uid://bja76v3r2yqti"

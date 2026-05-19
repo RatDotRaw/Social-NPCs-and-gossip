@@ -38,7 +38,8 @@ export const GenerateAiResponseScheme = z.object({
 
 export const GenerateGossipFromMessageBuffer = z.object({
   bufferName: z.string(),
-  personaId: z.string()
+  personaId: z.string(),
+  id: z.string().optional()
 })
 
 export const PropagateGossip = z.object({

@@ -11,18 +11,19 @@ export default class GameState {
     personasList: Persona[] = []
     gossipList: Gossip[] = []
     gossipEngine: GossipEngine
+    modelName: string
 
     // --- syncing settings ---
     is_busy = false
-    is_ai_bussy = false;
+    is_ai_busy = false;
     allow_request: boolean = true
-    allow_new_user_message: boolean = true
 
-    constructor(id: string, personas: Persona[]) {
+    constructor(id: string, personas: Persona[], modelName: string = Deno.env.get("OLLAMA_HOST") || 'qwen3.5:4b') { // 'qwen3.5:4b'
         this.id = id
         this.personasList = personas
+        this.modelName = modelName
         this.gossipEngine = new GossipEngine(personas, {
-            modelName: 'Ministral-3:8b',
+            modelName: modelName,
             maxRetries: 2,
         })
 
@@ -36,7 +37,7 @@ export default class GameState {
         // this.createMessageBuffer("buffer")
         // this.addMsgToBuffer("buffer", "user", "user", "Hello world!")
         // this.addMsgToBuffer("buffer", "butler", "assistant", "Hello back! Let me introduce myself.")
-        this.gossipList.push({id: "0", content: "default gossip", personaId:"0", timestamp: 0})
+        // this.gossipList.push({id: "0", content: "default gossip", personaId:"0", timestamp: 0})
     }
 
     //#region participants logic
@@ -166,6 +167,10 @@ export default class GameState {
         return gossip
     }
 
+    getGossipById(id: string): Gossip | undefined {
+        return this.gossipList.find(g => g.id === id)
+    }
+
     /**
      * Get a summary of a conversation from a participants persona perspective
      * 
@@ -173,25 +178,20 @@ export default class GameState {
      * @param participantName 
      * @returns 
      */
-    async summarizeMessageBufferToGossip(bufferName: string, participantName: string): Promise<Record<string, Gossip>> {
+    async summarizeMessageBufferToGossip(bufferName: string, personaId: string): Promise<Gossip> {
         const messages = this.findMessageBuffer(bufferName)
-        const participant = this.findParticipant(participantName)
-        const persona = this.personasList.find((p) => {
-            participant?.personaId == p.id
-        }) 
-        if (!persona) {
-            throw Error(`No persona description linked to this Participant ${participantName}`)
-        } 
+        const persona = this.findPersonabyId(personaId)
 
-        const gossip = await this.gossipEngine.getSummary(messages, persona)
-        return { participantName: gossip }
+        const gossip: Gossip = await this.gossipEngine.getSummary(messages, persona)
+        this.gossipList.push(gossip)
+        return gossip
     }
 
-    async propagateGossip(seedGossip: Gossip[]) {
-        const newGossip = await this.gossipEngine.propagate(seedGossip)
-        this.gossipList.push(...newGossip)
-
-        return newGossip
+    async *propagateGossip(seedGossip: Gossip[]) {
+        for await(const newGossip of this.gossipEngine.propagate(seedGossip)) {
+            this.gossipList.push(newGossip)
+            yield newGossip
+        }
     }
 
 
@@ -201,13 +201,11 @@ export default class GameState {
     get_state() {
         const {
             allow_request, 
-            allow_new_user_message, 
-            is_ai_bussy 
+            is_ai_busy 
         } = this;
         return { 
             allow_request, 
-            allow_new_user_message, 
-            is_ai_bussy 
+            is_ai_busy 
         };
     }
 }

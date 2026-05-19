@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Participant" format=3 uid="uid://cvcfy5d8oj7of"]
+
+[ext_resource type="Texture2D" uid="uid://vgsip5gujp72" path="res://assets/textures/persona icons/bengel.png" id="1_4ybsk"]
+[ext_resource type="Script" uid="uid://bja76v3r2yqti" path="res://scripts/custon_resources/participant.gd" id="2_543ld"]
+
+[resource]
+script = ExtResource("2_543ld")
+character_name = "Malachi-Hope"
+persona_id = "malachi_hope"
+icon = ExtResource("1_4ybsk")
+metadata/_custom_type_script = "uid://bja76v3r2yqti"

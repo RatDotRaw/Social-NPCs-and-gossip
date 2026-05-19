@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dgpqjh0dpfidm"
+path="res://.godot/imported/Jail cell door closing.ogg-5dcc8febf46d9ab931e635801a7b93a2.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sfx/Jail cell door closing.ogg"
+dest_files=["res://.godot/imported/Jail cell door closing.ogg-5dcc8febf46d9ab931e635801a7b93a2.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

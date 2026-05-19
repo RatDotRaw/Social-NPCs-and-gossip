@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Participant" format=3 uid="uid://bmgwojvypku8m"]
+
+[ext_resource type="Texture2D" uid="uid://cgsi7lrhj5b5w" path="res://assets/textures/persona icons/sherlockedinpng.png" id="1_eiaqw"]
+[ext_resource type="Script" uid="uid://bja76v3r2yqti" path="res://scripts/custon_resources/participant.gd" id="2_x5m3m"]
+
+[resource]
+script = ExtResource("2_x5m3m")
+character_name = "SherlockedIn"
+persona_id = "sherlockedin"
+icon = ExtResource("1_eiaqw")
+metadata/_custom_type_script = "uid://bja76v3r2yqti"

@@ -32,22 +32,5 @@ export class MessageBuffer {
     getMessages() {
         return this.messages
     }
-
-    getTranscript(targetParticipantName: string): Message[] {
-        if (!this.participants.has(targetParticipantName)) {
-            throw new Error(
-                `Target participant "${targetParticipantName}" not found.`
-            );
-        }
-
-        return this.messages.map((msg) => {
-            const isSelf = msg.participant === targetParticipantName;
-            return {
-                ...msg,
-                role: isSelf ? "assistant" : "user",
-                content: isSelf ? msg.content:`[${msg.participant}]: ${msg.content}`,
-            };
-        });
-    }
     //#endregion
 }

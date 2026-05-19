@@ -7,7 +7,6 @@ var socket := WebSocketPeer.new()
 var _next_request_id: int = 0
 var is_ws_connected: bool = false
 
-signal ws_ready
 signal ws_connected
 
 func start_ws():
@@ -16,7 +15,6 @@ func start_ws():
 	var err = socket.connect_to_url(full_url)
 	if err != OK:
 		print("Could not connect to server.")
-	ws_ready.emit()
 
 func _process(_delta):
 	socket.poll()
@@ -30,23 +28,41 @@ func _process(_delta):
 		# Check for incoming messages
 		while socket.get_available_packet_count() > 0:
 			var data_string = socket.get_packet().get_string_from_utf8()
-			var data = JSON.parse_string(data_string)
+			var data: Dictionary = JSON.parse_string(data_string)
+
+			# Robust logging for debugging parse failures
+			if data == null:
+				push_error("ws JSON PARSE FAILED: raw string = '%s'" % data_string)
+				continue
+			if not data is Dictionary:
+				push_error("WS parsed data not dict: type = %s, value = %s" % [typeof(data), data])
+				continue
+
+			var body_raw = data.get("body")
+			if body_raw == null:
+				push_warning("WS no 'body' field: data = %s" % data)
+			elif not body_raw is Dictionary:
+				push_warning("ws 'body' not dict: type = %s, value = %s" % [typeof(body_raw), body_raw])
+
 			var payload_data: Dictionary = data.get("body") as Dictionary
 			
 			#print("### Received data from server: ", data)
 			
 			# if has id field, its a response to a request
-			if data.has("id"):
-				_on_message_received(payload_data)
+			if data.has("id") && not data['id'].is_empty():
+				_on_message_received(payload_data, data.get("id"), data)
 			# Otherwise, it's a server-initiated message
 			elif data.has("type"):
 				var msg_type = data.get("type")
 				if handlers.has(msg_type):
+					if payload_data == null or not payload_data is Dictionary:
+						push_error("ws handler skipped: handler='%s', payload_data=%s" % [msg_type, payload_data])
+						continue
 					handlers[msg_type].call(payload_data)
 				else:
-					print("DEBUG: No handler found for type: ", msg_type)
+					print("ws DEBUG: No handler found for type: ", msg_type)
 					print("PAYLOAD: ", data)
-					push_warning("No handler for message type: %s" % msg_type)
+					push_warning("ws No handler for message type: %s" % msg_type)
 			else:
 				push_warning("Unknown message format: %s" % data)
 	elif state == WebSocketPeer.STATE_CONNECTING:
@@ -54,12 +70,7 @@ func _process(_delta):
 	elif state == WebSocketPeer.STATE_CLOSED:
 		var code = socket.get_close_code()
 		var reason = socket.get_close_reason()
-		("WebSocket closed with code: %d, reason: %s" % [code, reason])
-	elif state == WebSocketPeer.STATE_CLOSED:
-		var code = socket.get_close_code()
-		var reason = socket.get_close_reason()
 		print("WebSocket closed. Code: %d, Reason: %s" % [code, reason])
-		set_process(false) # Stop polling
 
 func _send_over_socket(message: Dictionary) -> bool:
 	if socket.get_ready_state() == WebSocketPeer.STATE_OPEN:
@@ -70,8 +81,7 @@ func _send_over_socket(message: Dictionary) -> bool:
 
 ## Send a request to teh server
 func send_request(type: String, reqData: Dictionary = {}) -> void:
-	assert(type, "Type was not set correctly")
-	assert((type != ""), "Type was not set correctly")
+	assert(type or type != "", "Type was not set correctly")
 	
 	reqData['type'] = type
 	_send_over_socket(reqData)
@@ -85,11 +95,9 @@ func send_request_async(type: String, data: Dictionary ={}) -> RequestResult:
 	assert(type, "Type was not set correctly")
 	assert((type != ""), "Type was not set correctly")
 	
-	var request = {
-		"id": str(request_id),
-		"type": type,
-		"data":data
-	}
+	data["id"] = str(request_id)
+	data["type"] = type
+	var request = data
 	
 	# create signal for when respond arrives
 	var signal_name = "request_" + str(request_id)
@@ -100,19 +108,27 @@ func send_request_async(type: String, data: Dictionary ={}) -> RequestResult:
 	# Wait for the response
 	var sig = Signal(self, signal_name)
 	var result = await sig
+	
+	print("received async resp: ", result)
 	self.remove_user_signal(signal_name)
 	
 	return result 
 
-func _on_message_received(response: Dictionary):
-	var signal_name = "request_" + str(response.id)
+func _on_message_received(response: Dictionary, request_id: String, full_message: Dictionary):
+	var signal_name = "request_" + request_id
 	
 	if self.has_user_signal(signal_name):
 		var result = RequestResult.new()
-		result.success = not response.get("denied", false)
-		result.denied = response.get("denied", false)
-		result.reason = response.get("reason", "")
-		result.data = response.get("data", {})
+		var response_type = full_message.get("type", "")
+		
+		if response_type == "error":
+			result.ok = false
+			result.error = full_message.get("body", "Unknown error")
+			result.data = {}
+		else:
+			result.ok = true
+			result.data = response
+			result.error = ""
 		
 		self.emit_signal(signal_name, result)
 
@@ -147,6 +163,9 @@ func create_lobby() -> String:
 func add_ai_message(data: Dictionary) -> void:
 	MsgM.add_message_dict(GS.current_chat_room, data)
 
+func add_ai_gossip(data: Dictionary) -> void:
+	print('fired fired fired')
+	MsgM.add_gossip_dict(data)
 #endregion
 
 # --- handlers ---
@@ -155,6 +174,8 @@ var handlers: Dictionary = {
 	"error": _log_server_error,
 	"status_update": GS.set_server_status,
 	"generated_AI_response": add_ai_message,
+	"propagate_gossip": add_ai_gossip,
+	"gossipEngine_config": func(val: Dictionary) -> void: GS.gossipEngine_config = val;
 }
 
 func _log_server_error(data: Dictionary) -> void:

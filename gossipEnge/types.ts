@@ -45,8 +45,8 @@ interface GossipNetwork {
   edges: GossipEdge[]; // who talks to who
 }
 
-interface GossipEdge {
+export interface GossipEdge {
   from: string; // persona id
   to: string; // persona id
-  relation: string
+  relation: string // can/should be split off as this is not needed for core edge.
 }

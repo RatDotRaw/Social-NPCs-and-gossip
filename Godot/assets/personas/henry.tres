@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Participant" format=3 uid="uid://cjnjgmj8e0m6d"]
+
+[ext_resource type="Texture2D" uid="uid://ddnxxr1vtb5ws" path="res://assets/textures/persona icons/henry.png" id="1_1052v"]
+[ext_resource type="Script" uid="uid://bja76v3r2yqti" path="res://scripts/custon_resources/participant.gd" id="2_mw1av"]
+
+[resource]
+script = ExtResource("2_mw1av")
+character_name = "Henry Stickmin"
+persona_id = "henry_stickmin"
+icon = ExtResource("1_1052v")
+metadata/_custom_type_script = "uid://bja76v3r2yqti"

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://hkdyn0q7djjd"
+path="res://.godot/imported/Stinky Sound.ogg-37e3242a672d2fa4aa3adcab97939989.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sfx/Stinky Sound.ogg"
+dest_files=["res://.godot/imported/Stinky Sound.ogg-37e3242a672d2fa4aa3adcab97939989.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Participant" format=3 uid="uid://bye4n3pdx0d1v"]
+
+[ext_resource type="Texture2D" uid="uid://duhdg8j02nn8p" path="res://assets/textures/persona icons/spiderman.png" id="1_ft24y"]
+[ext_resource type="Script" uid="uid://bja76v3r2yqti" path="res://scripts/custon_resources/participant.gd" id="2_awncw"]
+
+[resource]
+script = ExtResource("2_awncw")
+character_name = "Spidery-Skitter"
+persona_id = "spidery_skitter"
+icon = ExtResource("1_ft24y")
+metadata/_custom_type_script = "uid://bja76v3r2yqti"
