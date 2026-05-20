@@ -103,7 +103,7 @@ func start_game_session() -> void:
 			"participantName": 'system'
 		})
 	# request summary of case by persona
-	MsgM.message_and_ai(Message.new("The court is now in order.", 'system', 'system'), p2)
+	MsgM.message_and_ai(Message.new("The court is now in order. Start by going over the case, the evidence and an opening question.", 'system', 'system'), p2)
 
 #region useless functions for showcasing.
 func _pick_random_personas() -> void:

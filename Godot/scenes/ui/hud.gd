@@ -54,6 +54,9 @@ func _udpate_chatbox_visuals(allow: bool) -> void:
 	cross.visible = allow
 
 func _update_progress_bar() -> void:
+	if chat_turns_left == -1:
+		chat_turns_left = max_chat_turns
+	
 	var progress = (float(chat_turns_left)/float(max_chat_turns))*100
 	turns_progress_bar.value = progress
 	label_turns.text = str(chat_turns_left) +'/'+ str(max_chat_turns)

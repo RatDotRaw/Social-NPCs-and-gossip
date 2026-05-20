@@ -44,7 +44,7 @@ func _process(_delta):
 			elif not body_raw is Dictionary:
 				push_warning("ws 'body' not dict: type = %s, value = %s" % [typeof(body_raw), body_raw])
 
-			var payload_data: Dictionary = data.get("body") as Dictionary
+			var payload_data = data.get("body") if data.get("body") is Dictionary else {}
 			
 			#print("### Received data from server: ", data)
 			

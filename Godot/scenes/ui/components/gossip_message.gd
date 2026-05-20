@@ -1,5 +1,8 @@
 extends MarginContainer
 
+@onready var name_label: Label = %NameLabel
+@onready var rich_text_label: RichTextLabel = %RichTextLabel
+@onready var believe_label: RichTextLabel = %BelieveLabel
 @onready var texture_rect: TextureRect = %TextureRect
 
 @export var username: String:
@@ -10,7 +13,7 @@ extends MarginContainer
 		username = val
 @export var content: String:
 	get:
-		return username
+		return content
 	set(val):
 		rich_text_label.text = str(val)
 		content = val
@@ -23,9 +26,7 @@ extends MarginContainer
 	get:
 		return image
 	set(texture):
-		texture_rect.texture = texture
+		if not texture_rect: return # is sometimes nil for some reason
+		if texture and texture is Texture2D:
+			texture_rect.texture = texture
 		image = texture
-
-@onready var name_label: Label = %NameLabel
-@onready var rich_text_label: RichTextLabel = %RichTextLabel
-@onready var believe_label: RichTextLabel = %BelieveLabel

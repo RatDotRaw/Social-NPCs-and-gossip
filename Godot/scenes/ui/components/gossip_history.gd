@@ -26,9 +26,10 @@ func rerender_messages(_gossip: Gossip = Gossip.new()):
 		var participant: Participant = PM.find_participants_by_persona(msg.persona_id)[0]
 		var msgBox = gossip_message.instantiate()
 		message_container.add_child(msgBox)
+		await get_tree().process_frame # wait 1 frame to make sure msBox exists in tree
 		msgBox.username = participant.character_name
-		msgBox.image = participant.icon
 		msgBox.content = msg.content
+		msgBox.image = participant.icon
 
 func render_message(message: Message):
 	var instance = gossip_message.instantiate()

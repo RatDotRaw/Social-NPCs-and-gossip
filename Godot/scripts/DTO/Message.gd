@@ -21,6 +21,7 @@ var role: String:
 	set(val):
 		role=val
 		contents.role = val
+## character name of participant
 var participantName: String:
 	set(val):
 		participantName=val

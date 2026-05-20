@@ -170,11 +170,16 @@ export class GossipEngine {
     }
   }
 
-  async getSummary(messages: Message[], persona: Persona) {
+  async getSummary(messages: Message[], persona: Persona, includeSystemPrompts: boolean = false) {
     const personaSysPrompt = formatPersonaBasePrompt(persona)
     
     let instructionPrompt = `Review the conversation above and distill what happened.\n`;
     instructionPrompt += `Extract the key facts, actions, statements, conflicts, outcomes.\n\n`;
+
+    // filter out any system prompts
+    if (!includeSystemPrompts) {
+      messages = messages.filter(m => m.role !== "system");
+    }
 
     const msgHistory: Message[] = [
       {role: "system", content: personaSysPrompt},

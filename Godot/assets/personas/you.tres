@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Participant" format=3 uid="uid://chsvdqbtb1frw"]
+
+[ext_resource type="Texture2D" uid="uid://dmpbhwtkueqrd" path="res://assets/textures/persona icons/PFP.png" id="1_plfua"]
+[ext_resource type="Script" uid="uid://bja76v3r2yqti" path="res://scripts/custon_resources/participant.gd" id="2_r7qhb"]
+
+[resource]
+script = ExtResource("2_r7qhb")
+character_name = "You"
+persona_id = "player"
+icon = ExtResource("1_plfua")
+metadata/_custom_type_script = "uid://bja76v3r2yqti"

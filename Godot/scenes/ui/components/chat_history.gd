@@ -31,11 +31,16 @@ func rerender_messages(bufferName: String):
 			continue
 		
 		var participant: Participant = PM.get_participant(msg.participantName)
+		if participant == null:
+			printerr("Participant not found by name:", msg.participantName)
+			continue
 		var msgBox = ChatMessage.instantiate()
 		print("msg; ", msg.participantName)
 		print("participant: ", participant.character_name)
 		
 		message_container.add_child(msgBox)
+		await get_tree().process_frame # wait 1 frame to make sure msBox exists in tree
+
 		msgBox.username = participant.character_name
 		msgBox.image = participant.icon
 		msgBox.content = msg.content

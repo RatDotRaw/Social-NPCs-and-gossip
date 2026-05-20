@@ -2,6 +2,7 @@ extends Node
 class_name PersonaManager
 
 var Participants: Array[Participant] = [
+	preload("uid://chsvdqbtb1frw"), # the player
 	preload("res://assets/personas/baby.tres"),
 	preload("res://assets/personas/bengel.tres"),
 	preload("res://assets/personas/chad.tres"),
@@ -17,6 +18,7 @@ var Participants: Array[Participant] = [
 	preload("res://assets/personas/spidery_skitter.tres"),
 	preload("res://assets/personas/urkullaaa.tres")
 ]
+
 
 func get_participant(name: String) -> Participant:
 	for p: Participant in Participants:

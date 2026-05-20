@@ -74,8 +74,8 @@ export const messageHandlers: Record<string, MessageHandler> = {
   "add_message": (socket, session, data) => {
     const safeData = NewUserMessageScheme.safeParse(data)
     if (safeData.success) {
-      console.log(`[new_user_message] Adding message to ${session.id}::${safeData.data.participantName}::${safeData.data.bufferName}`);
       const {bufferName, content, role, participantName} = safeData.data
+      console.log(`[add_message] Adding message to ${session.id}::${safeData.data.participantName}::${safeData.data.bufferName}::${content.slice(0, 32)}`);
       
       session.addMsgToBuffer(bufferName, participantName, role, content);
     } else {

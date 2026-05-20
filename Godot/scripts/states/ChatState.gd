@@ -4,10 +4,13 @@ class_name ChatState
 @export var text_input: TextEdit
 @export var participant: Participant
 @export var max_chat_turns: int = 10
-var chat_turns_left: int = max_chat_turns
+var chat_turns_left: int = -1
 
 signal message_send(turns_left: int)
 signal no_turns_left()
+
+func _ready() -> void:
+	chat_turns_left = max_chat_turns
 
 func allow_chat() -> bool:
 	var allow: bool = true
@@ -33,7 +36,7 @@ func send_message() -> bool:
 	
 	var messge: Message = Message.new(user_text, "user", "You")
 	if MsgM.message_and_ai(messge, participant):
-		print("Creating new user messge:", messge.contents)
+		print("Created new user messge:", messge.contents)
 		chat_turns_left -= 1
 		message_send.emit(chat_turns_left)
 		if (chat_turns_left == 0):
