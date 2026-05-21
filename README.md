@@ -50,7 +50,7 @@ deno cache serverWS.ts
 deno run --env-file -A serverWS.ts
 ```
 
-The server runs on `http://localhost:8000`. 
+The server runs on `http://localhost:8000` by default.
 Keep this terminal open.
 
 ### 5. Run the Godot game
@@ -59,7 +59,7 @@ Keep this terminal open.
 2. Import `Godot/project.godot`
 3. Press **F5** to play
 
-The game will automatically connect to the backend.
+The game should automatically connect to the backend.
 
 ---
 
@@ -147,3 +147,10 @@ All sound effects
 - 07/05/2026 jail and stinky sfx
   https://www.youtube.com/watch?v=6HIPg9iKFSM
   https://www.youtube.com/watch?v=r5pEFAm63NM
+- 11/05/2026 other1-8
+  Received permission to use from Ewoudje: 
+  https://github.com/ewoudje/diesel/tree/master/src/main/resources/Common/Sounds/Diesel/Voice
+- 26/05/2026 running_around.wav
+  Copyright Luka Lattuca, received permission to use:
+  - Soundcloud: https://soundcloud.com/selfassureddestruction
+  
