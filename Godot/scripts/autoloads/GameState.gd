@@ -4,6 +4,10 @@ class_name GameState
 var sessionID: String
 var current_chat_room: String # current messagebuffer selected on server.
 
+var max_retries: int = 6
+
+const FULLSCREEN_POPUP = preload("uid://dh6q4qi5ipl7")
+
 #region game settings
 #endregion
 
@@ -25,6 +29,9 @@ var gossipEngine_config: Dictionary:
 var game_state_name = "court_senario"
 
 func _ready() -> void:
+	ApiClientWs.ws_closed.connect(_attempt_reconnect)
+	ApiClientWs.http_request_failed.connect(_on_http_request_failed)
+	
 	# setup clock to get server status updates
 	update_clock.wait_time = 2 # update every 2 secs
 	update_clock.autostart = true
@@ -36,13 +43,43 @@ func _ready() -> void:
 func start_session() -> void:
 	sessionID = await ApiClientWs.create_lobby()
 	print("id received from server:", sessionID)
-	ApiClientWs.ws_connected.connect(start_game_session)
+	ApiClientWs.ws_connected.connect(start_game_session, CONNECT_ONE_SHOT)
+	print('Gamestate Ready and connected!')
 	ApiClientWs.start_ws()
 
 ## runs when connected to server
 func start_game_session() -> void:
 	update_clock.connect("timeout", _request_server_status)
 	print('Gamestate Ready and connected!')
+
+func _attempt_reconnect() -> void:
+	_create_disconnect_popup()
+	
+	for i in range(max_retries):
+		if ApiClientWs.is_ws_connected:
+			_clear_disconnect_popup()
+			return
+		await update_clock.timeout
+		ApiClientWs.start_ws()
+	
+	_clear_disconnect_popup()
+	_create_disconnect_popup("Connection could not be established :( \n\nRestart to try again")
+
+func _on_http_request_failed() -> void:
+	_create_disconnect_popup("Server connection failed. Please restart the application.")
+
+#region connection popups
+var disconnect_popup_node: Node
+func _create_disconnect_popup(text: String = "") -> void:
+	disconnect_popup_node = FULLSCREEN_POPUP.instantiate()
+	get_tree().current_scene.add_child(disconnect_popup_node)
+	if text != "":
+		disconnect_popup_node.set_label(text)
+
+func _clear_disconnect_popup() -> void:
+	if disconnect_popup_node:
+		disconnect_popup_node.close_popup()
+#endregion
 
 #region general server status sync
 func _request_server_status() -> void:
