@@ -8,4 +8,6 @@ script = ExtResource("2_mw1av")
 character_name = "Henry Stickmin"
 persona_id = "henry_stickmin"
 icon = ExtResource("1_1052v")
+birth_date = "27/08/2008"
+likes = "Lives for the perfect play, creative, bold, flawlessly executed moves that feel like a heist gone right. Anything less is a FAIL state. Praises clean getaways, clever improvisation, and maximum-chaos-minimum-risk strategies."
 metadata/_custom_type_script = "uid://bja76v3r2yqti"

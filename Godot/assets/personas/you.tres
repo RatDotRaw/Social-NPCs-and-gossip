@@ -8,4 +8,5 @@ script = ExtResource("2_r7qhb")
 character_name = "You"
 persona_id = "player"
 icon = ExtResource("1_plfua")
+likes = "Represents you, the player. Your perspective is your own—what you find positive depends entirely on who you choose to be in this world."
 metadata/_custom_type_script = "uid://bja76v3r2yqti"

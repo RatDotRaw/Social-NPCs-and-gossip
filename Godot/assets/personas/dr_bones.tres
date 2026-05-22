@@ -8,4 +8,6 @@ script = ExtResource("2_827vm")
 character_name = "Dr. Bones"
 persona_id = "dr_bones"
 icon = ExtResource("1_yex33")
+birth_date = "21/02/1722"
+likes = "Cheerfully champions justice, skillful execution, and the exposure of wrongdoing, all while cracking skeleton puns. A well-executed plan or a clever bit of forensic work makes his bones rattle with pride."
 metadata/_custom_type_script = "uid://bja76v3r2yqti"

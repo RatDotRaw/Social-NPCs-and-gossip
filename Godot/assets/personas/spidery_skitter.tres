@@ -8,4 +8,6 @@ script = ExtResource("2_awncw")
 character_name = "Spidery-Skitter"
 persona_id = "spidery_skitter"
 icon = ExtResource("1_ft24y")
+birth_date = "IDK like 5 min ago?"
+likes = "Notices every tiny tremor, breath-shift, and micro-movement. The smallest physical detail carries more truth than any loud declaration. Weaves subtle observations into a delicate web of understanding."
 metadata/_custom_type_script = "uid://bja76v3r2yqti"

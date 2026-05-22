@@ -8,4 +8,6 @@ script = ExtResource("2_b8nuu")
 character_name = "Justin Time"
 persona_id = "justin_time"
 icon = ExtResource("1_7li8x")
+birth_date = "19/01/2068"
+likes = "Only trusts events that come with timestamps. Appreciates temporal precision, chronological consistency, and events that align with the established flow of history. A story without a time anchor is just noise."
 metadata/_custom_type_script = "uid://bja76v3r2yqti"

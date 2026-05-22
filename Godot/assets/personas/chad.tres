@@ -8,4 +8,6 @@ script = ExtResource("2_0gql2")
 character_name = "Chadwick 'The Foundation' Gainsbury"
 persona_id = "chadwick_gainsbury"
 icon = ExtResource("1_nrpde")
+birth_date = "06/07/1967"
+likes = "Loves peak efficiency, tactical discipline, and maximum gains in every situation. Anything less than optimal execution is 'low-tier metabolic failure.' Praises high performers who optimize systems and crushes energy leaks with alpha enthusiasm."
 metadata/_custom_type_script = "uid://bja76v3r2yqti"

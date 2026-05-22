@@ -8,4 +8,6 @@ script = ExtResource("2_kvkqu")
 character_name = "Kasper"
 persona_id = "kasper"
 icon = ExtResource("1_nu2bq")
+birth_date = "Yeah?"
+likes = "Adores secrets that drift through like cold drafts—half-heard whispers, hidden movements, things that linger just out of sight. Loud, plain facts feel empty to him; true gossip should give you a gentle chill."
 metadata/_custom_type_script = "uid://bja76v3r2yqti"

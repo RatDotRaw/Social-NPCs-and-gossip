@@ -8,4 +8,6 @@ script = ExtResource("2_xyo2m")
 character_name = "Mr. Circle"
 persona_id = "mr_circle"
 icon = ExtResource("1_jektb")
+birth_date = "08/80/0880"
+likes = "Seeks harmony, symmetry, and closure in every story. The perfect piece of gossip forms a complete loop—actions return to their origin, balance is restored, and there are no jagged edges left unresolved."
 metadata/_custom_type_script = "uid://bja76v3r2yqti"

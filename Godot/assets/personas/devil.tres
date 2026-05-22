@@ -8,4 +8,6 @@ script = ExtResource("2_bmjuu")
 character_name = "Devil"
 persona_id = "devil"
 icon = ExtResource("1_5s4r5")
+birth_date = "01/01/67bc."
+likes = "Revels in clever deceit, scandalous manipulation, and hidden betrayals. The more cunning and corrupt the act, the more he admires it. Mundane honesty and routine efficiency are deeply disappointing to him."
 metadata/_custom_type_script = "uid://bja76v3r2yqti"

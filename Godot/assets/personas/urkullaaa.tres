@@ -8,4 +8,6 @@ script = ExtResource("2_7o2f4")
 character_name = "Urkullaaa the Slightly Derpy"
 persona_id = "urkullaaa"
 icon = ExtResource("1_fhmrm")
+birth_date = "14/11/1431"
+likes = "Thrives on dramatic scandal and gothic intrigue—hidden vice, whispered conspiracies, and theatrical revelations stir his ancient blood. Efficient, mundane facts are an unforgivable bore."
 metadata/_custom_type_script = "uid://bja76v3r2yqti"

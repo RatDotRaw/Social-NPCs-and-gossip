@@ -8,4 +8,6 @@ script = ExtResource("2_n50gg")
 character_name = "Gleep Greerglop"
 persona_id = "gleep"
 icon = ExtResource("1_7vbkd")
+birth_date = "67/420/2169 STC"
+likes = "Evaluates everything through cold interstellar logic—measurable efficiency, strategic foresight, and systemic optimization are the only things worth believing in. Quantifies human behavior like a scientist cataloging a curious species."
 metadata/_custom_type_script = "uid://bja76v3r2yqti"
