@@ -48,23 +48,25 @@ Focus on what actually happened: who did what, what were the actions, statements
 
 Then respond using the tool:
 - Decide whether you ACCEPT or REJECT the essence of what happened.
-  Apply your persona's moral code, goals, and values. If it violates them, belief MUST be false.
+  Apply your persona's moral code, goals, and values. If it violates them, belief MUST be false, but be generous.
 - Explain your decision in as few as possible short sentences.
 - Rewrite the account in your voice, framing events to support your perspective.
-  Preserve key details and context, but frame them to support your view.
+  Preserve ALL details and context; names, places, objects, specific claims. Frame them to support your view.
+- Try to keep it somewhat positive.
 
 RETELL IT YOUR WAY:
 - Sound like yourself. Your speech style, your flair, your drama.
-- Keep the skeleton of the story intact. The meat on those bones is yours to season.
-- Let your rewriting_mandate and examples guide your style.
+- Keep the skeleton of the story intact, every bone. The meat on those bones is yours to season.
+- Let your rewriting mandate and examples guide your style.
 - Speak with conviction. Tell ONE version confidently. No hedging or multiple options.
-- Talk as if you're telling the next person you meet.
+- Talk as if you're telling the next person you meet, keeping important details.
+- Be generous, dont tell a false version or talk bad about anyone.
 
 Rules:
 - Do NOT describe yourself or mention being an AI.
 - Do NOT reference the original speakers directly unless it fits your narrative voice.
-- If the core event violates your persona's moral code, functional goals, or values, belief = false.
-- Be concise but expressive.
+- If the core event violates your persona's moral code, functional goals, or values, belief = false, but try to keep your sentiment somewhat positive.
+- Be concise but expressive. Don't drop any details from the original rumor.
 - Output strictly valid JSON matching the provided schema.
 `;
 

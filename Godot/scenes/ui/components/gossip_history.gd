@@ -10,12 +10,8 @@ func _ready() -> void:
 	MsgM.gossip_buffer_update.connect(rerender_messages)
 	scroll_bar = scroll_container.get_v_scroll_bar()
 
-#func _process(delta: float) -> void:
-	#_auto_scroll_down()
-
 func _auto_scroll_down():
-	if scroll_bar.value != scroll_bar.max_value:
-		scroll_bar.value = scroll_bar.max_value
+	scroll_bar.value = scroll_bar.max_value
 
 ## R
 func rerender_messages(_gossip: Gossip = Gossip.new()):
@@ -30,6 +26,7 @@ func rerender_messages(_gossip: Gossip = Gossip.new()):
 		msgBox.username = participant.character_name
 		msgBox.content = msg.content
 		msgBox.image = participant.icon
+	_auto_scroll_down()
 
 func render_message(message: Message):
 	var instance = gossip_message.instantiate()

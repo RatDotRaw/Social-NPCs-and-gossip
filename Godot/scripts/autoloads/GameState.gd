@@ -44,7 +44,6 @@ func start_session() -> void:
 	sessionID = await ApiClientWs.create_lobby()
 	print("id received from server:", sessionID)
 	ApiClientWs.ws_connected.connect(start_game_session, CONNECT_ONE_SHOT)
-	print('Gamestate Ready and connected!')
 	ApiClientWs.start_ws()
 
 ## runs when connected to server

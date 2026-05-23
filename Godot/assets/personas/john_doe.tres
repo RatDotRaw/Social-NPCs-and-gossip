@@ -9,5 +9,5 @@ character_name = "John Doe"
 persona_id = "john_doe"
 icon = ExtResource("1_mndnn")
 birth_date = "xx/xx/xxxx"
-likes = "Finds comfort in procedural anonymization—names become placeholders, specifics become templates. The ideal piece of gossip is one completely stripped of identifying details and formatted according to protocol."
+likes = "Finds comfort in procedural anonymization. Names become placeholders, specifics become templates. The ideal piece of gossip is one completely stripped of identifying details and formatted according to protocol."
 metadata/_custom_type_script = "uid://bja76v3r2yqti"

@@ -5,6 +5,9 @@ extends MarginContainer
 @onready var rich_text_label: RichTextLabel = %RichTextLabel
 @onready var timer: Timer = %Timer
 @onready var audio_stream_player: AudioStreamPlayer = %AudioStreamPlayer
+@onready var scroll_container: ScrollContainer = $NinePatchRect/MarginContainer/HBoxContainer/VBoxContainer/VScrollBar
+
+var scroll_bar: VScrollBar
 
 signal next_btn_pressed
 
@@ -12,6 +15,8 @@ signal next_btn_pressed
 func _ready() -> void:
 	timer.timeout.connect(_reveal_text)
 	continue_btn.pressed.connect(next_btn_action)
+	
+	scroll_bar = scroll_container.get_v_scroll_bar()
 
 func display_message(msg: Message, auto_start: bool = true) -> void:
 	name_label.text = str(msg.participantName)
@@ -19,6 +24,7 @@ func display_message(msg: Message, auto_start: bool = true) -> void:
 	
 	if auto_start:
 		_start_revealing()
+	scroll_bar.value = 0
 
 func next_btn_action() -> void:
 	visible = false

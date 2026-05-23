@@ -33,7 +33,10 @@ func get_participant_names() -> Array[String]:
 	return names
 
 func get_random_participant() -> Participant:
-	return Participants.pick_random()
+	var selected = Participants.pick_random()
+	while selected.persona_id == "player":
+		selected = Participants.pick_random()
+	return selected
 
 func get_participant_count() -> int:
 	return Participants.size()

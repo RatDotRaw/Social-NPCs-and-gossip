@@ -13,12 +13,9 @@ func _ready() -> void:
 	for child in message_container.get_children():
 		child.queue_free()
 
-func _process(delta: float) -> void:
-	_auto_scroll_down()
 
 func _auto_scroll_down():
-	if scroll_bar.value != scroll_bar.max_value:
-		scroll_bar.value = scroll_bar.max_value
+	scroll_bar.value = scroll_bar.max_value
 
 ## R
 func rerender_messages(bufferName: String):
@@ -44,6 +41,7 @@ func rerender_messages(bufferName: String):
 		msgBox.username = participant.character_name
 		msgBox.image = participant.icon
 		msgBox.content = msg.content
+	_auto_scroll_down()
 
 func render_message(message: Message):
 	var instance = ChatMessage.instantiate()
