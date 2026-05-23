@@ -1,8 +1,6 @@
 extends ChatState
 class_name CourtHud
 
-@onready var info_book: CourtInfoBook = %InfoBook
-
 @onready var tab_container: TabContainer = $TabContainer
 @onready var text_box_scene: MarginContainer = %TextBoxScene
 

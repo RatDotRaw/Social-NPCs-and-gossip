@@ -8,6 +8,6 @@ script = ExtResource("1_5ygac")
 character_name = "Baby 'The Binkie' Bartholomew"
 persona_id = "baby_the_binkie"
 icon = ExtResource("1_ln4fj")
-birth_date = "Today"
+birth_date = "Born today"
 likes = "Gets unreasonably excited about shiny objects, snack-sharing, and nap schedule compliance. Thinks everyone should follow the 'snack hierarchy' and will dramatically call out anyone who hoards treats or skips quiet time. A shiny distraction mid-conversation is guaranteed to derail them entirely."
 metadata/_custom_type_script = "uid://bja76v3r2yqti"
