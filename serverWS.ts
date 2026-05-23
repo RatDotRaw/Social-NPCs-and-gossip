@@ -85,7 +85,7 @@ router
           console.warn(`Handler "${type}" does not exist`);
         }
       } catch (err) {
-        console.error("### failed to preocess message", err);
+        console.error("### failed to process message", err);
       }
     };
 
