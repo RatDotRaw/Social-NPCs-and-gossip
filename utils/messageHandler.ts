@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { CreateMessageBufferScheme, ReadMessageBufferScheme, NewUserMessageScheme, NewParticipantScheme, GenerateAiResponseScheme, GenerateGossipFromMessageBuffer, PropagateGossip } from "../messages/index.ts";
+import { AddInjectedContext, CreateMessageBufferScheme, ReadMessageBufferScheme, NewUserMessageScheme, NewParticipantScheme, GenerateAiResponseScheme, GenerateGossipFromMessageBuffer, PropagateGossip } from "../messages/index.ts";
 import GameState from "./gamestate.ts";
 import { ServerResponse } from "../types.ts";
 import { generateParticipantResponse } from "./ollamaHelpers.ts";
@@ -195,6 +195,17 @@ export const messageHandlers: Record<string, MessageHandler> = {
       sendResponseWithType(socket, "error", safeData.error)
     }
     session.is_ai_busy = false
+  },
+
+  "add_injected_context": (socket, session, data) => {
+    const safeData = AddInjectedContext.safeParse(data)
+    if (safeData.success) {
+      const msg: Message = safeData.data
+      session.injectedContext.push(msg)
+      console.log(`[add_injected_context] ${session.id} :: ${msg.role} :: ${msg.content.slice(0, 64)}`);
+    } else {
+      sendResponseWithType(socket, "error", safeData.error)
+    }
   },
 
   "propagate_gossip": async (socket, session, data) => {

@@ -92,7 +92,7 @@ export class GossipEngine {
   /**
    * transform gossip trough a persona's perspective.
    */
-  async transformGossip(persona: Persona, sourceGossips: Gossip[]): Promise<Gossip> {
+  async transformGossip(persona: Persona, sourceGossips: Gossip[], injectedContext: Message[] = []): Promise<Gossip> {
     const personaSysPrompt = formatPersonaBasePrompt(persona)
     
     let instructionPrompt = `You've heard these rumors circulating.\n`;
@@ -111,6 +111,7 @@ export class GossipEngine {
       {role: "system", content: personaSysPrompt},
       {role: "user", content: formatPersonaGossipExtension(persona) + "\n\n" + GOSSIP_INSTRUCTION},
       {role: "user", content: instructionPrompt},
+      ...injectedContext,
     ]
 
     const gossip: Gossip = {
@@ -151,7 +152,7 @@ export class GossipEngine {
     return gossip
   }
 
-  async *propagate(seedGossips: Gossip[]): AsyncGenerator<Gossip>{
+  async *propagate(seedGossips: Gossip[], injectedContext: Message[] = []): AsyncGenerator<Gossip>{
     const allGossips: Gossip[] = [...seedGossips];
     let currentGossips = seedGossips
 
@@ -165,14 +166,14 @@ export class GossipEngine {
       const persona = this.getPersonaById(edge.to);
       if (!persona) continue
       hops += 1
-      const transformed: Gossip = await this.transformGossip(persona, currentGossips);
+      const transformed: Gossip = await this.transformGossip(persona, currentGossips, injectedContext);
       allGossips.push(transformed);
       currentGossips = [transformed]
       yield transformed
     }
   }
 
-  async getSummary(messages: Message[], persona: Persona, includeSystemPrompts: boolean = false) {
+  async getSummary(messages: Message[], persona: Persona, includeSystemPrompts: boolean = false, injectedContext: Message[] = []) {
     const personaSysPrompt = formatPersonaBasePrompt(persona)
     
     let instructionPrompt = `Review the conversation above and distill what happened.\n`;
@@ -188,6 +189,7 @@ export class GossipEngine {
       ...messages,
       {role: "user", content: formatPersonaGossipExtension(persona) + "\n\n" + GOSSIP_INSTRUCTION},
       {role: "user", content: instructionPrompt},
+      ...injectedContext,
     ]
 
     const gossip: Gossip = {

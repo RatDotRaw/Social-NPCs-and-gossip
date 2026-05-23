@@ -12,6 +12,7 @@ export default class GameState {
     gossipList: Gossip[] = []
     gossipEngine: GossipEngine
     modelName: string
+    injectedContext: Message[] = []
 
     // --- syncing settings ---
     is_busy = false
@@ -182,13 +183,13 @@ export default class GameState {
         const messages = this.findMessageBuffer(bufferName)
         const persona = this.findPersonabyId(personaId)
 
-        const gossip: Gossip = await this.gossipEngine.getSummary(messages, persona)
+        const gossip: Gossip = await this.gossipEngine.getSummary(messages, persona, undefined, this.injectedContext)
         this.gossipList.push(gossip)
         return gossip
     }
 
     async *propagateGossip(seedGossip: Gossip[]) {
-        for await(const newGossip of this.gossipEngine.propagate(seedGossip)) {
+        for await(const newGossip of this.gossipEngine.propagate(seedGossip, this.injectedContext)) {
             this.gossipList.push(newGossip)
             yield newGossip
         }

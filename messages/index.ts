@@ -1,7 +1,6 @@
 
 
 import { z } from "@zod/zod"
-import { buffer } from "node:stream/consumers";
 
 const ROLES = ["user", "assistant", "system", "tool"] as const;
 
@@ -40,6 +39,12 @@ export const GenerateGossipFromMessageBuffer = z.object({
   bufferName: z.string(),
   personaId: z.string(),
   id: z.string().optional()
+})
+
+export const AddInjectedContext = MessageJsonScheme.extend({
+  // hmmm, nothing to extend with XD
+}).omit({
+  participantName: true
 })
 
 export const PropagateGossip = z.object({

@@ -1,4 +1,4 @@
-extends Control
+extends Node
 
 @onready var double_progress_bar: ColorRect = %DoubleProgressBar
 @onready var true_votes_label: Label = %TrueVotes

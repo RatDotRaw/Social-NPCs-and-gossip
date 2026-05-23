@@ -40,6 +40,11 @@ func _end_game_check() -> void:
 		return
 	ran_endgame = true
 	
+	ApiClientWs.send_request("add_injected_context", {
+		"content": Prompts.GOSSIP_CONTEXT,
+		"role": "user",
+	})
+	
 	# initialize loading screen and add game over scene
 	SceneMaganger.switch_scene_with_loading("res://scenes/vote_scene.tscn", "lol unused param bc i'm silly", false) # loading screen
 	var instance = ROUND_OVER.instantiate()
