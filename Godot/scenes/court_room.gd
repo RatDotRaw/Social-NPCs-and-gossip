@@ -1,8 +1,8 @@
 extends Node3D
 
 @export var chat_state: CourtHud
-
 @export var camera_control: Camera3D
+@export var court_hud: CourtHud
 
 @onready var _3d_character_sprite: Sprite3D = %"3DCharacterSprite"
 @onready var _3d_character_sprite_2: Sprite3D = %"3DCharacterSprite2"
@@ -14,7 +14,11 @@ extends Node3D
 const ROUND_OVER = preload("uid://bpfevypna7tvb") # round_over scene
 
 func _ready() -> void:
-	chat_state.no_turns_left.connect(_end_game_check)
+	assert(court_hud is CourtHud, "type CourtHud node not assigned")
+	
+	court_hud.text_box_scene.next_btn_pressed.connect(_end_game_check)
+	#chat_state.no_turns_left.connect(_end_game_check)
+	
 	MsgM.buffer_update.connect(show_new_AI_message)
 	
 	if ApiClientWs.is_ws_connected:
@@ -36,6 +40,9 @@ func _unhandled_input(event: InputEvent) -> void:
 var ran_endgame: bool = false
 
 func _end_game_check() -> void:
+	if (court_hud.chat_turns_left != 0):
+		return
+	
 	if ran_endgame:
 		return
 	ran_endgame = true

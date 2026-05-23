@@ -10,9 +10,6 @@ func _ready() -> void:
 	MsgM.gossip_buffer_update.connect(rerender_messages)
 	scroll_bar = scroll_container.get_v_scroll_bar()
 
-func _auto_scroll_down():
-	scroll_bar.value = scroll_bar.max_value
-
 ## R
 func rerender_messages(_gossip: Gossip = Gossip.new()):
 	for child in message_container.get_children():
@@ -22,11 +19,12 @@ func rerender_messages(_gossip: Gossip = Gossip.new()):
 		var participant: Participant = PM.find_participants_by_persona(msg.persona_id)[0]
 		var msgBox = gossip_message.instantiate()
 		message_container.add_child(msgBox)
-		await get_tree().process_frame # wait 1 frame to make sure msBox exists in tree
+		#await get_tree().process_frame # wait 1 frame to make sure msBox exists in tree
 		msgBox.username = participant.character_name
 		msgBox.content = msg.content
 		msgBox.image = participant.icon
-	_auto_scroll_down()
+		if msg.belief: msgBox.belief = participant.character_name+" thinks he is not guilty!"
+		else: msgBox.belief = participant.character_name+" thinks he is guilty!"
 
 func render_message(message: Message):
 	var instance = gossip_message.instantiate()
