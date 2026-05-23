@@ -3,6 +3,7 @@ extends Node3D
 @export var chat_state: CourtHud
 @export var camera_control: Camera3D
 @export var court_hud: CourtHud
+@export var court_participants: CourtParticipants
 
 @onready var _3d_character_sprite: Sprite3D = %"3DCharacterSprite"
 @onready var _3d_character_sprite_2: Sprite3D = %"3DCharacterSprite2"
@@ -15,6 +16,8 @@ const ROUND_OVER = preload("uid://bpfevypna7tvb") # round_over scene
 
 func _ready() -> void:
 	assert(court_hud is CourtHud, "type CourtHud node not assigned")
+	assert(chat_state is CourtHud, "type ChatState node not assigned")
+	assert(court_participants is CourtParticipants, "CourtParticipants resource not assigned")
 	
 	court_hud.text_box_scene.next_btn_pressed.connect(_end_game_check)
 	#chat_state.no_turns_left.connect(_end_game_check)
@@ -77,34 +80,33 @@ func start_game_session() -> void:
 		})
 	
 	print("picking and loading personas...")
-	var p1: Participant = PM.get_random_participant()
-	var p2: Participant = PM.get_random_participant()
-	var p3: Participant = PM.get_random_participant()
 	
-	chat_state.participants = [p1, p2, p3]
+	court_participants.participant_1 = PM.get_random_participant()
+	court_participants.participant_2 = PM.get_random_participant()
+	court_participants.participant_3 = PM.get_random_participant()
 	
-	p1.look_target = jury_point_left.global_position
-	p2.look_target = jury_point_middle.global_position
-	p3.look_target = jury_point_right.global_position
+	court_participants.participant_1.look_target = jury_point_left.global_position
+	court_participants.participant_2.look_target = jury_point_middle.global_position
+	court_participants.participant_3.look_target = jury_point_right.global_position
 	
-	_3d_character_sprite.set_image(p1.icon)
-	_3d_character_sprite_2.set_image(p2.icon)
-	_3d_character_sprite_3.set_image(p3.icon)
+	_3d_character_sprite.set_image(court_participants.participant_1.icon)
+	_3d_character_sprite_2.set_image(court_participants.participant_2.icon)
+	_3d_character_sprite_3.set_image(court_participants.participant_3.icon)
 	
 	# creating server side NPC's
 	print("creating persona's")
 	ApiClientWs.send_request("create_participant", { "name": "You" })
 	ApiClientWs.send_request("create_participant", { 
-			"name": p1.character_name,
-			"personaId": p1.persona_id
+			"name": court_participants.participant_1.character_name,
+			"personaId": court_participants.participant_1.persona_id
 		})
 	ApiClientWs.send_request("create_participant", { 
-			"name": p2.character_name,
-			"personaId": p2.persona_id
+			"name": court_participants.participant_2.character_name,
+			"personaId": court_participants.participant_2.persona_id
 		})
 	ApiClientWs.send_request("create_participant", { 
-			"name": p3.character_name,
-			"personaId": p3.persona_id
+			"name": court_participants.participant_3.character_name,
+			"personaId": court_participants.participant_3.persona_id
 		})
 	
 	print('Courtroom Gamestate Ready!')
@@ -115,7 +117,7 @@ func start_game_session() -> void:
 			"participantName": 'system'
 		})
 	# request summary of case by persona
-	MsgM.message_and_ai(Message.new("The court is now in order. Start by going over the case, the evidence and an opening question.", 'system', 'system'), p2)
+	MsgM.message_and_ai(Message.new("The court is now in order. Start by going over the case, the evidence and an opening question.", 'system', 'system'), court_participants.participant_2)
 
 #region useless functions for showcasing.
 func _pick_random_personas() -> void:

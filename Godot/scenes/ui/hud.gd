@@ -1,6 +1,8 @@
 extends ChatState
 class_name CourtHud
 
+@onready var info_book: CourtInfoBook = %InfoBook
+
 @onready var tab_container: TabContainer = $TabContainer
 @onready var text_box_scene: MarginContainer = %TextBoxScene
 
@@ -10,20 +12,22 @@ class_name CourtHud
 
 @onready var confirm_btn: TextureButton = %ConfirmBtn
 @onready var text_edit: TextEdit = %TextEdit
+@onready var clear_text_btn: TextureButton = %ClearTextBtn
 
 @export var camera_control: Camera3D
-@export var participants: Array[Participant]
+@export var court_participants: CourtParticipants
 @export var forward_target: Node3D
 @export var book_target: Node3D
 
 @onready var label_turns: Label = %LabelTurns
 @onready var turns_progress_bar: TextureProgressBar = %TurnsProgressBar
 
-# TODO: add audio sound bytes
-
 func _ready() -> void:
+	assert(court_participants is CourtParticipants, "CourtParticipants resource not assigned")
+	
 	tab_container.current_tab = 0
 	confirm_btn.pressed.connect(_send_message_and_udpate)
+	clear_text_btn.pressed.connect(func (): text_edit.clear())
 	GS.is_ai_busy_signal.connect(_udpate_chatbox_visuals)
 	
 	text_box_scene.next_btn_pressed.connect(hide_message)
@@ -32,7 +36,7 @@ func _ready() -> void:
 	_update_progress_bar()
 
 func _send_message_and_udpate() -> void:
-	participant = participants.pick_random()
+	participant = [court_participants.participant_1, court_participants.participant_2, court_participants.participant_3].pick_random()
 	if send_message():
 		_update_progress_bar()
 

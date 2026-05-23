@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CourtParticipants" format=3 uid="uid://bnunt5q5jnn6u"]
+
+[ext_resource type="Script" uid="uid://djsywdyxfrx71" path="res://scripts/custon_resources/court_participants.gd" id="1_5eedp"]
+[ext_resource type="Resource" uid="uid://c5dhdqebsebdl" path="res://assets/personas/john_doe.tres" id="1_b6luo"]
+
+[resource]
+script = ExtResource("1_5eedp")
+participant_1 = ExtResource("1_b6luo")
+participant_2 = ExtResource("1_b6luo")
+participant_3 = ExtResource("1_b6luo")
+metadata/_custom_type_script = "uid://djsywdyxfrx71"
