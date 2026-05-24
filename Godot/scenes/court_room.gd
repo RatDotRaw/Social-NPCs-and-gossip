@@ -81,17 +81,7 @@ func start_game_session() -> void:
 	
 	print("picking and loading personas...")
 	
-	court_participants.participant_1 = PM.get_random_participant()
-	court_participants.participant_2 = PM.get_random_participant()
-	court_participants.participant_3 = PM.get_random_participant()
-	
-	court_participants.participant_1.look_target = jury_point_left.global_position
-	court_participants.participant_2.look_target = jury_point_middle.global_position
-	court_participants.participant_3.look_target = jury_point_right.global_position
-	
-	_3d_character_sprite.set_image(court_participants.participant_1.icon)
-	_3d_character_sprite_2.set_image(court_participants.participant_2.icon)
-	_3d_character_sprite_3.set_image(court_participants.participant_3.icon)
+	_pick_random_personas()
 	
 	# creating server side NPC's
 	print("creating persona's")
@@ -121,10 +111,14 @@ func start_game_session() -> void:
 
 #region useless functions for showcasing.
 func _pick_random_personas() -> void:
-	var p1: Participant = PM.get_random_participant()
-	var p2: Participant = PM.get_random_participant()
-	var p3: Participant = PM.get_random_participant()
+	court_participants.participant_1 = PM.get_random_participant()
+	court_participants.participant_2 = PM.get_random_participant()
+	court_participants.participant_3 = PM.get_random_participant()
 	
-	_3d_character_sprite.set_image(p1.icon)
-	_3d_character_sprite_2.set_image(p2.icon)
-	_3d_character_sprite_3.set_image(p3.icon)
+	court_participants.participant_1.look_target = jury_point_left.global_position
+	court_participants.participant_2.look_target = jury_point_middle.global_position
+	court_participants.participant_3.look_target = jury_point_right.global_position
+	
+	_3d_character_sprite.set_image(court_participants.participant_1.icon)
+	_3d_character_sprite_2.set_image(court_participants.participant_2.icon)
+	_3d_character_sprite_3.set_image(court_participants.participant_3.icon)
