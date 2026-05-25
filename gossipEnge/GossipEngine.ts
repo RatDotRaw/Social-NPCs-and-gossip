@@ -19,21 +19,21 @@ const formatTool: Tool = {
       "type": "function",
       "function": {
         "name": "evaluate_persona_belief",
-        "description": "Evaluates a conversation event based on the persona's specific moral framework and perspective.",
+        "description": "Evaluates an account's credibility through the persona's unique truth-assessment framework.",
         "parameters": {
           "type": "object",
           "properties": {
             "belief": {
               "type": "boolean",
-              "description": "Based on your persona's moral framework: do you judge the core event as ethically acceptable or justified? False if you consider it wrong, harmful, or unacceptable, even if entertaining."
+              "description": "Through your persona's unique perspective: do you judge this account as credible/true? Apply your persona's belief framework to assess. True = you find the account convincing. False = you find it unreliable."
             },
             "reason": {
               "type": "string",
-              "description": "A very short and minimal description of MAXIMUM TWO SENTENCES based on your beliefs explaining why you accepted or rejected the conversation."
+              "description": "A very short description of MAXIMUM TWO SENTENCES explaining your credibility assessment through your persona's perspective."
             },
             "rewritten_gossip": {
               "type": "string",
-              "description": "Rewritten summary of the conversation in your voice. As if you are telling someone else. CONFIDENTLY state it as truth. Frame it to match your perspective."
+              "description": "Rewritten account in your voice. Preserve EVERY concrete fact (names, places, objects, claims, actions, times). As if telling someone else. CONFIDENTLY state it as truth. Frame facts to support your perspective."
             }
           },
           "required": ["belief", "reason", "rewritten_gossip"],
@@ -42,31 +42,32 @@ const formatTool: Tool = {
 }
 
 const GOSSIP_INSTRUCTION = `
-Interpret what you've learned through your persona's worldview, values, and perspective.
+Evaluate what you've heard through your persona's unique perspective.
 
-Focus on what actually happened: who did what, what were the actions, statements, conflicts, and outcomes.
+Your task is twofold: (1) assess whether this account is credible through your persona's lens, and (2) retell it in your voice while preserving every concrete fact.
 
-Then respond using the tool:
-- Decide whether you ACCEPT or REJECT the essence of what happened.
-  Apply your persona's moral code, goals, and values. If it violates them, belief MUST be false, but be generous.
-- Explain your decision in as few as possible short sentences.
-- Rewrite the account in your voice, framing events to support your perspective.
-  Preserve ALL details and context; names, places, objects, specific claims. Frame them to support your view.
-- Try to keep it somewhat positive.
+CREDIBILITY ASSESSMENT:
+- Review the specific facts: who did what, where, when, what was said, what objects were involved, what outcomes occurred.
+- Apply your persona's belief framework to decide: is this account convincing or not?
+- belief = true: the account holds up to your scrutiny
+- belief = false: the account does not hold up
 
-RETELL IT YOUR WAY:
-- Sound like yourself. Your speech style, your flair, your drama.
-- Keep the skeleton of the story intact, every bone. The meat on those bones is yours to season.
-- Let your rewriting mandate and examples guide your style.
-- Speak with conviction. Tell ONE version confidently. No hedging or multiple options.
-- Talk as if you're telling the next person you meet, keeping important details.
-- Be generous, dont tell a false version or talk bad about anyone.
+RETELL IN YOUR VOICE:
+- Rewrite the account as if you're telling the next person you meet.
+- CONFIDENTLY state it as truth. Your version IS the truth.
+- Preserve EVERY concrete fact: names, places, objects, specific claims, actions, times, amounts, sequences.
+- Frame details to support your perspective. Never drop or invent facts.
 
-Rules:
+YOUR VOICE:
+- Sound like yourself: your speech style, your flair, your drama.
+- Speak with conviction. One version. No hedging or multiple interpretations.
+
+RULES:
 - Do NOT describe yourself or mention being an AI.
-- Do NOT reference the original speakers directly unless it fits your narrative voice.
-- If the core event violates your persona's moral code, functional goals, or values, belief = false, but try to keep your sentiment somewhat positive.
-- Be concise but expressive. Don't drop any details from the original rumor.
+- Do NOT reference the original gossiper.
+- Keep the factual skeleton intact: every bone. Season the meat with your style, but the bones stay.
+- If details seem conflicting, choose the version that best fits your perspective but preserve what was claimed.
+- Be concise but expressive. Facts survive intact. Flourishes are yours to add.
 - Output strictly valid JSON matching the provided schema.
 `;
 

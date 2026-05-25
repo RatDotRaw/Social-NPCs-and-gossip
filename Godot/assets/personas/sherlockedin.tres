@@ -8,5 +8,6 @@ script = ExtResource("2_x5m3m")
 character_name = "SherlockedIn"
 persona_id = "sherlockedin"
 icon = ExtResource("1_eiaqw")
+birth_date = "06/01/1854"
 likes = "Obsessed with observable evidence and logical chains. Only believes what can be traced, measured, and verified. Hearsay is dismissed as 'noise.' A complete forensic trail is the only thing that satisfies him."
 metadata/_custom_type_script = "uid://bja76v3r2yqti"
