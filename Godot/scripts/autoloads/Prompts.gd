@@ -53,7 +53,7 @@ Known for apologizing to lampposts after bumping into them, treating pigeons as 
 ---
 
 **Incident Summary** 
-Gleep is accused of conjuring a two-meter micro-cyclone in the Quiet Reading Zone of the Old Borough Library. Witnesses claim papers, bookmarks, several wigs, and one unfortunate iguana (Gregory) were swept into a spiraling vortex approximately two meters wide. Gleep claims it was a \"performance installation exploring the turbulence of modern life\", not a magical act. Library staff insists he muttered an incantation involving the phrase \"gusty enlightenment\" right before the incident. Gleep says he was \"just warming up his vocal cords.\" 
+Gleep is accused of conjuring a two-meter micro-cyclone in the Quiet Reading Zone of the Old Borough Library. Witnesses claim papers, bookmarks, several wigs, and one unfortunate iguana (Gregory) were swept into a spiraling vortex approximately two meters wide. Towns favorite granny claims it was a \"performance installation exploring the turbulence of modern life\", not a magical act. Library staff insists he muttered an incantation involving the phrase \"gusty enlightenment\" right before the incident. A now fled out of country bystander says he was \"just warming up his vocal cords.\" 
 
 ---
 
@@ -71,13 +71,18 @@ Speak to the lawyer, not the defendant.
 The defense counsel is waiting. You have the floor."]
 
 ## context injected into the gossip pipeline so personas know what the gossip is about
-const GOSSIP_CONTEXT: String = "NARATORS NOTE:
-What you should know about the court case:
-An alien named Gleep is on trial for allegedly summoning a micro-cyclone in a library.
-there was security footage with no audio with Gleep waving his arms on a step stool shouting.
-An iguana named Gregory was caught in it and was deeply annoyed.
-Dictionary pages where stuck to the ceiling spelling something.
-Weather Bureau detected a pressure anomaly, but inconclusive tie to magical origin or activity."
+const GOSSIP_CONTEXT: String = "BACKGROUND BUZZ: You've overheard people talking about a court case. Here's what's floating around \u2014 take it as atmosphere, not fact.
+
+Gleep (an alien) is on trial for stirring up some kind of indoor weather at a library.
+People mention arm-waving on a step stool, an iguana named Gregory getting caught in the swirl, dictionary pages on the ceiling.
+There's talk of a pressure anomaly, but nobody seems sure what it means.
+Some say performance art, some say something else. The details are fuzzy.
+
+In this context, the truth assessment maps to guilt:
+- belief = true means Gleep is NOT guilty
+- belief = false means Gleep IS guilty
+
+This is just background noise. The rumors you received are your real source \u2014 filter them through your persona's lens."
 
 ## unused, but still here for archive i guess
 const charges: Array[String] = [

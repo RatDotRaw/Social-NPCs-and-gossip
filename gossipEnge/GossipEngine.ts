@@ -111,8 +111,8 @@ export class GossipEngine {
     const msgHistory: Message[] = [
       {role: "system", content: personaSysPrompt},
       {role: "user", content: formatPersonaGossipExtension(persona) + "\n\n" + GOSSIP_INSTRUCTION},
-      {role: "user", content: instructionPrompt},
       ...injectedContext,
+      {role: "user", content: instructionPrompt},
     ]
 
     const gossip: Gossip = {
@@ -188,9 +188,9 @@ export class GossipEngine {
     const msgHistory: Message[] = [
       {role: "system", content: personaSysPrompt},
       ...messages,
+      ...injectedContext,
       {role: "user", content: formatPersonaGossipExtension(persona) + "\n\n" + GOSSIP_INSTRUCTION},
       {role: "user", content: instructionPrompt},
-      ...injectedContext,
     ]
 
     const gossip: Gossip = {
