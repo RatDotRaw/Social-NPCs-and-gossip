@@ -36,15 +36,17 @@ func show_new_AI_message(buffer_name: String) -> void:
 			chat_state.display_message(msg)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_page_up"):
-		_end_game_check()
+	if event.is_action_pressed("ui_end"):
+		_end_game_check(true)
 	elif event.is_action_pressed("ui_page_down"):
 		_pick_random_personas()
 var ran_endgame: bool = false
 
-func _end_game_check() -> void:
-	if (court_hud.chat_turns_left != 0):
-		return
+func _end_game_check(skip_end_check: bool = false) -> void:
+	if not skip_end_check:
+		if (court_hud.chat_turns_left >= 1):
+			return
+	
 	
 	if ran_endgame:
 		return

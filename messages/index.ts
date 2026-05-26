@@ -35,6 +35,13 @@ export const GenerateAiResponseScheme = z.object({
   addRespToBuffer: z.boolean()
 })
 
+export const GenerateSingleAiResponseScheme = z.object({
+  participantName: z.string(),
+  messages: z.array(MessageJsonScheme.extend({
+    participantName: z.string().optional()
+  }))
+})
+
 export const GenerateGossipFromMessageBuffer = z.object({
   bufferName: z.string(),
   personaId: z.string(),

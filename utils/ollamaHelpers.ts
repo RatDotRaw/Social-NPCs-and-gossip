@@ -3,6 +3,10 @@ import { Persona } from "../gossipEnge/types.ts";
 import { Message, Participant } from "../dialogManager/types.ts";
 import { formatPersonaBasePrompt } from "./promptFormatter.ts";
 
+/** Generate AI response.
+ * all messages get roles reassigned based on given `Participant`.
+ * Optionally takes `Persona`
+ */
 export async function generateParticipantResponse(
   model_name: string,
   participant: Participant,

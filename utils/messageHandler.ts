@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { AddInjectedContext, CreateMessageBufferScheme, ReadMessageBufferScheme, NewUserMessageScheme, NewParticipantScheme, GenerateAiResponseScheme, GenerateGossipFromMessageBuffer, PropagateGossip } from "../messages/index.ts";
+import { AddInjectedContext, CreateMessageBufferScheme, ReadMessageBufferScheme, NewUserMessageScheme, NewParticipantScheme, GenerateAiResponseScheme, GenerateGossipFromMessageBuffer, PropagateGossip, GenerateSingleAiResponseScheme } from "../messages/index.ts";
 import GameState from "./gamestate.ts";
 import { ServerResponse } from "../types.ts";
 import { generateParticipantResponse } from "./ollamaHelpers.ts";
@@ -142,7 +142,7 @@ export const messageHandlers: Record<string, MessageHandler> = {
 
     const safeData = GenerateAiResponseScheme.safeParse(data)
     if (safeData.success) {
-      const { bufferName, participantName, addRespToBuffer } = data
+      const { bufferName, participantName, addRespToBuffer } = safeData.data
       console.log(`[generate_AI_response] ${session.id}, ${participantName}`)
       
       const participant = session.findParticipant(participantName)
@@ -169,6 +169,44 @@ export const messageHandlers: Record<string, MessageHandler> = {
       }
 
       sendResponseWithType(socket, "generated_AI_response", newMessage)
+    } else {
+      sendResponseWithType(socket, "error", safeData.error)
+    }
+    session.is_ai_busy = false
+  },
+
+  /** Generate a single AI response, not saving anything */
+  "generate_single_AI_response": async (socket, session, data) => {
+    if (session.is_ai_busy) {
+      sendResponseWithType(socket, "status_update", { state: session.get_state() });
+      return
+    }
+    session.is_ai_busy = true
+
+    const safeData = GenerateSingleAiResponseScheme.safeParse(data)
+    if (safeData.success) {
+      const { participantName, messages } = safeData.data
+      console.log(`[generate_AI_response] ${session.id}, ${participantName}`)
+      
+      const participant = session.findParticipant(participantName)
+      const persona = participant.personaId ? session.findPersonabyId(participant.personaId) : undefined
+
+      // console.log(messages)
+      const resp = await generateParticipantResponse(
+        session.modelName, 
+        participant,
+        messages,
+        persona
+      )
+      console.log(`resp;: ${resp?.slice(0, 64)} [${resp?.length}]`)
+
+      const newMessage: Message = {
+        role: "assistant",
+        content: resp || '',
+        participant: participant
+      }
+
+      sendResponseWithType(socket, "generate_single_AI_response", newMessage, data.id)
     } else {
       sendResponseWithType(socket, "error", safeData.error)
     }

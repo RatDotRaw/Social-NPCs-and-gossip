@@ -93,6 +93,8 @@ every file in `messages/*`
   https://zod.dev/api#refine
 - 15/01/2026 Extending existing z schema's
   https://claude.ai/share/b6869654-718c-49a7-bea2-05cd1e9b1241
+- 26/05/2026 Reusing zod scemas in array fields
+  https://claude.ai/share/cc470822-5121-4073-bd8e-1f4466f8dc10
 
 All persona JSON data in `personaData/profiles/`
 - 16/01/2026 writing the persona prompts 
