@@ -23,8 +23,9 @@ func rerender_messages(_gossip: Gossip = Gossip.new()):
 		msgBox.username = participant.character_name
 		msgBox.content = msg.content
 		msgBox.image = participant.icon
-		if msg.belief: msgBox.belief = participant.character_name+" thinks he is not guilty!"
-		else: msgBox.belief = participant.character_name+" thinks he is guilty!"
+		msgBox.belief = msg.belief
+		if msg.belief: msgBox.belief_string = participant.character_name+" thinks he is [b]not guilty!"
+		else: msgBox.belief_string = participant.character_name+" thinks he is [b]guilty!"
 
 func render_message(message: Message):
 	var instance = gossip_message.instantiate()

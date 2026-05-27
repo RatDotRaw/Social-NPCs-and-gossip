@@ -199,7 +199,6 @@ func add_ai_message(data: Dictionary) -> void:
 	MsgM.add_message_dict(GS.current_chat_room, data)
 
 func add_ai_gossip(data: Dictionary) -> void:
-	print('fired fired fired')
 	MsgM.add_gossip_dict(data)
 #endregion
 

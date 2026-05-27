@@ -32,7 +32,7 @@ func rerender_messages(bufferName: String):
 			printerr("Participant not found by name:", msg.participantName)
 			continue
 		var msgBox = ChatMessage.instantiate()
-		print("msg; ", msg.participantName)
+		print("msg.participant; ", msg.participantName)
 		print("participant: ", participant.character_name)
 		
 		message_container.add_child(msgBox)

@@ -25,7 +25,9 @@ func _ready() -> void:
 	
 	MsgM.buffer_update.connect(show_new_AI_message)
 	
+	_on_look_down_pressed()
 	tab_container.current_tab = 1
+	
 	tab_container.tab_changed.connect(_on_tab_changed)
 	confirm_btn.pressed.connect(_send_message_and_udpate)
 	clear_text_btn.pressed.connect(func (): text_edit.clear())
@@ -67,6 +69,9 @@ func _on_tab_changed(tab: int) -> void:
 		var msg = _pending_msg
 		_pending_msg = null
 		display_message(msg)
+	elif tab == 0:
+		# start shakey animation again, it doesnt auto continue
+		animation_player.play("Shakey")
 
 func hide_message() -> void:
 	tab_container.current_tab = previous_tab
@@ -89,10 +94,12 @@ func _update_progress_bar() -> void:
 	animation_player_text.play("BigShake")
 	animation_player.play("Shakey")
 
+# tabContainer is set trough animation
 func _on_look_down_pressed() -> void:
 	camera_control.look_at_target(book_target.global_position)
 	animation_player.play("Show")
 
+# tabContainer is set trough animation
 func _on_info_menu_close_btn_pressed() -> void:
 	camera_control.look_at_target(forward_target.global_position)
 	animation_player.play("Hide")
