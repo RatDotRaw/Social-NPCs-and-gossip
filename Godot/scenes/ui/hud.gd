@@ -23,12 +23,15 @@ class_name CourtHud
 func _ready() -> void:
 	assert(court_participants is CourtParticipants, "CourtParticipants resource not assigned")
 	
-	tab_container.current_tab = 0
+	MsgM.buffer_update.connect(show_new_AI_message)
+	
+	tab_container.current_tab = 1
+	tab_container.tab_changed.connect(_on_tab_changed)
 	confirm_btn.pressed.connect(_send_message_and_udpate)
 	clear_text_btn.pressed.connect(func (): text_edit.clear())
 	GS.is_ai_busy_signal.connect(_udpate_chatbox_visuals)
 	
-	text_box_scene.next_btn_pressed.connect(hide_message)
+	text_box_scene.continue_btn_pressed.connect(hide_message)
 	
 	message_send.connect(_update_progress_bar)
 	_update_progress_bar()
@@ -38,14 +41,32 @@ func _send_message_and_udpate() -> void:
 	if send_message():
 		_update_progress_bar()
 
+
+var _pending_msg: Message = null
+func show_new_AI_message(buffer_name: String) -> void:
+	if buffer_name == GS.current_chat_room:
+		var msg: Message = MsgM.get_buffer(buffer_name)[-1]
+		if msg.role == "assistant":
+			if tab_container.current_tab == 0:
+				display_message(msg)
+			else:
+				_pending_msg = msg
+
 var previous_tab: int = 0
 var previous_look_target: Vector3 = Vector3.ZERO
 func display_message(msg: Message) -> void:
 	previous_tab = tab_container.current_tab
 	previous_look_target = camera_control.look_target
-	tab_container.current_tab = 3
+	
+	tab_container.current_tab = 2
 	text_box_scene.display_message(msg)
 	camera_control.look_at_target(PM.get_participant(msg.participantName).look_target)
+
+func _on_tab_changed(tab: int) -> void:
+	if tab == 0 and _pending_msg != null:
+		var msg = _pending_msg
+		_pending_msg = null
+		display_message(msg)
 
 func hide_message() -> void:
 	tab_container.current_tab = previous_tab
@@ -74,5 +95,4 @@ func _on_look_down_pressed() -> void:
 
 func _on_info_menu_close_btn_pressed() -> void:
 	camera_control.look_at_target(forward_target.global_position)
-	tab_container.current_tab = 0
 	animation_player.play("Hide")

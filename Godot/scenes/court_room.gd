@@ -19,21 +19,14 @@ func _ready() -> void:
 	assert(chat_state is CourtHud, "type ChatState node not assigned")
 	assert(court_participants is CourtParticipants, "CourtParticipants resource not assigned")
 	
-	court_hud.text_box_scene.next_btn_pressed.connect(_end_game_check)
+	court_hud.text_box_scene.continue_btn_pressed.connect(_end_game_check)
 	#chat_state.no_turns_left.connect(_end_game_check)
-	
-	MsgM.buffer_update.connect(show_new_AI_message)
 	
 	if ApiClientWs.is_ws_connected:
 		start_game_session()
 	else:
 		ApiClientWs.ws_connected.connect(start_game_session)
 
-func show_new_AI_message(buffer_name: String) -> void:
-	if buffer_name == GS.current_chat_room:
-		var msg: Message = MsgM.get_buffer(buffer_name)[-1]
-		if msg.role == "assistant":
-			chat_state.display_message(msg)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_end"):
@@ -46,7 +39,6 @@ func _end_game_check(skip_end_check: bool = false) -> void:
 	if not skip_end_check:
 		if (court_hud.chat_turns_left >= 1):
 			return
-	
 	
 	if ran_endgame:
 		return
