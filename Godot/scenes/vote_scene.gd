@@ -134,7 +134,7 @@ func _results_animatios() -> void:
 		animation_player.play("put_in_jail")
 
 func _update_duble_progressBar() -> void:
-	true_votes_label.text = str(true_votes)
-	false_votes_label.text = str(false_votes)
+	true_votes_label.text = "Not guilty votes: " + str(true_votes)
+	false_votes_label.text = "Guilty votes: " + str(false_votes)
 	double_progress_bar.material.set_shader_parameter("progress_value", float(true_votes)/float(max_votes))
 	double_progress_bar.material.set_shader_parameter("reverse_progress_value", float(false_votes)/float(max_votes))
