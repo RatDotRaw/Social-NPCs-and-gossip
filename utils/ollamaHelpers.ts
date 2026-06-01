@@ -18,7 +18,7 @@ export async function generateParticipantResponse(
     if (participant.name == msg.participant?.name) {
       msg.role = "assistant"
     } else if (msg.role != "tool" && msg.role != "system") {
-      const prefix = msg.participant ? msg.participant.name+ "said the following: \n" : "unknown someone sid the following: \n"
+      const prefix = msg.participant ? msg.participant.name+ "said the following: \n" : "unknown someone said the following: \n"
       msg.role = "user"
       msg.content = prefix + msg.content
     }
