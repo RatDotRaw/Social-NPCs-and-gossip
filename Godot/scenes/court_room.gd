@@ -50,7 +50,8 @@ func _end_game_check(skip_end_check: bool = false) -> void:
 	})
 	
 	# initialize loading screen and add game over scene
-	SceneMaganger.switch_scene_with_loading("res://scenes/vote_scene.tscn", "lol unused param bc i'm silly", false) # loading screen
+	# loading screen gets auto shown by round_over
+	SceneMaganger.switch_scene_with_loading("res://scenes/vote_scene.tscn", "lol unused param bc i'm silly", false, false) # loading screen
 	var instance = ROUND_OVER.instantiate()
 	add_child(instance)
 	

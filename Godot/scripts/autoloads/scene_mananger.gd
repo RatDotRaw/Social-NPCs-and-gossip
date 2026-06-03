@@ -12,10 +12,17 @@ func switch_scene(path: String, auto_switch: bool = true) -> void:
 	ResourceLoader.load_threaded_request(target_scene)
 	loading_status = 'THREAD_LOAD_IN_PROGRESS'
 
-func switch_scene_with_loading(path: String, loading_scene: String, auto_switch: bool = true) -> void:
+func switch_scene_with_loading(path: String, loading_scene: String, auto_switch: bool = true, auto_show_loading: bool = true) -> void:
+	if auto_show_loading:
+		show_loading_screen()
+	switch_scene(path, auto_switch)
+
+func show_loading_screen() -> void:
+	if target_scene == '':
+		push_warning("[LoadingManager] show_loading_screen() called with no scene in flight")
+		return
 	var instance = load("res://scenes/loading_screen.tscn").instantiate()
 	get_tree().current_scene.add_child(instance)
-	switch_scene(path, auto_switch)
 
 func switch_now() -> void:
 	allow_switch = true
@@ -33,6 +40,7 @@ func _process(_delta: float) -> void:
 			if allow_switch:
 				loading_status = null
 				get_tree().change_scene_to_packed(ResourceLoader.load_threaded_get(target_scene))
+				target_scene = ''
 		ResourceLoader.THREAD_LOAD_FAILED:
 			push_error("[LoadingManager] Failed to load: %s" % target_scene)
 			loading_status = null
