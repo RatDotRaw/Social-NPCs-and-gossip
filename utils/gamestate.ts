@@ -19,7 +19,7 @@ export default class GameState {
     is_ai_busy = false;
     allow_request: boolean = true
 
-    constructor(id: string, personas: Persona[], modelName: string = Deno.env.get("OLLAMA_HOST") || 'qwen3.5:4b') { // 'qwen3.5:4b'
+    constructor(id: string, personas: Persona[], modelName: string = Deno.env.get("OLLAMA_MODEL")?.trim() || 'qwen3.5:4b') { // 'qwen3.5:4b'
         this.id = id
         this.personasList = personas
         this.modelName = modelName

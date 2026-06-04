@@ -104,5 +104,7 @@ app.use(oakCors({ origin: "*" }));
 app.use(router.routes());
 app.use(router.allowedMethods());
 
+console.log("Model selected: ", Deno.env.get("OLLAMA_MODEL"))
+
 console.log(`Server running on http://${HOSTNAME}:${PORT}`);
 await app.listen({ port: PORT, hostname: HOSTNAME });

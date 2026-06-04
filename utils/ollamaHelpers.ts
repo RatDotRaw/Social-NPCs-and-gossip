@@ -41,6 +41,7 @@ export async function generateChatResponse(
   thinking: boolean = false
 ) {
   try {
+    console.log(`Model used: ${model_name}`)
     const response = await ollama.chat({
       model: model_name,
       messages: messages,
