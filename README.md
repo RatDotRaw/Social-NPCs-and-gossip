@@ -1,6 +1,29 @@
-# Social-NPCs-and-gossip
+# Social NPCs & Gossip
 
-A LLM network to simulate social circles and gossip.
+![](./sleutelbeeld.jpg)
+
+A proof of concept where an LLM-powered social network simulates how gossip spreads, distorts, and decides a verdict, all wrapped in a silly courtroom game.
+
+## The concept
+
+You play as a lawyer defending your client, your job is to talk your way out of it.
+
+### Court phase
+
+Three randomly selected town NPCs act as the **Court Heads**, they're not judges, just investigators. You answer their questions to piece together a story. After a limited number of exchanges, they write down what they heard as gossip seeds.
+
+### Gossip phase
+
+Those three seeds spread through a small social network. Every citizen who hears the story filters it through their own persona, beliefs, grudges, sense of humor and rewrites it in their voice before passing it on. Each citizen also casts a vote: **guilty** or **not guilty**. Majority decides your clients fate.
+
+> Truth is just the story that survives the game of telephone.
+
+## Technical overview
+
+- **Godot 4** — Game client (3D courtroom UI, character portraits, text input)
+- **Deno / Oak** — WebSocket server managing sessions, chat buffers, AI orchestration and gossip creation/propagation.
+- **Ollama** — Local LLM running the NPCs (default: `qwen3.5:4b`)
+- **Gossip Engine** — A propagation graph where each persona receives gossip, evaluates it through their belief framework, and rewrites it with their voice before forwarding it to the next node.
 
 ## What you'll need
 
@@ -8,9 +31,16 @@ This project needs 3 programs:
 
 1. [Ollama](https://ollama.com/): Runs the AI that powers the NPCs
 2. [Deno](https://deno.com/): The backend server that connects the game to the AI
-3. [Godot 4.6](https://godotengine.org/download/archive/4.6-stable/): The game engine
+3. [Godot 4.6.2](https://godotengine.org/download/archive/4.6.2-stable/): The game engine
 
 ## Up & running
+
+### 0. Get the project
+
+- Either clone the project the project and make sure Git-LFS did its job.
+
+- Or grab the latest release from the release page.
+
 
 ### 1. Pull the AI model
 
@@ -47,13 +77,16 @@ Keep this terminal open.
 
 ```bash
 deno cache serverWS.ts
-deno run --env-file -A serverWS.ts
+deno run --env-file=.env -A serverWS.ts
 ```
 
 The server runs on `http://localhost:8000` by default.
 Keep this terminal open.
 
 ### 5. Run the Godot game
+
+> If available, you can download a ready-to-use executable from the release page
+> and you can skip this step and run that one instead.
 
 1. Open Godot 4.6
 2. Import `Godot/project.godot`
