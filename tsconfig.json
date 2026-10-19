@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "serverWS.ts",
+    "test_gossip.ts",
+    "types.ts",
+    "utils/**/*.ts",
+    "gossipEnge/**/*.ts",
+    "dialogManager/**/*.ts",
+    "messages/**/*.ts"
+  ],
+  "exclude": ["node_modules", "demos"]
+}

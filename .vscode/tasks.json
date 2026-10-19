@@ -20,7 +20,7 @@
             "label": "Start serverWS",
             "type": "shell",
             // Use ~/ for home or ../ to go up from your project root
-            "command": "deno -A --watch serverWS.ts",
+            "command": "node --env-file-if-exists=.env --watch serverWS.ts",
             "isBackground": true,
             "presentation": {
                 "reveal": "always",

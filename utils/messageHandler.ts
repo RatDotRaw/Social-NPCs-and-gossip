@@ -1,10 +1,11 @@
 // deno-lint-ignore-file no-explicit-any
 import { AddInjectedContext, CreateMessageBufferScheme, ReadMessageBufferScheme, NewUserMessageScheme, NewParticipantScheme, GenerateAiResponseScheme, GenerateGossipFromMessageBuffer, PropagateGossip, GenerateSingleAiResponseScheme } from "../messages/index.ts";
 import GameState from "./gamestate.ts";
-import { ServerResponse } from "../types.ts";
+import type { ServerResponse } from "../types.ts";
 import { generateParticipantResponse } from "./ollamaHelpers.ts";
-import { Message } from "../dialogManager/types.ts";
-import { Gossip } from "../gossipEnge/types.ts";
+import type { Message } from "../dialogManager/types.ts";
+import type { Gossip } from "../gossipEnge/types.ts";
+import { WebSocket } from "ws";
 
 // Define what a handler looks like
 type MessageHandler = (

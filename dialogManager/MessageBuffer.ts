@@ -1,4 +1,4 @@
-import { Message } from "./types.ts";
+import type { Message } from "./types.ts";
 
 export class MessageBuffer {
     participants: Set<string> = new Set();

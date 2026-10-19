@@ -1,6 +1,7 @@
-import ollama, { Tool } from "ollama";
-import { Persona } from "../gossipEnge/types.ts";
-import { Message, Participant } from "../dialogManager/types.ts";
+import ollama from "ollama";
+import type { Tool } from "ollama";
+import type { Persona } from "../gossipEnge/types.ts";
+import type { Message, Participant } from "../dialogManager/types.ts";
 import { formatPersonaBasePrompt } from "./promptFormatter.ts";
 
 /** Generate AI response.

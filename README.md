@@ -21,7 +21,7 @@ Those three seeds spread through a small social network. Every citizen who hears
 ## Technical overview
 
 - **Godot 4** — Game client (3D courtroom UI, character portraits, text input)
-- **Deno / Oak** — WebSocket server managing sessions, chat buffers, AI orchestration and gossip creation/propagation.
+- **Node.js / ws** — WebSocket server managing sessions, chat buffers, AI orchestration and gossip creation/propagation.
 - **Ollama** — Local LLM running the NPCs (default: `qwen3.5:4b`)
 - **Gossip Engine** — A propagation graph where each persona receives gossip, evaluates it through their belief framework, and rewrites it with their voice before forwarding it to the next node.
 
@@ -30,7 +30,7 @@ Those three seeds spread through a small social network. Every citizen who hears
 This project needs 3 programs:
 
 1. [Ollama](https://ollama.com/): Runs the AI that powers the NPCs
-2. [Deno](https://deno.com/): The backend server that connects the game to the AI
+2. [Node.js](https://nodejs.org/) 22.18 or newer: The backend server that connects the game to the AI
 3. [Godot 4.6.2](https://godotengine.org/download/archive/4.6.2-stable/): The game engine
 
 ## Up & running
@@ -73,11 +73,11 @@ ollama serve
 
 Keep this terminal open.
 
-### 4. Start the Deno server
+### 4. Start the Node.js server
 
 ```bash
-deno cache serverWS.ts
-deno run --env-file=.env -A serverWS.ts
+npm install
+node --env-file=.env serverWS.ts
 ```
 
 The server runs on `http://localhost:8000` by default.
@@ -97,6 +97,8 @@ The game should automatically connect to the backend.
 ---
 
 ## Sources
+
+> **Disclaimer:** This project was originally made with Deno. Since Deno announced its deprecation, the backend has been ported to Node.js. See release 1.0.1 for the deno version.
 
 ### Deno
 

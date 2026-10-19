@@ -1,6 +1,6 @@
-import { Message } from "./dialogManager/types.ts";
+import type { Message } from "./dialogManager/types.ts";
 import { GossipEngine } from "./gossipEnge/GossipEngine.ts";
-import { Gossip } from "./gossipEnge/types.ts";
+import type { Gossip } from "./gossipEnge/types.ts";
 import { generateParticipantResponse } from "./utils/ollamaHelpers.ts";
 import { loadAllPersonas } from "./utils/promptLoader.ts";
 

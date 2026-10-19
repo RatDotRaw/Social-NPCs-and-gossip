@@ -1,8 +1,8 @@
 import { formatPersonaBasePrompt, formatPersonaGossipExtension } from "../utils/promptFormatter.ts";
-import { Gossip, GossipEdge, GossipEngineConfig, Persona } from "./types.ts";
+import type { Gossip, GossipEdge, GossipEngineConfig, Persona } from "./types.ts";
 import { generateToolCallResponse } from "../utils/ollamaHelpers.ts";
-import { Message } from "../dialogManager/types.ts";
-import { Tool } from "ollama";
+import type { Message } from "../dialogManager/types.ts";
+import type { Tool } from "ollama";
 
 // structured JSON format
 const formatJson = {
@@ -74,8 +74,10 @@ RULES:
 export class GossipEngine {
   config: GossipEngineConfig;
   staticEdges: GossipEdge[];
+  personas: Persona[];
 
-  constructor(public personas: Persona[], config: GossipEngineConfig, staticEdges: GossipEdge[] = []) {
+  constructor(personas: Persona[], config: GossipEngineConfig, staticEdges: GossipEdge[] = []) {
+    this.personas = personas;
     this.config = config;
     this.staticEdges = staticEdges;
   }

@@ -1,4 +1,4 @@
-import { Persona } from "../gossipEnge/types.ts";
+import type { Persona } from "../gossipEnge/types.ts";
 
 export function formatPersonaBasePrompt(persona: Persona): string {
   return `

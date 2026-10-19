@@ -1,6 +1,6 @@
 
 
-import { z } from "@zod/zod"
+import { z } from "zod"
 
 const ROLES = ["user", "assistant", "system", "tool"] as const;
 

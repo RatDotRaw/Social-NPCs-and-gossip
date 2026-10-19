@@ -1,6 +1,6 @@
-import { Message, Participant, roles } from "../dialogManager/types.ts"
+import type { Message, Participant, roles } from "../dialogManager/types.ts"
 import { GossipEngine } from "../gossipEnge/GossipEngine.ts";
-import { Gossip, Persona } from "../gossipEnge/types.ts";
+import type { Gossip, Persona } from "../gossipEnge/types.ts";
 
 
 export default class GameState {
@@ -19,7 +19,7 @@ export default class GameState {
     is_ai_busy = false;
     allow_request: boolean = true
 
-    constructor(id: string, personas: Persona[], modelName: string = Deno.env.get("OLLAMA_MODEL")?.trim() || 'qwen3.5:4b') { // 'qwen3.5:4b'
+    constructor(id: string, personas: Persona[], modelName: string = process.env.OLLAMA_MODEL?.trim() || 'qwen3.5:4b') { // 'qwen3.5:4b'
         this.id = id
         this.personasList = personas
         this.modelName = modelName

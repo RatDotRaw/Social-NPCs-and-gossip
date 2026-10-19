@@ -1,0 +1,25 @@
+{
+  "name": "social-npcs-and-gossip",
+  "version": "1.0.0",
+  "description": "WebSocket backend for Social NPCs & Gossip: sessions, chat buffers, AI orchestration and gossip creation/propagation.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env serverWS.ts",
+    "dev": "node --env-file-if-exists=.env --watch serverWS.ts",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "ollama": "^0.6.3",
+    "ws": "^8.18.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/ws": "^8.18.2",
+    "typescript": "^7.0.2"
+  }
+}
